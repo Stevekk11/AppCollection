@@ -11,11 +11,13 @@ public class Clock
         //přiřazení hodin a minut
         int hour = time.Hour % 12;
         if (hour == 0) hour = 12;
-        int minuteSlot = (int)Math.Round(time.Minute / 5.0);
+        int minuteSlot = (int)Math.Round(time.Minute / 10.0);
         if (minuteSlot >= Minutes.Length) minuteSlot = 0;
 
         string hod = Hours[hour];
         string min = Minutes[minuteSlot];
+
+        words.Add("a");
 
 
         // Spojky a tvar
@@ -38,7 +40,7 @@ public class Clock
         words.Add(hod);
         words.Add(min);
         words.Add("minut");
-
+        Console.WriteLine(string.Join(", ", words.Select(x => x.ToString())));
         return words;
     }
 }

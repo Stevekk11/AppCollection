@@ -14,8 +14,3 @@
     padding: 0.1em 0.2em;
     transition: background 0.3s, color 0.3s;
 }
-.active {
-    color: #fff;
-    background: #1e90ff;
-    font-weight: bold;
-}
