@@ -1,0 +1,35 @@
+﻿@{
+    ViewData["Title"] = "Slovní hodiny";
+}
+<link rel="stylesheet" href="~/css/clock.css" />
+
+@model SlovníHodiny.Models.Clock
+@{
+    var now = DateTime.Now;
+    var activeWords = Model.GetActiveWords(now);
+
+    string[,] grid =
+    {
+        { "JE", "JSOU", "JEDNA", "ŠEST", "DVĚ", "ČTYŘI" },
+        { "PĚT", "SEDM", "DEVĚT", "TŘI", "JEDENÁCT", "OSM" },
+        { "DESET", "DVANÁCT", "HODIN", "HODINY", " A ", "PADESÁT" },
+        { "ČTYŘICET", "DVACET", "TŘICET", "DESET", "PĚT", "MINUT"},
+    };
+
+    int rows = grid.GetLength(0);
+    int cols = grid.GetLength(1);
+}
+<h1 class="display-4">Aktuální čas</h1>
+<div class="d-flex justify-content-center align-items-center flex-column">
+    <div class="clock-grid">
+        @for (int row = 0; row < rows; row++)
+                             {
+        for (int col = 0; col < cols; col++)
+                                         {
+        var word = grid[row, col];
+            var isActive = activeWords.Any(w => string.Equals(word, w, StringComparison.OrdinalIgnoreCase));
+            <span class="clock-letter @(isActive ? "active" : "inactive")">@word</span>
+            }
+        }
+    </div>
+</div>

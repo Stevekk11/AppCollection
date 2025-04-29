@@ -18,6 +18,14 @@ public class HomeController : Controller
         return View();
     }
 
+    public IActionResult Clock()
+    {
+        var clock = new Clock();
+        var now = DateTime.Now;
+        ViewBag.CurrentTime = now;
+        return View(clock);
+    }
+
     public IActionResult Privacy()
     {
         return View();

@@ -1,0 +1,21 @@
+﻿.clock-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 5em);
+    grid-template-rows: repeat(6, 4em);
+    gap: 0.1em;
+    font-family: monospace;
+    font-size: 1.2em;
+    line-height: 1.5em;
+}
+.clock-letter {
+    color: #000000;
+    background: #b8b1b1;
+    border-radius: 0.2em;
+    padding: 0.1em 0.2em;
+    transition: background 0.3s, color 0.3s;
+}
+.active {
+    color: #fff;
+    background: #1e90ff;
+    font-weight: bold;
+}
