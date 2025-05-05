@@ -1,7 +1,7 @@
 ﻿@{
     ViewData["Title"] = "Slovní hodiny";
 }
-<link rel="stylesheet" href="~/css/clock.css" />
+<link rel="stylesheet" href="~/css/clock.css"/>
 
 @model SlovníHodiny.Models.Clock
 @{
@@ -16,8 +16,17 @@
         { "JE", "JSOU", "JEDNA", "ŠEST", "DVĚ", "ČTYŘI" },
         { "PĚT", "SEDM", "DEVĚT", "TŘI", "JEDENÁCT", "OSM" },
         { "DESET", "DVANÁCT", "HODIN", "HODINY", "A", "PADESÁT" },
-        { "ČTYŘICET", "DVACET", "TŘICET", "DESET", "PĚT.", "MINUT"},
+        { "ČTYŘICET", "DVACET", "TŘICET", "DESET", "PĚT", "MINUT" },
     };
+
+    string[,] gridContexts =
+    {
+        { "sloveso", "sloveso", "hodiny", "hodiny", "hodiny", "hodiny" },
+        { "hodiny", "hodiny", "hodiny", "hodiny", "hodiny", "hodiny" },
+        { "hodiny", "hodiny", "hodiny", "hodiny", "spojka", "minuty" },
+        { "minuty", "minuty", "minuty", "minuty", "minuty", "minuty" },
+    };
+
 
     int rows = grid.GetLength(0);
     int cols = grid.GetLength(1);
@@ -26,21 +35,25 @@
 <div class="d-flex justify-content-center align-items-center flex-column">
     <div class="clock-grid">
         @for (int row = 0; row < rows; row++)
-{
-    for (int col = 0; col < cols; col++)
-    {
-        var word = grid[row, col];
-        var isActive = activeWords.Any(w => string.Equals(word, w, StringComparison.OrdinalIgnoreCase));
-        if (isActive)
         {
-            var colorIndex = activeWordsList.FindIndex(w => string.Equals(w, word, StringComparison.OrdinalIgnoreCase)) % colors.Length;
-            <span class="clock-letter d-flex justify-content-center text-align-center active" style="color:@colors[colorIndex]">@word</span>
+            for (int col = 0; col < cols; col++)
+            {
+                var word = grid[row, col];
+                var context = gridContexts[row, col];
+                var isActive = activeWords.Any(w => string.Equals(w.Text, word, StringComparison.OrdinalIgnoreCase) && w.Context == context);
+
+                if (isActive)
+                {
+                    var colorIndex = activeWordsList.FindIndex(w => string.Equals(w.Text, word, StringComparison.OrdinalIgnoreCase) && w.Context == context) % colors.Length;
+
+                    <span class="clock-letter d-flex justify-content-center text-align-center active"
+                          style="color:@colors[colorIndex]">@word</span>
+                }
+                else
+                {
+                    <span class="clock-letter d-flex justify-content-center text-align-center inactive">@word</span>
+                }
+            }
         }
-        else
-        {
-            <span class="clock-letter d-flex justify-content-center text-align-center inactive">@word</span>
-        }
-    }
-}
     </div>
 </div>
