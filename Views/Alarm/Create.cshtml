@@ -1,0 +1,49 @@
+﻿@model SlovníHodiny.Models.Alarm
+@{
+    ViewData["Title"] = "Nový budík";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<form asp-action="Create" method="post">
+    <div class="mb-3">
+        <label asp-for="Time" class="form-label">Čas</label>
+        <input asp-for="Time" type="time" class="form-control"/>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Label" class="form-label">Popisek</label>
+        <input asp-for="Label" class="form-control"/>
+    </div>
+    <div class="mb-3">
+        <label asp-for="IsOn" class="form-label">Zapnuto</label>
+        <input asp-for="IsOn" type="checkbox" />
+    </div>
+    <div class="mb-3">
+        <label>Opakovat ve dnech</label>
+        <select asp-for="RepeatDays" multiple="multiple" class="form-control">
+            @foreach(var day in Enum.GetValues(typeof(DayOfWeek)).Cast<DayOfWeek>())
+            {
+                <option value="@day">@day</option>
+            }
+        </select>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Type" class="form-label">Typ</label>
+        <select asp-for="Type" class="form-control">
+            @foreach(var type in Enum.GetValues(typeof(SlovníHodiny.Models.AlarmType)))
+            {
+                <option value="@type">@type</option>
+            }
+        </select>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Sound" class="form-label">Zvuk</label>
+        <input asp-for="Sound" class="form-control"/>
+    </div>
+    <div class="mb-3">
+        <label asp-for="SnoozeForMins" class="form-label">Snooze (minut)</label>
+        <input asp-for="SnoozeForMins" type="number" min="0" max="60" class="form-control"/>
+    </div>
+    <button type="submit" class="btn btn-primary">Uložit</button>
+    <a asp-action="Index" class="btn btn-secondary">Zpět</a>
+</form>

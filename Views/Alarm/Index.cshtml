@@ -1,0 +1,49 @@
+﻿@model List<SlovníHodiny.Models.Alarm>
+@{
+    ViewData["Title"] = "Seznam budíků";
+}
+<h2>@ViewData["Title"]</h2>
+
+<p>
+    <a class="btn btn-success" asp-action="Create">Přidat budík</a>
+</p>
+
+<table class="table" id="alarmTable">
+    <thead>
+        <tr>
+            <th>Čas</th>
+            <th>Popisek</th>
+            <th>Zapnuto</th>
+            <th>Opakování</th>
+            <th>Typ</th>
+            <th>Zvuk</th>
+            <th>Snooze [min]</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach(var alarm in Model)
+    {
+        <tr data-alarm="@alarm.Time.ToString(@"hh\:mm")"
+            data-type="@alarm.Type"
+            data-sound="@alarm.Sound"
+            data-is-on="@(alarm.IsOn ? "true" : "false")">
+            <td>@alarm.Time</td>
+            <td>@alarm.Label</td>
+            <td>@(alarm.IsOn ? "Ano" : "Ne")</td>
+            <td>@string.Join(", ", alarm.RepeatDays)</td>
+            <td>@alarm.Type</td>
+            <td>@alarm.Sound</td>
+            <td>@alarm.SnoozeForMins</td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@alarm.Id">Upravit</a> |
+                <a asp-action="Delete" asp-route-id="@alarm.Id">Smazat</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+<!-- Přehávač zvuku nebo streamu -->
+<audio id="alarmAudio"></audio>
+<script src="~/js/alarm.js"></script>
