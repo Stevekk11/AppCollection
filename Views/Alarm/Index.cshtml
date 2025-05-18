@@ -10,16 +10,16 @@
 
 <table class="table" id="alarmTable">
     <thead>
-        <tr>
-            <th>Čas</th>
-            <th>Popisek</th>
-            <th>Zapnuto</th>
-            <th>Opakování</th>
-            <th>Typ</th>
-            <th>Zvuk</th>
-            <th>Snooze [min]</th>
-            <th></th>
-        </tr>
+    <tr>
+        <th>Čas</th>
+        <th>Popisek</th>
+        <th>Zapnuto</th>
+        <th>Opakování</th>
+        <th>Typ</th>
+        <th>Zvuk</th>
+        <th>Snooze [min]</th>
+        <th></th>
+    </tr>
     </thead>
     <tbody>
     @foreach(var alarm in Model)
@@ -43,6 +43,7 @@
     }
     </tbody>
 </table>
+<h2 id="alrm" style="color: indianred" class="display-5 text-center"></h2>
 
 <!-- Přehávač zvuku nebo streamu -->
 <audio id="alarmAudio"></audio>

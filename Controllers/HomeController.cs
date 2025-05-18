@@ -1,39 +1,35 @@
-using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using SlovníHodiny.Models;
+using SlovníHodiny.Services;
+using System.Threading.Tasks;
+using Newtonsoft.Json.Linq;
 
 namespace SlovníHodiny.Controllers;
 
 public class HomeController : Controller
 {
-    private readonly ILogger<HomeController> _logger;
+    private readonly WeatherService _weatherService;
 
-    public HomeController(ILogger<HomeController> logger)
+    public HomeController(WeatherService weatherService)
     {
-        _logger = logger;
+        _weatherService = weatherService;
     }
 
-    public IActionResult Index()
+    public async Task<IActionResult> Clock(string city)
     {
-        return View();
+        var clockModel = new Clock();
+        var cityToUse = string.IsNullOrWhiteSpace(city) ? "Praha" : city;
+        var weatherModel = await _weatherService.GetWeatherAsync(cityToUse);
+
+        var viewModel = new ClockWeatherViewModel
+        {
+            Clock = clockModel,
+            Weather = weatherModel
+        };
+        return View(viewModel);
     }
 
-    public IActionResult Clock()
-    {
-        var clock = new Clock();
-        var now = DateTime.Now;
-        ViewBag.CurrentTime = now;
-        return View(clock);
-    }
-
-    public IActionResult Privacy()
-    {
-        return View();
-    }
-
-    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-    public IActionResult Error()
-    {
-        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-    }
+    //public IActionResult Index() => View();
+    public IActionResult Privacy() => View();
+    public IActionResult Index() => View();
 }

@@ -2,15 +2,14 @@
     ViewData["Title"] = "Slovní hodiny";
 }
 <link rel="stylesheet" href="~/css/clock.css"/>
-<script src="~/js/alarm.js"></script>
 
-@model SlovníHodiny.Models.Clock
+@model SlovníHodiny.Models.ClockWeatherViewModel
 @{
+    ViewData["Title"] = "Slovní hodiny";
     var now = DateTime.Now;
-    var activeWords = Model.GetActiveWords(now);
+    var activeWords = Model.Clock.GetActiveWords(now);
     var colors = new[] { "#ff5733", "#33c1ff", "#ff33c8", "#7bff33", "#ffd133", "#a633ff", "#ff3636", "#33ffd1", "#d133ff" };
     var activeWordsList = activeWords.ToList();
-
 
     string[,] grid =
     {
@@ -28,13 +27,13 @@
         { "minuty", "minuty", "minuty", "minuty", "minuty", "minuty" },
     };
 
-
     int rows = grid.GetLength(0);
     int cols = grid.GetLength(1);
+    var weather = Model.Weather;
 }
-<h1 class="display-4 text-center">Aktuální čas ⏱️</h1>
-<div class="d-flex justify-content-center align-items-center flex-column">
-    <div class="clock-grid">
+<h1 class="display-4 text-center">Aktuální čas & počasí ⏱️</h1>
+<div class="d-flex justify-content-center align-items-start flex-row">
+    <div class="clock-grid me-5">
         @for (int row = 0; row < rows; row++)
         {
             for (int col = 0; col < cols; col++)
@@ -42,11 +41,9 @@
                 var word = grid[row, col];
                 var context = gridContexts[row, col];
                 var isActive = activeWords.Any(w => string.Equals(w.Text, word, StringComparison.OrdinalIgnoreCase) && w.Context == context);
-
                 if (isActive)
                 {
                     var colorIndex = activeWordsList.FindIndex(w => string.Equals(w.Text, word, StringComparison.OrdinalIgnoreCase) && w.Context == context) % colors.Length;
-
                     <span class="clock-letter d-flex justify-content-center text-align-center active"
                           style="color:@colors[colorIndex]">@word</span>
                 }
@@ -57,4 +54,41 @@
             }
         }
     </div>
+    <div class="weather-box bg-white p-3 rounded border shadow-sm" style="width: 10vw">
+        <div class="text-center mb-2">
+            <strong>Počasí:</strong>
+        </div>
+        @if (weather != null)
+        {
+            <div class="text-center">
+                <img src="@weather.IconUrl" alt="počasí ikona" style="width:25%" />
+            </div>
+            <div class="mt-2">
+                <span>Teplota: <strong>@weather.TemperatureCelsius</strong>°C</span><br />
+                @if (weather.WindSpeedKmh.HasValue)
+                {
+                    <span>Vítr: <strong>@weather.WindSpeedKmh.Value</strong> km/h</span><br />
+                }
+                @if (weather.HumidityPercent.HasValue)
+                {
+                    <span>Vlhkost: <strong>@weather.HumidityPercent.Value</strong>%</span>
+                }
+            </div>
+            <div class="mt-2 text-muted" style="font-size:0.85em;">
+                <span>@weather.Date.ToString("d.M.yyyy H:mm")</span>
+            </div>
+        }
+        else
+        {
+            <span>Informace o počasí nejsou dostupné.😵</span>
+        }
+    </div>
+    <div class="weather-city-form mb-3" style="padding: 1em">
+        <form asp-action="Clock" method="get" class="d-flex flex-row align-items-center gap-2">
+            <label for="city" class="form-label mb-0">Město:</label>
+            <input type="text" id="city" name="city" value="@(Context.Request.Query["city"].FirstOrDefault() ?? "Praha")" class="form-control" style="width: 140px;" />
+            <button type="submit" class="btn btn-primary">Zobrazit počasí</button>
+        </form>
+    </div>
 </div>
+<h2 id="alrm" style="color: indianred" class="display-5 text-center"></h2>

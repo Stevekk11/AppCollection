@@ -32,17 +32,18 @@ setInterval(() => {
                     audio.play();
                 } else if (type === "Nature" || type === "Radio") {
                     // Nature = link na mp3, Radio = webstream url
-                    audio.src = sound;
+                    audio.src = "/media/"+sound+".mp3";
                     audio.loop = type === "Nature"; // příroda může loopovat, rádio ne
                     audio.play();
                 }
 
-                alert("Budík: " + row.children[1].innerText);
+                document.querySelector('#alrm').innerHTML= "🔔Zvoní budík🔔";
 
                 // Zastavení alarmu po 60 sekundách, případně doplň o snooze
                 setTimeout(() => {
                     audio.pause();
                     audio.currentTime = 0;
+                    document.querySelector('#alrm').innerHTML= "";
                 }, 60000);
             }
         } else if (alarmTime !== currentTime && alarmTriggered[alarmTime]) {

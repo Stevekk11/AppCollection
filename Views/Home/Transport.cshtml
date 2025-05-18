@@ -1,0 +1,87 @@
+﻿@model SlovníHodiny.Models.DepartureViewModel
+@{
+    ViewData["Title"] = "Odjezdy PID";
+}
+
+<h1 class="flex">@ViewData["Title"]</h1>
+
+<div class="departures-container">
+    <div class="flex" style="font-size: large">
+        <h2>
+            Čas: <span id="clock">@Model.Now.ToLongTimeString()</span>,
+            @Model.Now.ToString("d.M.yyyy")
+        </h2>
+    </div>
+    @if (!string.IsNullOrEmpty(Model.Error))
+    {
+        <p class="error">@Model.Error</p>
+    }
+    <div class="mx-auto my-4 p-4 border border-2 rounded-3 bg-white shadow text-center" style="max-width:500px; width:170%; transform:scale(1.2);">
+        <form asp-action="Search" asp-controller="Departures" method="post" class="form-inline">
+            <label for="stop-name">Název zastávky:</label>
+            <input name="stopName" id="stop-name" class="form-control" value="@Model.StopName" placeholder="@Model.Placeholder" list="stopSuggestions" autocomplete="off"/>
+            <datalist id="stopSuggestions">
+                @foreach (var s in Model.AvailableStops.Distinct())
+                {
+                    <option value="@s" />
+                }
+            </datalist>
+            <button type="submit" class="btn btn-primary">Zobrazit</button>
+        </form>
+    </div>
+
+    <div class="d-flex justify-content-between align-items-center p-3 border rounded bg-white shadow my-3" style="max-width:170%; margin-top:2em;">
+        <div class="route" id="cislo">Číslo linky</div>
+        <div class="destination" id="smer">Směr</div>
+        <div class="scheduled-time">Čas odjezdu (min)</div>
+        <div class="platform">Nástupiště</div>
+        <div class="ac">Klimatizováno</div>
+        <div class="krypl">Bezbariérový spoj</div>
+        <div class="delay">Zpoždění</div>
+    </div>
+    @if (Model.Departures?.Any() ?? false)
+    {
+        @foreach (var dep in Model.Departures)
+        {
+            <div class="d-flex justify-content-between align-items-center p-3 border rounded bg-white shadow my-1">
+
+                <div class="route">@dep.Route</div>
+                <div class="destination">@dep.Destination</div>
+                <div class="scheduled-time">@dep.Minutes</div>
+                <div class="platform">@dep.PlatformCode</div>
+                <div class="ac">
+                    @if (dep.Ac)
+                    {
+                        <img src="snowflake.png" alt="Air conditioning" style="width:24px"/>
+                    }
+                </div>
+                <div class="krypl">
+                    @if (dep.Krypl)
+                    {
+                        <img src="disability.png" alt="Is low-floor" style="width:24px"/>
+                    }
+                </div>
+                <div class="@(dep.Delay == 0 ? "no-delay" : dep.Delay <= 5 ? "slight-delay" : "delay")">
+                    @(dep.Delay == 0 ? "Bez zpoždění" : dep.Delay.ToString())
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <div class="d-flex justify-content-center align-items-center my-4">
+            <img src="bus.png" alt="" width="128px" height="128px" />
+        </div>
+    }
+</div>
+<link rel="stylesheet" href="css/transport.css" />
+<script>
+function updateClock() {
+    const clockElem = document.getElementById('clock');
+    const now = new Date();
+    clockElem.textContent =
+        now.toLocaleTimeString('cs-CZ', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+}
+setInterval(updateClock, 1000);
+updateClock();
+</script>

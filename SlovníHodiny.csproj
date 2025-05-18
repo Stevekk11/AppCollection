@@ -10,4 +10,19 @@
       <_ContentIncludedByDefault Remove="wwwroot\lib\media\beep.mp3" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="wwwroot\lib\vendor\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Update="cloc.exe">
+        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      </Content>
+    </ItemGroup>
+
 </Project>
