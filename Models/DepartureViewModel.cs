@@ -1,5 +1,8 @@
 ﻿namespace SlovníHodiny.Models;
 
+/// <summary>
+/// Represents a view model for departure information used in the application.
+/// </summary>
 public class DepartureViewModel
 {
     public string StopName { get; set; }
@@ -9,6 +12,10 @@ public class DepartureViewModel
     public DateTime Now { get; set; }
     public string? Error { get; set; }
 
+    /// <summary>
+    /// Represents a Data Transfer Object (DTO) for departure information
+    /// containing details such as route, destination, timing, and accessibility features.
+    /// </summary>
     public class DepartureDto
     {
         public string Route { get; set; }

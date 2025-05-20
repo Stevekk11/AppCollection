@@ -4,6 +4,10 @@ using SlovníHodiny.Models;
 using SlovníHodiny.Services;
 
 namespace SlovníHodiny.Controllers;
+
+/// <summary>
+/// Provides functionality for handling search operations in the application.
+/// </summary>
 [Authorize]
 public class SearchController : Controller
 {

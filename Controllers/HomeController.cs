@@ -6,6 +6,9 @@ using Microsoft.AspNetCore.Authorization;
 using Newtonsoft.Json.Linq;
 
 namespace SlovníHodiny.Controllers;
+/// <summary>
+/// Main controller for the application. Displays the home page and handles requests for the clock and weather.
+/// </summary>
 [Authorize]
 public class HomeController : Controller
 {
@@ -16,6 +19,10 @@ public class HomeController : Controller
         _weatherService = weatherService;
     }
 
+    /// <summary>
+    /// Represents a clock model that provides functionality to retrieve active words
+    /// representing the current time in a textual format based on a specific context.
+    /// </summary>
     public async Task<IActionResult> Clock(string city)
     {
         var clockModel = new Clock();
@@ -30,7 +37,6 @@ public class HomeController : Controller
         return View(viewModel);
     }
 
-    //public IActionResult Index() => View();
     public IActionResult Privacy() => View();
     public IActionResult Index() => View();
 }

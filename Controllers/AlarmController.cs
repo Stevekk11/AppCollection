@@ -3,16 +3,27 @@ using Microsoft.AspNetCore.Mvc;
 using SlovníHodiny.Models;
 
 namespace SlovníHodiny.Controllers;
+/// <summary>
+/// Controller for managing alarm functionality
+/// </summary>
 [Authorize]
 public class AlarmController : Controller
 {
     private static List<Alarm> Alarms { get; set; } = new List<Alarm>();
 
+    /// <summary>
+    /// Displays a list of all alarms
+    /// </summary>
+    /// <returns>View containing list of alarms</returns>
     public IActionResult Index()
     {
         return View(Alarms);
     }
 
+    /// <summary>
+    /// Displays the alarm creation form
+    /// </summary>
+    /// <returns>View with empty alarm form</returns>
     public IActionResult Create()
     {
         return View(new Alarm
@@ -22,6 +33,11 @@ public class AlarmController : Controller
         });
     }
 
+    /// <summary>
+    /// Processes the alarm creation form submission
+    /// </summary>
+    /// <param name="alarm">The alarm to create</param>
+    /// <returns>Redirects to Index on success</returns>
     [HttpPost]
     public IActionResult Create(Alarm alarm)
     {
@@ -29,6 +45,11 @@ public class AlarmController : Controller
         Alarms.Add(alarm);
         return RedirectToAction(nameof(Index));
     }
+    /// <summary>
+    /// Displays the alarm editing form
+    /// </summary>
+    /// <param name="id">ID of the alarm to edit</param>
+    /// <returns>View with alarm details or NotFound</returns>
     [HttpGet]
     public IActionResult Edit(int id)
     {
@@ -36,6 +57,11 @@ public class AlarmController : Controller
         if (alarm == null) return NotFound();
         return View(alarm);
     }
+    /// <summary>
+    /// Processes the alarm edit form submission
+    /// </summary>
+    /// <param name="alarm">The updated alarm data</param>
+    /// <returns>Redirects to Index on success or NotFound</returns>
     [HttpPost]
     public IActionResult Edit(Alarm alarm)
     {
@@ -52,6 +78,11 @@ public class AlarmController : Controller
         existing.SnoozeForMins = alarm.SnoozeForMins;
         return RedirectToAction(nameof(Index));
     }
+    /// <summary>
+    /// Displays the alarm deletion confirmation page
+    /// </summary>
+    /// <param name="id">ID of the alarm to delete</param>
+    /// <returns>View with alarm details or NotFound</returns>
     public IActionResult Delete(int id)
     {
         var alarm = Alarms.FirstOrDefault(a => a.Id == id);
@@ -59,6 +90,11 @@ public class AlarmController : Controller
         return View(alarm);
     }
 
+    /// <summary>
+    /// Processes the alarm deletion confirmation
+    /// </summary>
+    /// <param name="id">ID of the alarm to delete</param>
+    /// <returns>Redirects to Index after deletion</returns>
     [HttpPost, ActionName("DeleteConfirmed")]
     public IActionResult DeleteConfirmed(int id)
     {

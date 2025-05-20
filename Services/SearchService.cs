@@ -7,15 +7,29 @@ using System.Text;
 
 namespace SlovníHodiny.Services;
 
+/// <summary>
+/// Service responsible for performing web searches and extracting structured data from the results.
+/// Specifically designed to work with lustit.cz website for word searches.
+/// </summary>
+
 public class SearchService
 {
     private readonly IHttpClientFactory _httpClientFactory;
 
+    /// <summary>
+    /// Initializes a new instance of the SearchService class.
+    /// </summary>
+    /// <param name="httpClientFactory">The HTTP client factory used for creating HTTP clients.</param>
     public SearchService(IHttpClientFactory httpClientFactory)
     {
         _httpClientFactory = httpClientFactory;
     }
 
+    /// <summary>
+    /// Performs an asynchronous search query on a website for crosswords API.
+    /// </summary>
+    /// <param name="query">The search query string to look up.</param>
+    /// <returns>A string containing the formatted search results or an error message if the search fails.</returns>
     public async Task<string?> SearchAsync(string query)
     {
         var client = _httpClientFactory.CreateClient();
@@ -31,6 +45,11 @@ public class SearchService
         }
     }
 
+    /// <summary>
+    /// Extracts and formats table data from the HTML content retrieved from the search results.
+    /// </summary>
+    /// <param name="html">The HTML content to parse.</param>
+    /// <returns>A formatted string containing the extracted data or an error message if extraction fails.</returns>
     private string? ExtractTableData(string html)
     {
         var sb = new StringBuilder();

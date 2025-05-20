@@ -7,15 +7,28 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
+
+/// <summary>
+/// Controller responsible for handling user authentication and registration.
+/// </summary>
 public class AccountController : Controller
 {
     private readonly ApplicationDbContext _context;
 
+    /// <summary>
+    /// Initializes a new instance of the AccountController.
+    /// </summary>
+    /// <param name="context">The database context for user authentication.</param>
     public AccountController(ApplicationDbContext context)
     {
         _context = context;
     }
 
+    /// <summary>
+    /// Handles user registration requests.
+    /// </summary>
+    /// <param name="model">The login model containing registration information.</param>
+    /// <returns>Redirects to the Login page on success or returns the view with errors.</returns>
     [HttpPost]
     [AllowAnonymous]
     [ValidateAntiForgeryToken]
@@ -44,6 +57,11 @@ public class AccountController : Controller
         return View(model);
     }
 
+    /// <summary>
+    /// Authenticates user login attempts.
+    /// </summary>
+    /// <param name="model">The login model containing credentials.</param>
+    /// <returns>Redirects to Home page on successful login or returns the view with errors.</returns>
     [HttpPost]
     [AllowAnonymous]
     [ValidateAntiForgeryToken]
@@ -83,6 +101,10 @@ public class AccountController : Controller
         return View(model);
     }
 
+    /// <summary>
+    /// Displays the login page.
+    /// </summary>
+    /// <returns>The login view.</returns>
     [HttpGet]
     [AllowAnonymous]
     public IActionResult Login()
@@ -90,6 +112,10 @@ public class AccountController : Controller
         return View();
     }
 
+    /// <summary>
+    /// Displays the registration page.
+    /// </summary>
+    /// <returns>The registration view.</returns>
     [HttpGet]
     [AllowAnonymous]
     public IActionResult Register()

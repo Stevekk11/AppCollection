@@ -1,5 +1,7 @@
 ﻿namespace SlovníHodiny.Models;
-
+/// <summary>
+/// Simple weather model.
+/// </summary>
 public class ClockWeatherViewModel
 {
     public Clock Clock { get; set; }

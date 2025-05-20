@@ -1,5 +1,8 @@
 ﻿namespace SlovníHodiny.Models;
 
+/// <summary>
+/// Represents weather data including temperature, wind speed, humidity, and icon information.
+/// </summary>
 public class Weather
 {
     public DateTime Date { get; set; }

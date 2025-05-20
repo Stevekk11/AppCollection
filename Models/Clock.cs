@@ -1,11 +1,23 @@
 ﻿namespace SlovníHodiny.Models;
 
-public record ActiveWord(string Text, string Context); // Kontext může být "hodiny" nebo "minuty"
+/// <summary>
+/// Represents an active word with associated textual content and context.
+/// </summary>
+/// <param name="Text">The text of the word.</param>
+/// <param name="Context">
+/// The context in which the word is used. Possible values include "hodiny" (hours) or "minuty" (minutes).
+/// </param>
+public record ActiveWord(string Text, string Context); // Context can be "hodiny" nebo "minuty"
 public class Clock
 {
     public string[] Hours = { "dvanáct", "jedna", "dvě", "tři", "čtyři", "pět", "šest", "sedm", "osm", "devět", "deset", "jedenáct", "dvanáct" };
     public string[] Minutes = {"nula","deset", "dvacet", "třicet", "čtyřicet", "padesát"};
 
+    /// <summary>
+    /// Retrieves a list of active words representing the current time in a textual form.
+    /// </summary>
+    /// <param name="time">The DateTime object representing the time for which active words will be generated.</param>
+    /// <returns>A list of <see cref="ActiveWord"/> objects representing the active words based on the provided time.</returns>
     public List<ActiveWord> GetActiveWords(DateTime time)
     {
         var words = new List<ActiveWord>();

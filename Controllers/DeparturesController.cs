@@ -5,21 +5,39 @@ using System.Net.Http.Headers;
 using Microsoft.AspNetCore.Authorization;
 
 namespace SlovníHodiny.Controllers;
+/// <summary>
+/// Controller for managing public transport departures
+/// </summary>
 [Authorize]
 public class DeparturesController : Controller
 {
+    /// <summary>
+    /// Displays departure information for a specified stop
+    /// </summary>
+    /// <param name="stopName">Name of the stop to show departures for</param>
+    /// <returns>View with departure information</returns>
     public IActionResult Index(string stopName = "")
     {
         var model = BuildViewModel(stopName);
         return View("~/Views/Home/Transport.cshtml", model);
     }
 
+    /// <summary>
+    /// Processes the stop search form submission
+    /// </summary>
+    /// <param name="stopName">Name of the stop to search for</param>
+    /// <returns>Redirects to Index action with search parameters</returns>
     [HttpPost]
     public IActionResult Search(string stopName)
     {
         return RedirectToAction("Index", new { stopName, actionType = "search" });
     }
 
+    /// <summary>
+    /// Builds the view model for departure information
+    /// </summary>
+    /// <param name="stopName">Name of the stop to fetch departures for</param>
+    /// <returns>Populated DepartureViewModel instance</returns>
     private DepartureViewModel BuildViewModel(string stopName)
     {
         var vm = new DepartureViewModel

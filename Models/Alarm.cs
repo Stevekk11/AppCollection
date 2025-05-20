@@ -1,5 +1,7 @@
 ﻿namespace SlovníHodiny.Models;
-
+/// <summary>
+/// Alarm model, includes all alarm settings.
+/// </summary>
 public class Alarm
 {
     private int id;
