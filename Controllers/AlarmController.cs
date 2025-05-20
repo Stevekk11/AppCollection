@@ -1,8 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SlovníHodiny.Models;
 
 namespace SlovníHodiny.Controllers;
-
+[Authorize]
 public class AlarmController : Controller
 {
     private static List<Alarm> Alarms { get; set; } = new List<Alarm>();

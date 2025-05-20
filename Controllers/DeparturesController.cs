@@ -2,9 +2,10 @@
 using Newtonsoft.Json.Linq;
 using SlovníHodiny.Models;
 using System.Net.Http.Headers;
+using Microsoft.AspNetCore.Authorization;
 
 namespace SlovníHodiny.Controllers;
-
+[Authorize]
 public class DeparturesController : Controller
 {
     public IActionResult Index(string stopName = "")

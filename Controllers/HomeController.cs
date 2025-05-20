@@ -2,10 +2,11 @@ using Microsoft.AspNetCore.Mvc;
 using SlovníHodiny.Models;
 using SlovníHodiny.Services;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Newtonsoft.Json.Linq;
 
 namespace SlovníHodiny.Controllers;
-
+[Authorize]
 public class HomeController : Controller
 {
     private readonly WeatherService _weatherService;

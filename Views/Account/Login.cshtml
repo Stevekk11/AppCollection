@@ -1,0 +1,34 @@
+﻿@model Login
+@{
+    ViewData["Title"] = "Login";
+}
+<link rel="stylesheet">
+
+<div class="container w-25">
+    <h2>@ViewData["Title"]</h2>
+    <form asp-action="Login" method="post">
+        <div class="mb-3">
+            <label asp-for="Username" class="form-label"></label>
+            <input asp-for="Username" class="form-control" />
+            <span asp-validation-for="Username" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Password" class="form-label"></label>
+            <input asp-for="Password" class="form-control" type="password" />
+            <span asp-validation-for="Password" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Usertype" class="form-label">User Type</label>
+            <select asp-for="Usertype" class="form-select">
+                <option value="1">Admin</option>
+                <option value="2">Normal user</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Login</button>
+        <a asp-controller="Account" asp-action="Register" class="btn btn-link">Vytvořit účet</a>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

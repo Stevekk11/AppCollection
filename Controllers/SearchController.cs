@@ -1,9 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SlovníHodiny.Models;
 using SlovníHodiny.Services;
 
 namespace SlovníHodiny.Controllers;
-
+[Authorize]
 public class SearchController : Controller
 {
     private readonly SearchService _searchService;
