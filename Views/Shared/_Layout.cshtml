@@ -12,8 +12,9 @@
 <header>
     <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
         <div class="container-fluid">
-            <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Slovní hodiny</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+            <a class="navbar-brand fw-bold" asp-area="" asp-controller="Home" asp-action="Index">Kolekce aplikací</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse"
+                    aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -23,12 +24,13 @@
                         <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Domů</a>
                     </li>
                     <li class="nav-item d-flex align-items-center">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Ochrana
-                            soukromí</a>
+                        <a class="nav-link text-dark d-flex align-items-center fw-bold" asp-controller="Search" asp-action="Index">Křížovkářský slovník</a>
                     </li>
                     <li class="nav-item d-flex align-items-center">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Clock">Slovní
-                            hodiny</a>
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Ochrana soukromí</a>
+                    </li>
+                    <li class="nav-item d-flex align-items-center">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Clock">Slovní hodiny</a>
                     </li>
                     <li class="nav-item d-flex align-items-center">
                         <a target="_blank" class="nav-link text-dark" asp-controller="Alarm"
@@ -39,6 +41,9 @@
                            asp-action="Index">Odjezdy PID<img src="logo PID text CZ screen.png"
                                                               style="width: 8%; margin-left: 5px;" alt=""/></a>
                     </li>
+                    <div class="nav-item d-flex align-items-center">
+                        <button class="btn btn-secondary" id="themeToggle">Tmavý/světlý mód</button>
+                    </div>
                 </ul>
             </div>
         </div>
@@ -50,13 +55,26 @@
     </main>
 </div>
 
-<footer class="border-top footer text-muted">
+<footer class="border-top footer text-muted bg-black fw-bold">
     <div class="container">
-        &copy; 2025 SPŠE Ječná - SlovníHodiny - <a asp-area="" asp-controller="Home" asp-action="Privacy">Ochrana soukromí</a>
+        &copy; 2025 SPŠE Ječná - Kolekce aplikací
     </div>
 </footer>
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    // Store theme preference in localStorage
+    const storedTheme = localStorage.getItem('theme') || 'light';
+    document.documentElement.setAttribute('data-bs-theme', storedTheme);
+
+    document.getElementById('themeToggle').addEventListener('click', () => {
+        const currentTheme = document.documentElement.getAttribute('data-bs-theme');
+        const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+        document.documentElement.setAttribute('data-bs-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+    });
+</script>
+
 <script src="~/js/site.js" asp-append-version="true"></script>
 @await RenderSectionAsync("Scripts", required: false)
 </body>

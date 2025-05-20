@@ -1,0 +1,77 @@
+﻿@model SearchResultViewModel
+
+@{
+    ViewData["Title"] = "Křížovkářský slovník";
+    // Helper to split results if in "Otázka: ... Odpověď: ..." format
+    List<(string Question, string Answer)> qas = new();
+    if (!string.IsNullOrWhiteSpace(Model?.Result) && Model.Result.StartsWith("Otázka:"))
+    {
+        var lines = Model.Result.Split('\n', StringSplitOptions.RemoveEmptyEntries);
+        foreach (var line in lines)
+        {
+            var qIdx = line.IndexOf("Otázka:");
+            var aIdx = line.IndexOf("Odpověď:");
+            if (qIdx != -1 && aIdx != -1)
+            {
+                var otazka = line.Substring(qIdx + 7, aIdx - (qIdx + 7)).Trim(new[] { ':', ' ' });
+                var odpoved = line.Substring(aIdx + 9).Trim();
+                qas.Add((otazka, odpoved));
+            }
+        }
+    }
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h2 class="card-title text-center mb-4">@ViewData["Title"]</h2>
+
+                    <form asp-action="Index" method="post" class="mb-3">
+                        <div class="input-group input-group-lg">
+                            <input type="text" id="Query" name="Query" value="@Model.Query"
+                                   class="form-control"
+                                   placeholder="Zadejte hledaný výraz..." aria-label="Search" />
+                            <button type="submit" class="btn btn-success px-4">
+                                <span class="d-none d-md-inline">Hledat </span>🔍
+                            </button>
+                        </div>
+                    </form>
+
+                    @if (!string.IsNullOrEmpty(Model.Result))
+                    {
+                        if (qas.Count > 0)
+                        {
+                            <div class="mt-4">
+                                @foreach (var qa in qas)
+                                {
+                                    <div class="card mb-3 border-primary">
+                                        <div class="card-body">
+                                            <div class="mb-2">
+                                                <span class="badge bg-secondary me-2">Otázka</span>
+                                                <span>@qa.Question</span>
+                                            </div>
+                                            <div>
+                                                <span class="badge bg-info text-dark me-2">Odpověď</span>
+                                                <span class="fw-bold">@qa.Answer</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="alert alert-primary mt-4" style="white-space: pre-line; font-size: 1.1rem;">
+                                @Model.Result
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
