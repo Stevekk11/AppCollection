@@ -1,0 +1,54 @@
+﻿@model SlovníHodiny.Models.DocumentViewModel
+@{
+    ViewData["Title"] = "Moje Dokumenty";
+}
+<h2>@ViewData["Title"]</h2>
+
+@if (TempData["UploadError"] != null)
+{
+    <div class="alert alert-danger">@TempData["UploadError"]</div>
+}
+
+<form asp-action="UploadFile" method="post" enctype="multipart/form-data" class="mb-4">
+    <div class="mb-2">
+        <input type="file" name="file" class="form-control-file btn btn-info fw-bold" required/>
+    </div>
+    <button type="submit" class="btn btn-primary">Nahrát</button>
+    @Html.AntiForgeryToken()
+</form>
+
+@if (Model.Documents.Any())
+{
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>Název</th>
+            <th>Nahráno dne</th>
+            <th>Velikost (KB)</th>
+            <th>Možnosti</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var doc in Model.Documents)
+        {
+            <tr>
+                <td>@doc.FileName</td>
+                <td>@doc.UploadedAt.ToLocalTime().ToString("g")</td>
+                <td>@(doc.FileSize / 1024)</td>
+                <td>
+                    <a asp-action="Download" asp-route-id="@doc.Id" class="btn btn-sm btn-success">Stáhnout</a>
+                    <form asp-action="Delete" asp-route-id="@doc.Id" method="post" style="display:inline;">
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="btn btn-sm btn-danger"
+                                onclick="return confirm('Delete this file?');">Smazat</button>
+                    </form>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+else
+{
+    <div class="alert alert-info">Nic tu zatím není.</div>
+}

@@ -1,11 +1,14 @@
 ﻿@model Login
 @{
-    ViewData["Title"] = "Login";
+    ViewData["Title"] = "Přihlášení";
 }
 <link rel="stylesheet">
 
 <div class="container w-25">
     <h2>@ViewData["Title"]</h2>
+    <!-- Show validation summary for general errors like invalid login -->
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
     <form asp-action="Login" method="post">
         <div class="mb-3">
             <label asp-for="Username" class="form-label"></label>

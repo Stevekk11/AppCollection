@@ -18,7 +18,7 @@
                     aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between align-items-center">
+            <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between align-items-center text-nowrap">
                 <ul class="navbar-nav flex-grow-1 align-items-center">
                     <li class="nav-item d-flex align-items-center">
                         <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Domů</a>
@@ -37,12 +37,25 @@
                            asp-action="Index">Budíky</a>
                     </li>
                     <li class="nav-item d-flex align-items-center">
+                        <a class="nav-link text-dark" asp-controller="Document" asp-action="Index">Moje dokumenty</a>
+                    </li>
+                    <li class="nav-item d-flex align-items-center">
+                        <a class="nav-link" asp-controller="Document" asp-action="Gallery">
+                            <i class="fas fa-images"></i> Galerie
+                        </a>
+                    </li>
+
+                    <li class="nav-item d-flex align-items-center">
                         <a class="nav-link text-dark d-flex align-items-center" asp-controller="Departures"
                            asp-action="Index">Odjezdy PID<img src="logo PID text CZ screen.png"
                                                               style="width: 8%; margin-left: 5px;" alt=""/></a>
                     </li>
                     <div class="nav-item d-flex align-items-center">
-                        <button class="btn btn-secondary" id="themeToggle">Tmavý/světlý mód</button>
+                        <form asp-controller="Account" asp-action="Logout" method="post" class="d-inline" id="logoutForm">
+                            @Html.AntiForgeryToken()
+                            <button class="btn btn-secondary" type="submit">Odhlásit se...</button>
+                        </form>
+
                     </div>
                 </ul>
             </div>

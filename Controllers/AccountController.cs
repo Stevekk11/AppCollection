@@ -102,6 +102,19 @@ public class AccountController : Controller
     }
 
     /// <summary>
+    /// Logs out the currently authenticated user and clears their session.
+    /// </summary>
+    /// <returns>Redirects to the Home page after the user is logged out.</returns>
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Logout()
+    {
+        await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+        return RedirectToAction("Index", "Home");
+    }
+
+
+    /// <summary>
     /// Displays the login page.
     /// </summary>
     /// <returns>The login view.</returns>

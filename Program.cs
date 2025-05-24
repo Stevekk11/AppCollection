@@ -23,6 +23,13 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddSingleton<WeatherService>();
 builder.Services.AddHttpClient();
 builder.Services.AddScoped<SearchService>();
+builder.Services.AddScoped<DocumentService>(provider =>
+{
+    var context = provider.GetRequiredService<ApplicationDbContext>();
+    var configuration = provider.GetRequiredService<IConfiguration>();
+    var storageRoot = configuration.GetValue<string>("Storage:Root") ?? "UserDocs";
+    return new DocumentService(context, storageRoot);
+});
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
