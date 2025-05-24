@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using AppCollection.Models;
 using AppCollection.Services;
+using System.Drawing;
 
 namespace AppCollection.Controllers;
 
@@ -17,15 +18,14 @@ public class DocumentController : Controller
 {
     private readonly ApplicationDbContext _context;
     private readonly DocumentService _documentService;
-
-    private readonly string _storageRoot;
+    private readonly PdfSignatureService _pdfSignatureService;
 
     public DocumentController(ApplicationDbContext context, IConfiguration configuration,
-        DocumentService documentService)
+        DocumentService documentService, PdfSignatureService pdfSignatureService)
     {
         _context = context;
-        _storageRoot = configuration.GetValue<string>("Storage:Root") ?? "UserDocs";
         _documentService = documentService;
+        _pdfSignatureService = pdfSignatureService;
     }
 
     /// <summary>
@@ -51,8 +51,34 @@ public class DocumentController : Controller
     {
         var userId = GetCurrentUserId();
         var docs = await _documentService.GetUserDocumentsAsync(userId);
-        return View(new DocumentViewModel { Documents = docs });
+        var documentsWithSignature = docs.Select(doc => new DocumentWithSignature
+        {
+            Document = doc,
+            IsPdfSigned = doc.ContentType == "application/pdf" && _pdfSignatureService.IsPdfSigned(doc.StoragePath)
+        }).ToList();
+
+        return View(new DocumentViewModel { DocumentsWithSignature = documentsWithSignature });
     }
+
+    [HttpGet]
+    public async Task<IActionResult> GetPdfSignatureInfo(int id)
+    {
+        var userId = GetCurrentUserId();
+        var doc = await _documentService.GetDocumentAsync(id, userId);
+
+        if (doc == null || doc.ContentType != "application/pdf")
+            return NotFound();
+
+        var signatureInfo = _pdfSignatureService.GetPdfSignatureInfo(doc.StoragePath);
+
+        return Json(new {
+            isSigned = signatureInfo.IsSigned,
+            signerName = signatureInfo.SignerName,
+            signatureDate = signatureInfo.SignatureDate?.ToString("dd.MM.yyyy HH:mm"),
+            signatureCount = signatureInfo.SignatureCount
+        });
+    }
+
 
     /// <summary>
     /// Handles the file upload process for the currently authenticated user. The uploaded file is stored and associated with the user's account.
@@ -158,15 +184,22 @@ public class DocumentController : Controller
         if (doc == null || !doc.ContentType.StartsWith("image/"))
             return NotFound();
 
-        return Json(new {
+        var absolutePath = Path.GetFullPath(doc.StoragePath);
+        using var image = Image.FromFile(absolutePath);
+
+        return Json(new
+        {
             id = doc.Id,
             fileName = doc.FileName,
             fileSize = FormatFileSize(doc.FileSize),
             uploadedAt = doc.UploadedAt.ToString("dd.MM.yyyy HH:mm"),
             contentType = doc.ContentType,
-            downloadUrl = Url.Action("Download", new { id = doc.Id })
+            downloadUrl = Url.Action("Download", new { id = doc.Id }),
+            width = image.Width,
+            height = image.Height
         });
     }
+
     /// <summary>
     /// Formats the file size to be human readable.
     /// </summary>
@@ -182,6 +215,7 @@ public class DocumentController : Controller
             order++;
             len = len / 1024;
         }
+
         return $"{len:0.##} {sizes[order]}";
     }
 

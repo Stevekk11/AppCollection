@@ -1,4 +1,4 @@
-﻿namespace AppCollection.Models;
+﻿namespace AppCollection.Helpers;
 
 /// <summary>
 /// Represents an active word with associated textual content and context.

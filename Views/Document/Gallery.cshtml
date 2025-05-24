@@ -88,17 +88,17 @@
 </div>
 
 @section Scripts {
-<script>
-$(document).ready(function() {
-    // Klik na obrázek v galerii
-    $('.gallery-item').click(function() {
-        const imageId = $(this).data('id');
-        loadImageDetails(imageId);
-    });
+    <script>
+        $(document).ready(function () {
+            // Klik na obrázek v galerii
+            $('.gallery-item').click(function () {
+                const imageId = $(this).data('id');
+                loadImageDetails(imageId);
+            });
 
-    function loadImageDetails(imageId) {
-        $('#imageDetailModal').modal('show');
-        $('#modalContent').html(`
+            function loadImageDetails(imageId) {
+                $('#imageDetailModal').modal('show');
+                $('#modalContent').html(`
             <div class="text-center">
                 <div class="spinner-border" role="status">
                     <span class="visually-hidden">Načítání...</span>
@@ -106,9 +106,9 @@ $(document).ready(function() {
             </div>
         `);
 
-        $.get('@Url.Action("GetImageDetails")', { id: imageId })
-            .done(function(data) {
-                const modalContent = `
+                $.get('@Url.Action("GetImageDetails")', {id: imageId})
+                    .done(function (data) {
+                        const modalContent = `
                     <div class="row">
                         <div class="col-md-8">
                             <img src="${data.downloadUrl}"
@@ -135,63 +135,70 @@ $(document).ready(function() {
                                     <th>Nahráno:</th>
                                     <td>${data.uploadedAt}</td>
                                 </tr>
+                                 <tr>
+                                    <th>Rozměry:</th>
+                                    <td>${data.width} × ${data.height} px</td>
+                                </tr>
                             </table>
                         </div>
                     </div>
                 `;
 
-                $('#modalContent').html(modalContent);
-                $('#downloadBtn').off('click').on('click', function() {
-                    window.open(data.downloadUrl, '_blank');
-                });
-                $('#deleteBtn').off('click').on('click', function() {
-                    if (confirm('Opravdu chcete smazat tento obrázek?')) {
-                        deleteImage(data.id);
-                    }
-                });
-            })
-            .fail(function() {
-                $('#modalContent').html(`
+                        $('#modalContent').html(modalContent);
+                        $('#downloadBtn').off('click').on('click', function () {
+                            window.open(data.downloadUrl, '_blank');
+                        });
+                        $('#deleteBtn').off('click').on('click', function () {
+                            if (confirm('Opravdu chcete smazat tento obrázek?')) {
+                                deleteImage(data.id);
+                            }
+                        });
+                    })
+                    .fail(function () {
+                        $('#modalContent').html(`
                     <div class="alert alert-danger">
                         <i class="fas fa-exclamation-triangle"></i>
                         Nepodařilo se načíst detail obrázku.
                     </div>
                 `);
-            });
-    }
+                    });
+            }
 
-    function deleteImage(imageId) {
-        $.post('@Url.Action("Delete")', {
-            id: imageId,
-            __RequestVerificationToken: $('input[name="__RequestVerificationToken"]').val()
-        })
-        .done(function() {
-            $('#imageDetailModal').modal('hide');
-            location.reload();
-        })
-        .fail(function() {
-            alert('Nepodařilo se smazat obrázek.');
+            function deleteImage(imageId) {
+                $.post('@Url.Action("Delete")', {
+                    id: imageId,
+                    __RequestVerificationToken: $('input[name="__RequestVerificationToken"]').val()
+                })
+                    .done(function () {
+                        $('#imageDetailModal').modal('hide');
+                        location.reload();
+                    })
+                    .fail(function () {
+                        alert('Nepodařilo se smazat obrázek.');
+                    });
+            }
+
+
+
         });
-    }
-});
-</script>
+    </script>
 }
 
 <style>
-.gallery-item:hover {
-    transform: translateY(-2px);
-    transition: transform 0.2s ease-in-out;
-}
+    .gallery-item:hover {
+        transform: translateY(-2px);
+        transition: transform 0.2s ease-in-out;
+    }
 
-.gallery-item:hover .card {
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2) !important;
-}
+    .gallery-item:hover .card {
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2) !important;
+    }
 
-.object-fit-cover {
-    object-fit: cover;
-}
+    .object-fit-cover {
+        object-fit: cover;
+    }
 
-.object-fit-contain {
-    object-fit: contain;
-}
+    .object-fit-contain {
+        object-fit: contain;
+    }
 </style>

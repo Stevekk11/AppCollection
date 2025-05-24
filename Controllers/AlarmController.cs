@@ -9,99 +9,106 @@ namespace AppCollection.Controllers;
 [Authorize]
 public class AlarmController : Controller
 {
-    private static List<Alarm> Alarms { get; set; } = new List<Alarm>();
+    private readonly ApplicationDbContext _context;
 
-    /// <summary>
-    /// Displays a list of all alarms
-    /// </summary>
-    /// <returns>View containing list of alarms</returns>
+    public AlarmController(ApplicationDbContext context)
+    {
+        _context = context;
+    }
+
     public IActionResult Index()
     {
-        return View(Alarms);
+        var alarms = _context.Alarms.ToList();
+        return View(alarms);
     }
 
-    /// <summary>
-    /// Displays the alarm creation form
-    /// </summary>
-    /// <returns>View with empty alarm form</returns>
-    public IActionResult Create()
-    {
-        return View(new Alarm
-        {
-            IsOn = true,
-            RepeatDays = new List<DayOfWeek>()
-        });
-    }
-
-    /// <summary>
-    /// Processes the alarm creation form submission
-    /// </summary>
-    /// <param name="alarm">The alarm to create</param>
-    /// <returns>Redirects to Index on success</returns>
     [HttpPost]
     public IActionResult Create(Alarm alarm)
     {
-        alarm.Id = Alarms.Count > 0 ? Alarms.Max(a => a.Id) + 1 : 1;
-        Alarms.Add(alarm);
-        return RedirectToAction(nameof(Index));
-    }
-    /// <summary>
-    /// Displays the alarm editing form
-    /// </summary>
-    /// <param name="id">ID of the alarm to edit</param>
-    /// <returns>View with alarm details or NotFound</returns>
-    [HttpGet]
-    public IActionResult Edit(int id)
-    {
-        var alarm = Alarms.FirstOrDefault(a => a.Id == id);
-        if (alarm == null) return NotFound();
+        if (ModelState.IsValid)
+        {
+            _context.Alarms.Add(alarm);
+            _context.SaveChanges();
+            return RedirectToAction(nameof(Index));
+        }
         return View(alarm);
     }
-    /// <summary>
-    /// Processes the alarm edit form submission
-    /// </summary>
-    /// <param name="alarm">The updated alarm data</param>
-    /// <returns>Redirects to Index on success or NotFound</returns>
+
+    public IActionResult Details(int? id)
+    {
+        if (id == null)
+        {
+            return NotFound();
+        }
+
+        var alarm = _context.Alarms.FirstOrDefault(m => m.Id == id);
+        if (alarm == null)
+        {
+            return NotFound();
+        }
+
+        return View(alarm);
+    }
+
+    public IActionResult Edit(int? id)
+    {
+        if (id == null)
+        {
+            return NotFound();
+        }
+
+        var alarm = _context.Alarms.Find(id);
+        if (alarm == null)
+        {
+            return NotFound();
+        }
+        return View(alarm);
+    }
+
     [HttpPost]
-    public IActionResult Edit(Alarm alarm)
+    [ValidateAntiForgeryToken]
+    public IActionResult Edit(int id, [Bind("Id,Name,Time,IsActive")] Alarm alarm)
     {
-        var existing = Alarms.FirstOrDefault(a => a.Id == alarm.Id);
-        if (existing == null) return NotFound();
+        if (id != alarm.Id)
+        {
+            return NotFound();
+        }
 
-        // aktualizace hodnot:
-        existing.Time = alarm.Time;
-        existing.Label = alarm.Label;
-        existing.IsOn = alarm.IsOn;
-        existing.RepeatDays = alarm.RepeatDays;
-        existing.Type = alarm.Type;
-        existing.Sound = alarm.Sound;
-        existing.SnoozeForMins = alarm.SnoozeForMins;
-        return RedirectToAction(nameof(Index));
-    }
-    /// <summary>
-    /// Displays the alarm deletion confirmation page
-    /// </summary>
-    /// <param name="id">ID of the alarm to delete</param>
-    /// <returns>View with alarm details or NotFound</returns>
-    public IActionResult Delete(int id)
-    {
-        var alarm = Alarms.FirstOrDefault(a => a.Id == id);
-        if (alarm == null) return NotFound();
+        if (ModelState.IsValid)
+        {
+            _context.Update(alarm);
+            _context.SaveChanges();
+            return RedirectToAction(nameof(Index));
+        }
         return View(alarm);
     }
 
-    /// <summary>
-    /// Processes the alarm deletion confirmation
-    /// </summary>
-    /// <param name="id">ID of the alarm to delete</param>
-    /// <returns>Redirects to Index after deletion</returns>
-    [HttpPost, ActionName("DeleteConfirmed")]
+    public IActionResult Delete(int? id)
+    {
+        if (id == null)
+        {
+            return NotFound();
+        }
+
+        var alarm = _context.Alarms.FirstOrDefault(m => m.Id == id);
+        if (alarm == null)
+        {
+            return NotFound();
+        }
+
+        return View(alarm);
+    }
+
+    [HttpPost, ActionName("Delete")]
+    [ValidateAntiForgeryToken]
     public IActionResult DeleteConfirmed(int id)
     {
-        var alarm = Alarms.FirstOrDefault(a => a.Id == id);
+        var alarm = _context.Alarms.Find(id);
         if (alarm != null)
-            Alarms.Remove(alarm);
+        {
+            _context.Alarms.Remove(alarm);
+            _context.SaveChanges();
+        }
         return RedirectToAction(nameof(Index));
     }
-
 }

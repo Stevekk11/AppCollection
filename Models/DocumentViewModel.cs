@@ -8,4 +8,5 @@
 public class DocumentViewModel
 {
     public IList<Document> Documents { get; set; }
+    public List<DocumentWithSignature> DocumentsWithSignature { get; set; } = new();
 }

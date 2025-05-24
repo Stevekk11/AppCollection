@@ -2,79 +2,201 @@
 @{
     ViewData["Title"] = "Odjezdy PID";
 }
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
 
-<h1 class="flex">@ViewData["Title"]</h1>
+<div class="container-fluid px-3">
+    <div class="row justify-content-center">
+        <div class="col-12">
 
-<div class="departures-container">
-    <div class="flex" style="font-size: large">
-        <h2>
-            Čas: <span id="clock">@Model.Now.ToLongTimeString()</span>,
-            @Model.Now.ToString("d.M.yyyy")
-        </h2>
-    </div>
-    @if (!string.IsNullOrEmpty(Model.Error))
-    {
-        <p class="error">@Model.Error</p>
-    }
-    <div class="mx-auto my-4 p-4 border border-2 rounded-3 bg-white shadow text-center" style="max-width:500px; width:170%; transform:scale(1.2);">
-        <form asp-action="Search" asp-controller="Departures" method="post" class="form-inline">
-            <label for="stop-name">Název zastávky:</label>
-            <input name="stopName" id="stop-name" class="form-control" value="@Model.StopName" placeholder="@Model.Placeholder" list="stopSuggestions" autocomplete="off"/>
-            <datalist id="stopSuggestions">
-                @foreach (var s in Model.AvailableStops.Distinct())
-                {
-                    <option value="@s" />
-                }
-            </datalist>
-            <button type="submit" class="btn btn-primary">Zobrazit</button>
-        </form>
-    </div>
+            <!-- Header -->
+            <div class="text-center mb-4">
+                <h1 class="display-4 mb-3">@ViewData["Title"]</h1>
+                <h2 class="h4 text-muted">
+                    Čas: <span id="clock">@Model.Now.ToLongTimeString()</span>,
+                    @Model.Now.ToString("d.M.yyyy")
+                </h2>
+            </div>
 
-    <div class="d-flex justify-content-between align-items-center p-3 border rounded bg-white shadow my-3" style="max-width:170%; margin-top:2em;">
-        <div class="route" id="cislo">Číslo linky</div>
-        <div class="destination" id="smer">Směr</div>
-        <div class="scheduled-time">Čas odjezdu (min)</div>
-        <div class="platform">Nástupiště</div>
-        <div class="ac">Klimatizováno</div>
-        <div class="krypl">Bezbariérový spoj</div>
-        <div class="delay">Zpoždění</div>
-    </div>
-    @if (Model.Departures?.Any() ?? false)
-    {
-        @foreach (var dep in Model.Departures)
-        {
-            <div class="d-flex justify-content-between align-items-center p-3 border rounded bg-white shadow my-1">
-
-                <div class="route">@dep.Route</div>
-                <div class="destination">@dep.Destination</div>
-                <div class="scheduled-time">@dep.Minutes</div>
-                <div class="platform">@dep.PlatformCode</div>
-                <div class="ac">
-                    @if (dep.Ac)
-                    {
-                        <img src="snowflake.png" alt="Air conditioning" style="width:24px"/>
-                    }
+            <!-- Error Message -->
+            @if (!string.IsNullOrEmpty(Model.Error))
+            {
+                <div class="alert alert-danger text-center mb-4" role="alert">
+                    @Model.Error
                 </div>
-                <div class="krypl">
-                    @if (dep.Krypl)
-                    {
-                        <img src="disability.png" alt="Is low-floor" style="width:24px"/>
-                    }
-                </div>
-                <div class="@(dep.Delay == 0 ? "no-delay" : dep.Delay <= 5 ? "slight-delay" : "delay")">
-                    @(dep.Delay == 0 ? "Bez zpoždění" : dep.Delay.ToString())
+            }
+
+            <!-- Search Form -->
+            <div class="row justify-content-center mb-4">
+                <div class="col-12 col-md-8 col-lg-6">
+                    <div class="card shadow">
+                        <div class="card-body p-4">
+                            <form asp-action="Search" asp-controller="Departures" method="post">
+                                <div class="mb-3">
+                                    <label for="stop-name" class="form-label fw-bold">Název zastávky:</label>
+                                    <input name="stopName"
+                                           id="stop-name"
+                                           class="form-control form-control-lg"
+                                           value="@Model.StopName"
+                                           placeholder="@Model.Placeholder"
+                                           list="stopSuggestions"
+                                           autocomplete="off"/>
+                                    <datalist id="stopSuggestions">
+                                        @foreach (var s in Model.AvailableStops.Distinct())
+                                        {
+                                            <option value="@s" />
+                                        }
+                                    </datalist>
+                                </div>
+                                <div class="d-grid">
+                                    <button type="submit" class="btn btn-primary btn-lg">Zobrazit</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                 </div>
             </div>
-        }
-    }
-    else
-    {
-        <div class="d-flex justify-content-center align-items-center my-4">
-            <img src="bus.png" alt="" width="128px" height="128px" />
+
+            <!-- Departures Table Header (Desktop) -->
+            <div class="d-none d-lg-block">
+                <div class="card shadow mb-3">
+                    <div class="card-body py-4">
+                        <div class="row text-center fw-bold fs-5">
+                            <div class="col-lg-2">Číslo linky</div>
+                            <div class="col-lg-3">Směr</div>
+                            <div class="col-lg-2">Čas odjezdu (min)</div>
+                            <div class="col-lg-1">Nástupiště</div>
+                            <div class="col-lg-1">Klimatizováno</div>
+                            <div class="col-lg-1">Bezbariérový</div>
+                            <div class="col-lg-2">Zpoždění</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Departures List -->
+            @if (Model.Departures?.Any() ?? false)
+            {
+                @foreach (var dep in Model.Departures)
+                {
+                    <!-- Desktop Layout -->
+                    <div class="d-none d-lg-block">
+                        <div class="card shadow mb-3">
+                            <div class="card-body py-4">
+                                <div class="row text-center align-items-center">
+                                    <div class="col-lg-2">
+                                        <span class="badge bg-primary fs-5 px-3 py-2">@dep.Route</span>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <strong class="fs-5">@dep.Destination</strong>
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <span class="fs-4 fw-bold text-primary">@dep.Minutes</span>
+                                    </div>
+                                    <div class="col-lg-1">
+                                        <span class="fs-5">@dep.PlatformCode</span>
+                                    </div>
+                                    <div class="col-lg-1">
+                                        @if (dep.Ac)
+                                        {
+                                            <i class="bi bi-snow" style="font-size: 2rem; color: #0dcaf0;"></i>
+                                        }
+                                    </div>
+                                    <div class="col-lg-1">
+                                        @if (dep.Krypl)
+                                        {
+                                            <img src="disability.png" alt="disability"/>
+                                        }
+                                    </div>
+                                    <div class="col-lg-2">
+                                        @if (dep.Delay == 0)
+                                        {
+                                            <span class="badge bg-success fs-6 px-3 py-2">Bez zpoždění</span>
+                                        }
+                                        else if (dep.Delay <= 3)
+                                        {
+                                            <span class="badge bg-warning text-dark fs-6 px-3 py-2">@dep.Delay min</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-danger fs-6 px-3 py-2">@dep.Delay min</span>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Mobile/Tablet Layout -->
+                    <div class="d-lg-none">
+                        <div class="card shadow mb-4">
+                            <div class="card-body p-4">
+                                <div class="row">
+                                    <div class="col-4">
+                                        <span class="badge bg-primary fs-6 mb-2 px-3 py-2">@dep.Route</span>
+                                        <div class="small text-muted">Linka</div>
+                                    </div>
+                                    <div class="col-4 text-center">
+                                        <div class="fs-3 fw-bold text-primary">@dep.Minutes</div>
+                                        <div class="small text-muted">minut</div>
+                                    </div>
+                                    <div class="col-4 text-end">
+                                        @if (dep.Delay == 0)
+                                        {
+                                            <span class="badge bg-success fs-6 px-3 py-2">Bez zpoždění</span>
+                                        }
+                                        else if (dep.Delay <= 5)
+                                        {
+                                            <span class="badge bg-warning text-dark fs-6 px-3 py-2">+@dep.Delay min</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-danger fs-6 px-3 py-2">+@dep.Delay min</span>
+                                        }
+                                    </div>
+                                </div>
+                                <hr class="my-3">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <strong class="fs-5">@dep.Destination</strong>
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <div class="col-4">
+                                        <small class="text-muted">Nástupiště: </small>
+                                        <strong class="fs-6">@dep.PlatformCode</strong>
+                                    </div>
+                                    <div class="col-4 text-center">
+                                        @if (dep.Ac)
+                                        {
+                                            <i class="bi bi-snow text-info" style="font-size: 1.5rem;"></i>
+                                            <small class="text-muted ms-1">Klimatizace</small>
+                                        }
+                                    </div>
+                                    <div class="col-4 text-end">
+                                        @if (dep.Krypl)
+                                        {
+                                            <img src="disability.png" alt="disability"/>
+                                            <small class="text-muted ms-1">Bezbariérový</small>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="text-center my-5">
+                    <div class="display-1 text-muted mb-3"><img src="bus.png" alt="no" width="128px" height="128px"/></div>
+                    <p class="text-muted fs-5">Žádné odjezdy k zobrazení</p>
+                </div>
+            }
+
         </div>
-    }
+    </div>
 </div>
-<link rel="stylesheet" href="css/transport.css" />
+
 <script>
 function updateClock() {
     const clockElem = document.getElementById('clock');

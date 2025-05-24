@@ -17,7 +17,7 @@
     @Html.AntiForgeryToken()
 </form>
 
-@if (Model.Documents.Any())
+@if (Model.DocumentsWithSignature.Any())
 {
     <table class="table table-bordered">
         <thead>
@@ -29,15 +29,41 @@
         </tr>
         </thead>
         <tbody>
-        @foreach (var doc in Model.Documents)
+        @foreach (var item in Model.DocumentsWithSignature)
         {
             <tr>
-                <td>@doc.FileName</td>
-                <td>@doc.UploadedAt.ToLocalTime().ToString("g")</td>
-                <td>@(doc.FileSize / 1024)</td>
                 <td>
-                    <a asp-action="Download" asp-route-id="@doc.Id" class="btn btn-sm btn-success">Stáhnout</a>
-                    <form asp-action="Delete" asp-route-id="@doc.Id" method="post" style="display:inline;">
+                    <div class="d-flex align-items-center">
+                        @if (item.Document.ContentType == "application/pdf")
+                        {
+                            <i class="fas fa-file-pdf text-danger me-2"></i>
+                        }
+                        else if (item.Document.ContentType.StartsWith("image/"))
+                        {
+                            <i class="fas fa-file-image text-info me-2"></i>
+                        }
+                        else
+                        {
+                            <i class="fas fa-file text-secondary me-2"></i>
+                        }
+                        @item.Document.FileName
+
+                        @if (item.Document.ContentType == "application/pdf" && item.IsPdfSigned)
+                        {
+                            <i class="fas fa-check-circle text-success ms-2"
+                               title="PDF je digitálně podepsán"
+                               data-bs-toggle="tooltip"
+                               style="cursor: pointer;"
+                               onclick="showSignatureInfo(@item.Document.Id)"></i>
+                            Console.WriteLine("signed" + item.Document.FileName);
+                        }
+                    </div>
+                </td>
+                <td>@item.Document.UploadedAt.ToLocalTime().ToString("g")</td>
+                <td>@(item.Document.FileSize / 1024)</td>
+                <td>
+                    <a asp-action="Download" asp-route-id="@item.Document.Id" class="btn btn-sm btn-success">Stáhnout</a>
+                    <form asp-action="Delete" asp-route-id="@item.Document.Id" method="post" style="display:inline;">
                         @Html.AntiForgeryToken()
                         <button type="submit" class="btn btn-sm btn-danger"
                                 onclick="return confirm('Delete this file?');">Smazat</button>
@@ -51,4 +77,68 @@
 else
 {
     <div class="alert alert-info">Nic tu zatím není.</div>
+}
+
+<!-- Modal for signature info -->
+<div class="modal fade" id="signatureModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Informace o digitálním podpisu</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body" id="signatureContent">
+                <div class="text-center">
+                    <div class="spinner-border" role="status">
+                        <span class="visually-hidden">Načítání...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+<script>
+function showSignatureInfo(documentId) {
+    $('#signatureModal').modal('show');
+    $('#signatureContent').html(`
+        <div class="text-center">
+            <div class="spinner-border" role="status">
+                <span class="visually-hidden">Načítání...</span>
+            </div>
+        </div>
+    `);
+
+    $.get('@Url.Action("GetPdfSignatureInfo")', { id: documentId })
+        .done(function(data) {
+            let content = '<div class="alert alert-success">';
+            content += '<i class="fas fa-check-circle"></i> PDF je digitálně podepsáno';
+            content += '</div>';
+
+            if (data.signerName) {
+                content += '<p><strong>Podepsáno:</strong> ' + data.signerName + '</p>';
+            }
+            if (data.signatureDate) {
+                content += '<p><strong>Datum podpisu:</strong> ' + data.signatureDate + '</p>';
+            }
+            content += '<p><strong>Počet podpisů:</strong> ' + data.signatureCount + '</p>';
+
+            $('#signatureContent').html(content);
+        })
+        .fail(function() {
+            $('#signatureContent').html(`
+                <div class="alert alert-danger">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    Nepodařilo se načíst informace o podpisu.
+                </div>
+            `);
+        });
+}
+
+// Initialize tooltips
+$(document).ready(function() {
+    $('[data-bs-toggle="tooltip"]').tooltip();
+});
+</script>
 }

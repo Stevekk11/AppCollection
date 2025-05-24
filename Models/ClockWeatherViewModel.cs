@@ -1,4 +1,6 @@
-﻿namespace AppCollection.Models;
+﻿using AppCollection.Helpers;
+
+namespace AppCollection.Models;
 /// <summary>
 /// Simple weather model.
 /// </summary>

@@ -15,9 +15,20 @@ public class ApplicationDbContext : DbContext
 {
     public DbSet<Login> Logins { get; set; }
     public DbSet<Document> Documents { get; set; }
+    public DbSet<Alarm> Alarms { get; set; }
 
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options)
     {
+    }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<Alarm>()
+            .Property(a => a.RepeatDays)
+            .HasConversion(
+                v => string.Join(',', v.Select(d => (int)d)),
+                v => v.Split(',', StringSplitOptions.RemoveEmptyEntries).Select(s => (DayOfWeek)int.Parse(s)).ToList()
+            );
     }
 }
