@@ -1,4 +1,4 @@
-﻿namespace SlovníHodiny.Models;
+﻿namespace AppCollection.Models;
 
 /// <summary>
 /// Represents weather data including temperature, wind speed, humidity, and icon information.

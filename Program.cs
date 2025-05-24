@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
-using SlovníHodiny.Models;
-using SlovníHodiny.Services;
+using AppCollection.Models;
+using AppCollection.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews(options =>

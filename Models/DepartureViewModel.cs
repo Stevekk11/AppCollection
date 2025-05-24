@@ -1,4 +1,4 @@
-﻿namespace SlovníHodiny.Models;
+﻿namespace AppCollection.Models;
 
 /// <summary>
 /// Represents a view model for departure information used in the application.

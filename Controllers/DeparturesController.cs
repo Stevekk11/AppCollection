@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
-using SlovníHodiny.Models;
+using AppCollection.Models;
 using System.Net.Http.Headers;
 using Microsoft.AspNetCore.Authorization;
 
-namespace SlovníHodiny.Controllers;
+namespace AppCollection.Controllers;
 /// <summary>
 /// Controller for managing public transport departures
 /// </summary>

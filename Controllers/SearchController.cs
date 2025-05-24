@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SlovníHodiny.Models;
-using SlovníHodiny.Services;
+using AppCollection.Models;
+using AppCollection.Services;
 
-namespace SlovníHodiny.Controllers;
+namespace AppCollection.Controllers;
 
 /// <summary>
 /// Provides functionality for handling search operations in the application.

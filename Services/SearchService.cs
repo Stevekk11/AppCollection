@@ -5,7 +5,7 @@ using System.Web;
 using System.Text;
 
 
-namespace SlovníHodiny.Services;
+namespace AppCollection.Services;
 
 /// <summary>
 /// Service responsible for performing web searches and extracting structured data from the results.

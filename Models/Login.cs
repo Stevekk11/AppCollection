@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace SlovníHodiny.Models;
+namespace AppCollection.Models;
 
 /// <summary>
 /// Represents user login information.

@@ -5,11 +5,11 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using SlovníHodiny.Models;
+using AppCollection.Models;
 
 #nullable disable
 
-namespace SlovníHodiny.Migrations
+namespace AppCollection.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     [Migration("20250524073354_InitialCreate")]
@@ -25,7 +25,7 @@ namespace SlovníHodiny.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("SlovníHodiny.Models.Document", b =>
+            modelBuilder.Entity("AppCollection.Models.Document", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -61,7 +61,7 @@ namespace SlovníHodiny.Migrations
                     b.ToTable("Documents");
                 });
 
-            modelBuilder.Entity("SlovníHodiny.Models.Login", b =>
+            modelBuilder.Entity("AppCollection.Models.Login", b =>
                 {
                     b.Property<int>("Id_Login")
                         .ValueGeneratedOnAdd()
@@ -87,9 +87,9 @@ namespace SlovníHodiny.Migrations
                     b.ToTable("Logins");
                 });
 
-            modelBuilder.Entity("SlovníHodiny.Models.Document", b =>
+            modelBuilder.Entity("AppCollection.Models.Document", b =>
                 {
-                    b.HasOne("SlovníHodiny.Models.Login", "Login")
+                    b.HasOne("AppCollection.Models.Login", "Login")
                         .WithMany()
                         .HasForeignKey("LoginId")
                         .OnDelete(DeleteBehavior.Cascade)

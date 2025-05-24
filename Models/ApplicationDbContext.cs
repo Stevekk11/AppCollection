@@ -1,6 +1,6 @@
-﻿namespace SlovníHodiny.Models;
+﻿namespace AppCollection.Models;
 using Microsoft.EntityFrameworkCore;
-using SlovníHodiny.Models;
+using AppCollection.Models;
 
 /// <summary>
 /// Represents the database context for the application, which provides access to the

@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace SlovníHodiny.Models;
+namespace AppCollection.Models;
 
 /// <summary>
 /// Represents a document entity that is associated with a user and contains metadata about a stored file.

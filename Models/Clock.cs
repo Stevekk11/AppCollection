@@ -1,4 +1,4 @@
-﻿namespace SlovníHodiny.Models;
+﻿namespace AppCollection.Models;
 
 /// <summary>
 /// Represents an active word with associated textual content and context.

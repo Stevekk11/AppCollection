@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SlovníHodiny.Models;
+using AppCollection.Models;
 
-namespace SlovníHodiny.Services;
+namespace AppCollection.Services;
 
 public class DocumentService
 {

@@ -1,11 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
-using SlovníHodiny.Models;
-using SlovníHodiny.Services;
+using AppCollection.Models;
+using AppCollection.Services;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Newtonsoft.Json.Linq;
 
-namespace SlovníHodiny.Controllers;
+namespace AppCollection.Controllers;
 /// <summary>
 /// Main controller for the application. Displays the home page and handles requests for the clock and weather.
 /// </summary>

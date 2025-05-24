@@ -1,4 +1,4 @@
-﻿@model SlovníHodiny.Models.Alarm
+﻿@model AppCollection.Models.Alarm
 @{
     ViewData["Title"] = "Nový budík";
 }
@@ -30,7 +30,7 @@
     <div class="mb-3">
         <label asp-for="Type" class="form-label">Typ</label>
         <select asp-for="Type" class="form-control">
-            @foreach(var type in Enum.GetValues(typeof(SlovníHodiny.Models.AlarmType)))
+            @foreach(var type in Enum.GetValues(typeof(AppCollection.Models.AlarmType)))
             {
                 <option value="@type">@type</option>
             }

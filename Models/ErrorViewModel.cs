@@ -1,4 +1,4 @@
-namespace SlovníHodiny.Models;
+namespace AppCollection.Models;
 
 public class ErrorViewModel
 {

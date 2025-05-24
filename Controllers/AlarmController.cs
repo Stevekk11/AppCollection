@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SlovníHodiny.Models;
+using AppCollection.Models;
 
-namespace SlovníHodiny.Controllers;
+namespace AppCollection.Controllers;
 /// <summary>
 /// Controller for managing alarm functionality
 /// </summary>

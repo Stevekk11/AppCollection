@@ -1,4 +1,4 @@
-﻿namespace SlovníHodiny.Models;
+﻿namespace AppCollection.Models;
 
 /// <summary>
 /// Represents the view model for search results, containing the user's query and the resulting data from the search operation.

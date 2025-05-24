@@ -1,4 +1,4 @@
-﻿namespace SlovníHodiny.Models;
+﻿namespace AppCollection.Models;
 /// <summary>
 /// Alarm model, includes all alarm settings.
 /// </summary>

@@ -1,10 +1,10 @@
 ﻿using System.Net.Http;
 using System.Threading.Tasks;
-using SlovníHodiny.Models;
+using AppCollection.Models;
 using Newtonsoft.Json.Linq;
 using System.Globalization;
 
-namespace SlovníHodiny.Services;
+namespace AppCollection.Services;
 
 /// <summary>
 /// Service for retrieving weather information from wttr.in API.

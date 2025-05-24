@@ -2,10 +2,10 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using SlovníHodiny.Models;
-using SlovníHodiny.Services;
+using AppCollection.Models;
+using AppCollection.Services;
 
-namespace SlovníHodiny.Controllers;
+namespace AppCollection.Controllers;
 
 /// <summary>
 /// Controller class responsible for managing user documents.

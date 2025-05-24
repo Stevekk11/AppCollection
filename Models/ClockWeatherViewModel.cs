@@ -1,4 +1,4 @@
-﻿namespace SlovníHodiny.Models;
+﻿namespace AppCollection.Models;
 /// <summary>
 /// Simple weather model.
 /// </summary>

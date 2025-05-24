@@ -1,4 +1,4 @@
-﻿namespace SlovníHodiny.Models;
+﻿namespace AppCollection.Models;
 
 /// <summary>
 /// Represents the view model for displaying a list of documents.
