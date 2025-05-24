@@ -8,6 +8,10 @@
 
     <ItemGroup>
       <_ContentIncludedByDefault Remove="wwwroot\lib\media\beep.mp3" />
+      <_ContentIncludedByDefault Remove="Views\Alarm\Create.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Alarm\Delete.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Alarm\Edit.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Alarm\Index.cshtml" />
     </ItemGroup>
 
     <ItemGroup>
@@ -26,6 +30,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="UserDocs\" />
       <Folder Include="wwwroot\lib\vendor\" />
     </ItemGroup>
 

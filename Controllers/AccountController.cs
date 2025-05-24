@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-
+namespace AppCollection.Controllers;
 /// <summary>
 /// Controller responsible for handling user authentication and registration.
 /// </summary>

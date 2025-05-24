@@ -12,7 +12,7 @@ builder.Services.AddControllersWithViews(options =>
 builder.Services.AddAuthentication("Cookies")
     .AddCookie("Cookies", options =>
     {
-        options.LoginPath = "/Account/Login"; // Path to your login form
+        options.LoginPath = "/Account/Login";
         options.AccessDeniedPath = "/Account/AccessDenied";
         options.ExpireTimeSpan = TimeSpan.FromHours(24);
         options.SlidingExpiration = false;
