@@ -11,7 +11,7 @@
 
 <form asp-action="UploadFile" method="post" enctype="multipart/form-data" class="mb-4">
     <div class="mb-2">
-        <input type="file" name="file" class="form-control-file btn btn-info fw-bold" required/>
+        <input type="file" name="file" class="form-control-file btn btn-info fw-bold" multiple required/>
     </div>
     <button type="submit" class="btn btn-primary">Nahrát</button>
     @Html.AntiForgeryToken()
@@ -34,39 +34,61 @@
             <tr>
                 <td>
                     <div class="d-flex align-items-center">
-                        @if (item.Document.ContentType == "application/pdf")
-                        {
-                            <i class="fas fa-file-pdf text-danger me-2"></i>
+                        @{
+                            var type = item.Document.ContentType?.ToLower() ?? "";
+                            var iconClass = type == "application/pdf" ? "bi bi-file-earmark-pdf text-danger me-2"
+                                : type.StartsWith("image/") ? "bi bi-file-earmark-image text-info me-2"
+                                : type.StartsWith("audio/") ? "bi bi-vinyl text-primary me-2"
+                                : type == "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                                  || type == "application/msword" ? "bi bi-file-earmark-word text-primary me-2"
+                                : type == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                                  || type == "application/vnd.ms-excel" ? "bi bi-file-earmark-excel text-success me-2"
+                                : type == "application/vnd.openxmlformats-officedocument.presentationml.presentation"
+                                  || type == "application/vnd.ms-powerpoint" ? "bi bi-file-earmark-ppt text-warning me-2"
+                                : type.StartsWith("video/") ? "bi bi-file-earmark-play text-danger me-2"
+                                : type.Contains("zip") || type.Contains("compressed") ? "bi bi-file-earmark-zip text-muted me-2"
+                                : "bi bi-file-earmark text-secondary me-2";
+
+                            // Previewable types
+                            var isPreviewable = type == "application/pdf"
+                                                || type == "text/plain"
+                                                || type == "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                                                || type == "application/msword";
                         }
-                        else if (item.Document.ContentType.StartsWith("image/"))
-                        {
-                            <i class="fas fa-file-image text-info me-2"></i>
-                        }
-                        else
-                        {
-                            <i class="fas fa-file text-secondary me-2"></i>
-                        }
+                        <i class="@iconClass"></i>
                         @item.Document.FileName
 
-                        @if (item.Document.ContentType == "application/pdf" && item.IsPdfSigned)
+                        @if (type == "application/pdf" && item.IsPdfSigned)
                         {
-                            <i class="fas fa-check-circle text-success ms-2"
+                            <i class="bi bi-check-circle-fill text-success ms-2"
                                title="PDF je digitálně podepsán"
                                data-bs-toggle="tooltip"
                                style="cursor: pointer;"
                                onclick="showSignatureInfo(@item.Document.Id)"></i>
-                            Console.WriteLine("signed" + item.Document.FileName);
+                        }
+
+                        @if (isPreviewable)
+                        {
+                            <button type="button"
+                                    class="btn btn-sm btn-outline-secondary ms-2"
+                                    onclick="showPreviewModal(@item.Document.Id, '@type', '@item.Document.FileName')">
+                                <i class="bi bi-eye"></i> Náhled
+                            </button>
                         }
                     </div>
                 </td>
+
+
                 <td>@item.Document.UploadedAt.ToLocalTime().ToString("g")</td>
                 <td>@(item.Document.FileSize / 1024)</td>
                 <td>
-                    <a asp-action="Download" asp-route-id="@item.Document.Id" class="btn btn-sm btn-success">Stáhnout</a>
+                    <a asp-action="Download" asp-route-id="@item.Document.Id"
+                       class="btn btn-sm btn-success">Stáhnout</a>
                     <form asp-action="Delete" asp-route-id="@item.Document.Id" method="post" style="display:inline;">
                         @Html.AntiForgeryToken()
                         <button type="submit" class="btn btn-sm btn-danger"
-                                onclick="return confirm('Delete this file?');">Smazat</button>
+                                onclick="return confirm('Delete this file?');">Smazat
+                        </button>
                     </form>
                 </td>
             </tr>
@@ -98,11 +120,31 @@ else
     </div>
 </div>
 
+<!-- Preview Modal -->
+<div class="modal fade" id="previewModal" tabindex="-1" aria-labelledby="previewModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="previewModalLabel">Náhled dokumentu</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body" id="previewModalBody" style="min-height: 60vh;">
+                <div class="text-center">
+                    <div class="spinner-border" role="status">
+                        <span class="visually-hidden">Načítání...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 @section Scripts {
-<script>
-function showSignatureInfo(documentId) {
-    $('#signatureModal').modal('show');
-    $('#signatureContent').html(`
+    <script>
+        function showSignatureInfo(documentId) {
+            $('#signatureModal').modal('show');
+            $('#signatureContent').html(`
         <div class="text-center">
             <div class="spinner-border" role="status">
                 <span class="visually-hidden">Načítání...</span>
@@ -110,35 +152,76 @@ function showSignatureInfo(documentId) {
         </div>
     `);
 
-    $.get('@Url.Action("GetPdfSignatureInfo")', { id: documentId })
-        .done(function(data) {
-            let content = '<div class="alert alert-success">';
-            content += '<i class="fas fa-check-circle"></i> PDF je digitálně podepsáno';
-            content += '</div>';
+            $.get('@Url.Action("GetPdfSignatureInfo")', {id: documentId})
+                .done(function (data) {
+                    let content = '<div class="alert alert-success">';
+                    content += '<i class="fas fa-check-circle"></i> PDF je digitálně podepsáno';
+                    content += '</div>';
 
-            if (data.signerName) {
-                content += '<p><strong>Podepsáno:</strong> ' + data.signerName + '</p>';
-            }
-            if (data.signatureDate) {
-                content += '<p><strong>Datum podpisu:</strong> ' + data.signatureDate + '</p>';
-            }
-            content += '<p><strong>Počet podpisů:</strong> ' + data.signatureCount + '</p>';
+                    if (data.signerName) {
+                        content += '<p><strong>Podepsáno:</strong> ' + data.signerName + '</p>';
+                    }
+                    if (data.signatureDate) {
+                        content += '<p><strong>Datum podpisu:</strong> ' + data.signatureDate + '</p>';
+                    }
+                    content += '<p><strong>Počet podpisů:</strong> ' + data.signatureCount + '</p>';
 
-            $('#signatureContent').html(content);
-        })
-        .fail(function() {
-            $('#signatureContent').html(`
+                    $('#signatureContent').html(content);
+                })
+                .fail(function () {
+                    $('#signatureContent').html(`
                 <div class="alert alert-danger">
                     <i class="fas fa-exclamation-triangle"></i>
                     Nepodařilo se načíst informace o podpisu.
                 </div>
             `);
-        });
-}
+                });
+        }
 
-// Initialize tooltips
-$(document).ready(function() {
-    $('[data-bs-toggle="tooltip"]').tooltip();
-});
-</script>
+        function showPreviewModal(documentId, type, fileName) {
+            $('#previewModalLabel').text('Náhled: ' + fileName);
+            $('#previewModalBody').html(`
+        <div class="text-center">
+            <div class="spinner-border" role="status">
+                <span class="visually-hidden">Načítání...</span>
+            </div>
+        </div>
+    `);
+
+            var previewUrl = '/Document/Preview?id=' + documentId;
+
+            $('#previewModal').modal('show');
+
+            setTimeout(function () {
+                let content = '';
+                if (type === 'application/pdf') {
+                    content = `<iframe src="${previewUrl}" width="100%" height="600px" frameborder="0"></iframe>`;
+                } else if (type.startsWith('image/')) {
+                    content = `<img src="${previewUrl}" alt="Náhled obrázku" class="img-fluid" />`;
+                } else if (type.startsWith('text/')) {
+                    $.get(previewUrl, function (data) {
+                        $('#previewModalBody').html('<pre style="white-space: pre-wrap; word-break: break-all;">' + $('<div>').text(data).html() + '</pre>');
+                    }).fail(function () {
+                        $('#previewModalBody').html('<div class="alert alert-danger">Nepodařilo se načíst textový soubor.</div>');
+                    });
+                    return;
+                } else if (
+                    type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' ||
+                    type === 'application/msword'
+                ) {
+                    const gviewUrl = 'https://docs.google.com/gview?url=' + encodeURIComponent(window.location.origin + previewUrl) + '&embedded=true';
+                    content = `<iframe src="${gviewUrl}" width="100%" height="600px" frameborder="0"></iframe>`;
+                } else {
+                    content = `<div class="alert alert-info">Náhled tohoto typu souboru není podporován.</div>`;
+                }
+                $('#previewModalBody').html(content);
+            }, 400);
+        }
+
+
+        // Initialize tooltips
+        $(document).ready(function () {
+            $('[data-bs-toggle="tooltip"]').tooltip();
+        });
+    </script>
 }

@@ -60,6 +60,13 @@ public class DocumentController : Controller
         return View(new DocumentViewModel { DocumentsWithSignature = documentsWithSignature });
     }
 
+    /// <summary>
+    /// Retrieves detailed information about the digital signatures present in a PDF document.
+    /// </summary>
+    /// <param name="id">The unique identifier of the PDF document.</param>
+    /// <returns>A JSON result containing information about the PDF signatures, including whether the document is signed, the signer's name, the signature date, and the total number of signatures.</returns>
+    /// <exception cref="FileNotFoundException">Thrown if the specified document cannot be found or does not exist.</exception>
+    /// <exception cref="InvalidOperationException">Thrown if the document is not of type 'application/pdf'.</exception>
     [HttpGet]
     public async Task<IActionResult> GetPdfSignatureInfo(int id)
     {
@@ -167,6 +174,17 @@ public class DocumentController : Controller
         return View(new DocumentViewModel { Documents = images });
     }
 
+    public async Task<IActionResult> Music()
+    {
+        var userId = GetCurrentUserId();
+        var audioTypes = new[] { "audio/mpeg", "audio/mp3", "audio/wav", "audio/x-wav", "audio/x-ms-wma", "audio/x-ms-wax", "audio/ogg" };
+
+        var audioFiles = await _context.Documents.Where(d => d.LoginId == userId && audioTypes.Contains(d.ContentType.ToLower()))
+            .OrderByDescending(d => d.UploadedAt)
+            .ToListAsync();
+        return View(new DocumentViewModel { Documents = audioFiles });
+    }
+
     /// <summary>
     /// Retrieves detailed information about a specific image document for the current user.
     /// If the specified document does not exist or is not an image, a 404 Not Found result is returned.
@@ -199,6 +217,25 @@ public class DocumentController : Controller
             height = image.Height
         });
     }
+
+    [HttpGet]
+    public async Task<IActionResult> Preview(int id)
+    {
+        var userId = GetCurrentUserId();
+        var doc = await _documentService.GetDocumentAsync(id, userId);
+        if (doc == null)
+            return NotFound();
+
+        var mimeType = doc.ContentType ?? "application/octet-stream";
+        var absolutePath = Path.GetFullPath(doc.StoragePath);
+
+        if (!System.IO.File.Exists(absolutePath))
+            return NotFound();
+
+        // Inline disposition for browser preview
+        return PhysicalFile(absolutePath, mimeType, enableRangeProcessing: true);
+    }
+
 
     /// <summary>
     /// Formats the file size to be human readable.
