@@ -1,6 +1,9 @@
-﻿@model AppCollection.Models.Login
+﻿@using System.Globalization
+@model AppCollection.Models.Login
+@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer Localizer
 @{
-    ViewData["Title"] = "Přihlášení";
+    ViewData["Title"] = @Localizer["Přihlášení"];
+    var culture = CultureInfo.CurrentUICulture.Name;
 }
 <link rel="stylesheet">
 
@@ -21,14 +24,14 @@
             <span asp-validation-for="Password" class="text-danger"></span>
         </div>
         <div class="mb-3">
-            <label asp-for="Usertype" class="form-label">User Type</label>
+            <label asp-for="Usertype" class="form-label">@Localizer["Typ uživatele"]</label>
             <select asp-for="Usertype" class="form-select">
-                <option value="1">Admin</option>
-                <option value="2">Normal user</option>
+                <option value="1">@Localizer["Administrátor"]</option>
+                <option value="2">@Localizer["Normální uživatel"]</option>
             </select>
         </div>
-        <button type="submit" class="btn btn-primary">Login</button>
-        <a asp-controller="Account" asp-action="Register" class="btn btn-link">Vytvořit účet</a>
+        <button type="submit" class="btn btn-primary" asp-route-culture="@culture">@Localizer["Přihlásit se"]</button>
+        <a asp-controller="Account" asp-action="Register" class="btn btn-link" asp-route-culture="@culture">@Localizer["Vytvořit účet"]</a>
     </form>
 </div>
 

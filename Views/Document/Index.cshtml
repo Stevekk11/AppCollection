@@ -142,6 +142,10 @@ else
 
 @section Scripts {
     <script>
+        /**
+         * Displays modal with PDF signature information for a given document
+         * documentId - The ID of the document to show signature info for
+         */
         function showSignatureInfo(documentId) {
             $('#signatureModal').modal('show');
             $('#signatureContent').html(`
@@ -178,6 +182,12 @@ else
                 });
         }
 
+        /**
+         * Shows a preview modal for the document based on its type
+         * {number} documentId - The ID of the document to preview
+         * {string} type - The MIME type of the document
+         * {string} fileName - The name of the file to display in the modal title
+         */
         function showPreviewModal(documentId, type, fileName) {
             $('#previewModalLabel').text('Náhled: ' + fileName);
             $('#previewModalBody').html(`
@@ -209,8 +219,7 @@ else
                     type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' ||
                     type === 'application/msword'
                 ) {
-                    const gviewUrl = 'https://docs.google.com/gview?url=' + encodeURIComponent(window.location.origin + previewUrl) + '&embedded=true';
-                    content = `<iframe src="${gviewUrl}" width="100%" height="600px" frameborder="0"></iframe>`;
+                    content = `<h2>TODO: Word preview</h2>`;
                 } else {
                     content = `<div class="alert alert-info">Náhled tohoto typu souboru není podporován.</div>`;
                 }

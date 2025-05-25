@@ -4,6 +4,17 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AppCollection.Controllers;
 
+/// <summary>
+/// Provides functionality for managing and interacting with events in the application.
+/// This controller supports operations such as retrieving user-specific events,
+/// displaying a calendar view, and performing CRUD (Create, Read, Update, Delete)
+/// operations on event data.
+/// </summary>
+/// <remarks>
+/// This controller interacts with the application's database through the
+/// ApplicationDbContext class and assumes authentication is in place to obtain
+/// the current user's context for operations.
+/// </remarks>
 public class EventsController : Controller
 {
     private readonly ApplicationDbContext _context;
@@ -69,6 +80,11 @@ public class EventsController : Controller
         return Ok();
     }
 
+    /// <summary>
+    /// Retrieves the ID of the currently authenticated user from the database.
+    /// </summary>
+    /// <returns>The ID of the current user as an integer.</returns>
+    /// <exception cref="Exception">Thrown if no matching user is found in the database.</exception>
     private int GetCurrentUserId()
     {
         var username = User.Identity.Name;

@@ -2,12 +2,17 @@ using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using AppCollection.Models;
 using AppCollection.Services;
+using Microsoft.AspNetCore.Localization;
 
 var builder = WebApplication.CreateBuilder(args);
+
 builder.Services.AddControllersWithViews(options =>
 {
     options.Filters.Add(new AuthorizeFilter());
-});
+
+}).AddViewLocalization().AddDataAnnotationsLocalization();
+// Add localization services
+builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
 
 builder.Services.AddAuthentication("Cookies")
     .AddCookie("Cookies", options =>
@@ -20,8 +25,9 @@ builder.Services.AddAuthentication("Cookies")
 // Add services to the container.
 builder.Services.AddAuthorization();
 builder.Services.AddControllersWithViews();
-builder.Services.AddSingleton<WeatherService>();
 builder.Services.AddHttpClient();
+
+builder.Services.AddSingleton<WeatherService>();
 builder.Services.AddScoped<SearchService>();
 builder.Services.AddScoped<PdfSignatureService>();
 builder.Services.AddScoped<DocumentService>(provider =>
@@ -36,7 +42,15 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 var app = builder.Build();
+// Set supported cultures
+var supportedCultures = new[] {"en", "cs"};
+var localizationOptions = new RequestLocalizationOptions()
+    .SetDefaultCulture("cs")
+    .AddSupportedCultures(supportedCultures)
+    .AddSupportedUICultures(supportedCultures);
 
+localizationOptions.RequestCultureProviders.Insert(0, new QueryStringRequestCultureProvider());
+app.UseRequestLocalization(localizationOptions);
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {

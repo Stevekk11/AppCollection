@@ -1,27 +1,65 @@
-﻿@{
-    ViewData["Title"] = "Úvod";
+﻿@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer Localizer
+@using System.Security.Claims
+
+@{
+    ViewData["Title"] = Localizer["Přehled"];
+
+    bool isAuthenticated = User.Identity?.IsAuthenticated ?? false;
+    string? username = isAuthenticated ? User.FindFirstValue(ClaimTypes.Name) : Localizer["Anonym"].ToString();
+    string? usertype = isAuthenticated ? User.FindFirstValue("Usertype") : null;
 }
-<link rel="stylesheet" href="~/css/index.css" />
-<div class="text-center">
-    <h1 class="display-4">Kolekce zajímavých aplikací</h1>
-    <p>Slovní hodiny je speciální typ hodin, kde místo kulatého ciferníku s ručičkami je čas zobrazen pomocí slov na čtvercovém "ciferníku", například takto: "</p>
-    <pre style="font-size:32px; line-height:1; letter-spacing:0;">
-┌──────────────────────┐
-│  je deset            │
-│                      │
-│           hodin      │
-│                      │
-│   a      třicet      │
-│                      │
-│       minut          │
-│                      │
-└──────────────────────┘
-</pre>
-    <p>Každé slovo má v ciferníku jinou pozici, a proto jsou různě rozmístěna. Ostatní slova nesvítí (jsou šedá).</p>
-    <br/>
-    <p>Minuty jsou po deseti: "nula", "deset", "dvacet", atd...</p>
-    <br/>
-    <p>Hodin je dvanáct, jako na normálních hodinách.</p>
-    <p>Budíky - lze si nastavit budík</p>
-    <p>Odjezdy PID - ukazují, kdy pojede veřejná doprava z určené zastávky.</p>
+
+<div class="container py-4 ">
+    <h1 class="mb-4 text-decoration-underline">@Localizer["Přehled"]</h1>
+
+    @if (isAuthenticated)
+    {
+        <div class="card mb-3">
+            <div class="card-body">
+                <h4>@Localizer["Vítejte, "] @username</h4>
+                <p>@Localizer["Základní info:"]</p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card text-bg-primary mb-3">
+                    <div class="card-header">@Localizer["Info o profilu"]</div>
+                    <div class="card-body">
+                        <p><strong>@Localizer["Uživatelské jméno:"]</strong> @username</p>
+                        <p><strong>@Localizer["Typ uživatele: "]</strong>
+                            @if (usertype.Equals("1"))
+                            {
+                            <p style="color: red">@Localizer["Administrátor"]</p>
+                        }
+                        else
+                        {
+                            <p style="color: green">@Localizer["Normální uživatel"]</p>
+                        }
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="card text-bg-secondary text-dark mb-3">
+                    <div class="card-header">@Localizer["Základní informace"]</div>
+                    <div class="card-body">
+                        <div class="text-dark">
+                            <h5>@Localizer["O projektu"]</h5>
+                            <p>@Localizer["Co tato webová aplikace umí:"]</p>
+                            <ul>
+                                <li>@Localizer["Přihlášení a správa uživatelů"]</li>
+                                <li>@Localizer["Lokalizace do více jazyků"]</li>
+                                <li>@Localizer["Responzivní Bootstrap rozhraní"]</li>
+                                <li>@Localizer["Bezpečné ukládání dat"]</li>
+                                <li>@Localizer["Vyhledávání odjezdů PID"]</li>
+                                <li>@Localizer["Bezpečné ukládání dat"]</li>
+                                <li>@Localizer["A další ..."]😀</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
 </div>

@@ -218,6 +218,12 @@ public class DocumentController : Controller
         });
     }
 
+    /// <summary>
+    /// Streams the specified document as a file for inline browser preview.
+    /// </summary>
+    /// <param name="id">The unique identifier of the document to preview.</param>
+    /// <returns>An <see cref="IActionResult"/> containing the file for preview if found, or a NotFound result if the document does not exist.</returns>
+    /// <exception cref="Exception">Thrown when the current authenticated user's information cannot be found.</exception>
     [HttpGet]
     public async Task<IActionResult> Preview(int id)
     {
