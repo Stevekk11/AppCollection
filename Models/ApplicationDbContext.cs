@@ -15,6 +15,7 @@ public class ApplicationDbContext : DbContext
 {
     public DbSet<Login> Logins { get; set; }
     public DbSet<Document> Documents { get; set; }
+    public DbSet<Event> Events { get; set; }
 
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options)

@@ -32,6 +32,7 @@
     <ItemGroup>
       <Folder Include="UserDocs\" />
       <Folder Include="wwwroot\lib\vendor\" />
+      <Folder Include="wwwroot\media\" />
     </ItemGroup>
 
     <ItemGroup>
