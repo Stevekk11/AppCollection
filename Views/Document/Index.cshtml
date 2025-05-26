@@ -1,8 +1,9 @@
-﻿@model AppCollection.Models.DocumentViewModel
+﻿@using System.Globalization
+@model AppCollection.Models.DocumentViewModel
 @inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer Localizer
 @{
-    ViewData["Title"] = Localizer["Moje Dokumenty"]
-        ;
+    ViewData["Title"] = Localizer["Moje Dokumenty"];
+    var culture = CultureInfo.CurrentUICulture.Name;
 }
 <h2>@ViewData["Title"]</h2>
 
@@ -11,9 +12,9 @@
     <div class="alert alert-danger">@TempData["UploadError"]</div>
 }
 
-<form asp-action="UploadFile" method="post" enctype="multipart/form-data" class="mb-4">
+<form asp-action="UploadFile" method="post" enctype="multipart/form-data" class="mb-4" asp-route-culture="@culture">
     <div class="mb-2">
-        <input type="file" name="file" class="form-control-file btn btn-info fw-bold" multiple required/>
+        <input type="file" name="file" class="form-control-file btn btn-info fw-bold" required/>
     </div>
     <button type="submit" class="btn btn-primary">@Localizer["Nahrát"]</button>
     @Html.AntiForgeryToken()
@@ -84,10 +85,10 @@
                 <td>@item.Document.UploadedAt.ToLocalTime().ToString("g")</td>
                 <td>@(item.Document.FileSize / 1024)</td>
                 <td>
-                    <a asp-action="Download" asp-route-id="@item.Document.Id"
+                    <a asp-action="Download" asp-route-id="@item.Document.Id" asp-route-culture="@culture"
                        class="btn btn-sm btn-success">@Localizer["Stáhnout"]
                     </a>
-                    <form asp-action="Delete" asp-route-id="@item.Document.Id" method="post" style="display:inline;">
+                    <form asp-action="Delete" asp-route-id="@item.Document.Id" method="post" style="display:inline;" asp-route-culture="@culture">
                         @Html.AntiForgeryToken()
                         <button type="submit" class="btn btn-sm btn-danger"
                                 onclick="return confirm('@Localizer["Smazat tento soubor?"]');">

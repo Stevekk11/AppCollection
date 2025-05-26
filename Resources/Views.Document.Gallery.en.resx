@@ -56,4 +56,19 @@
     <data name="Nepodařilo se smazat obrázek." xml:space="preserve">
     <value>Failed to delete image.</value>
   </data>
+  <data name="Název:" xml:space="preserve">
+    <value>Name:</value>
+  </data>
+  <data name="Velikost:" xml:space="preserve">
+    <value>File size:</value>
+  </data>
+  <data name="Typ:" xml:space="preserve">
+    <value>Type:</value>
+  </data>
+  <data name="Nahráno:" xml:space="preserve">
+    <value>Uploaded at:</value>
+  </data>
+  <data name="Rozměry:" xml:space="preserve">
+    <value>Resolution:</value>
+  </data>
 </root>

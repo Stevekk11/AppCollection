@@ -1,9 +1,11 @@
-﻿@using Microsoft.AspNetCore.Mvc.Localization
+﻿@using System.Globalization
+@using Microsoft.AspNetCore.Mvc.Localization
 @inject IViewLocalizer Localizer
 @model AppCollection.Models.DocumentViewModel
 
 @{
     ViewData["Title"] = Localizer["Galerie fotografií"];
+    var culture = CultureInfo.CurrentUICulture.Name;
 }
 
 <div class="container-fluid">
@@ -16,7 +18,7 @@
                 <div class="alert alert-info">
                     <i class="fas fa-info-circle"></i>
                     @Localizer["Zatím nemáte nahrané žádné obrázky."]
-                    <a href="@Url.Action("Index")" class="btn btn-primary btn-sm ms-2">
+                    <a href="@Url.Action("Index", new { culture = CultureInfo.CurrentUICulture.Name })" class="btn btn-primary btn-sm ms-2">
                         @Localizer["Nahrát první obrázek"]
                     </a>
                 </div>
@@ -34,7 +36,7 @@
                                     <img src="@Url.Action("Download", new { id = doc.Id })"
                                          class="card-img-top h-100 object-fit-cover"
                                          alt="@doc.FileName"
-                                         loading="lazy">
+                                         loading="lazy" asp-route-culture="@culture">
                                     <div class="position-absolute top-0 end-0 p-2">
                                         <span class="badge bg-dark bg-opacity-75">
                                             @doc.ContentType.Split('/')[1].ToUpper()
@@ -92,7 +94,6 @@
 @section Scripts {
     <script>
         $(document).ready(function () {
-            // Klik na obrázek v galerii
             $('.gallery-item').click(function () {
                 const imageId = $(this).data('id');
                 loadImageDetails(imageId);
@@ -118,27 +119,27 @@
                                  alt="${data.fileName}"
                                  style="max-height: 400px; width: 100%; object-fit: contain;">
                         </div>
-                        <div class="col-md-4">
-                            <h6>${@Localizer["Informace o souboru"]}</h6>
+                         <div class="col-md-4">
+                            <h6>@Localizer["Informace o souboru"]</h6>
                             <table class="table table-sm">
                                 <tr>
-                                    <th>Název:</th>
+                                    <th>@Localizer["Název:"]</th>
                                     <td class="text-break">${data.fileName}</td>
                                 </tr>
                                 <tr>
-                                    <th>Velikost:</th>
+                                    <th>@Localizer["Velikost:"]</th>
                                     <td>${data.fileSize}</td>
                                 </tr>
                                 <tr>
-                                    <th>Typ:</th>
+                                    <th>@Localizer["Typ:"]</th>
                                     <td>${data.contentType}</td>
                                 </tr>
                                 <tr>
-                                    <th>Nahráno:</th>
+                                    <th>@Localizer["Nahráno:"]</th>
                                     <td>${data.uploadedAt}</td>
                                 </tr>
                                  <tr>
-                                    <th>Rozměry:</th>
+                                    <th>@Localizer["Rozměry:"]</th>
                                     <td>${data.width} × ${data.height} px</td>
                                 </tr>
                             </table>

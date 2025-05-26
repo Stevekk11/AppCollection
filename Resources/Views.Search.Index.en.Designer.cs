@@ -69,7 +69,7 @@ namespace AppCollection.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Crosswork finder.
+        ///   Looks up a localized string similar to Crossword finder.
         /// </summary>
         internal static string Křížovkářský_slovník {
             get {
@@ -92,6 +92,15 @@ namespace AppCollection.Resources {
         internal static string Otázka {
             get {
                 return ResourceManager.GetString("Otázka", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter a word....
+        /// </summary>
+        internal static string Zadejte_hledaný_výraz___ {
+            get {
+                return ResourceManager.GetString("Zadejte hledaný výraz...", resourceCulture);
             }
         }
     }
