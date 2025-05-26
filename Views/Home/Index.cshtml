@@ -30,13 +30,30 @@
                         <p><strong>@Localizer["Typ uživatele: "]</strong>
                             @if (usertype.Equals("1"))
                             {
-                            <p style="color: red">@Localizer["Administrátor"]</p>
-                        }
-                        else
-                        {
-                            <p style="color: green">@Localizer["Normální uživatel"]</p>
-                        }
+                                <p style="color: red">@Localizer["Administrátor"]</p>
+                            }
+                            else
+                            {
+                                <p style="color: green">@Localizer["Normální uživatel"]</p>
+                            }
                         </p>
+                    </div>
+                    <div class="card-header fw-bold">@Localizer["Nedávno hledané"]</div>
+                    <div class="card-body">
+                        @{
+                            if (ViewBag.Searches != null)
+                            {
+                                foreach (var search in ViewBag.Searches)
+                                {
+                                    <p class="mb-1 fw-normal">@search.Word</p>
+                                    <p class="text-muted">@search.Date.ToString("g")</p>
+                                }
+                            }
+                            else
+                            {
+                                <p>@Localizer["Zatím žádné vyhledávání"]</p>
+                            }
+                        }
                     </div>
                 </div>
             </div>

@@ -72,4 +72,10 @@
     <data name="Základní info:" xml:space="preserve">
         <value>Basic information</value>
     </data>
+    <data name="Nedávno hledané" xml:space="preserve">
+        <value>Recent searches</value>
+    </data>
+    <data name="Zatím žádné vyhledávání" xml:space="preserve">
+        <value>No searches yet</value>
+    </data>
 </root>

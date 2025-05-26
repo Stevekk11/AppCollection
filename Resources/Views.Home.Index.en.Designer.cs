@@ -123,6 +123,15 @@ namespace AppCollection.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Recent searches.
+        /// </summary>
+        internal static string Nedávno_hledané {
+            get {
+                return ResourceManager.GetString("Nedávno hledané", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Normal user.
         /// </summary>
         internal static string Normální_uživatel {
@@ -218,6 +227,15 @@ namespace AppCollection.Resources {
         internal static string Základní_informace {
             get {
                 return ResourceManager.GetString("Základní informace", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No searches yet.
+        /// </summary>
+        internal static string Zatím_žádné_vyhledávání {
+            get {
+                return ResourceManager.GetString("Zatím žádné vyhledávání", resourceCulture);
             }
         }
     }

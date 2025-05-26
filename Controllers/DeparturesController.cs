@@ -40,6 +40,7 @@ public class DeparturesController : Controller
         {
             Word = stopName,
             Date = DateTime.Now,
+            UserId = GetCurrentUserId()
         };
         _context.Add(hist);
         _context.SaveChangesAsync();
@@ -109,5 +110,12 @@ public class DeparturesController : Controller
             vm.StopName = stopName;
         }
         return vm;
+    }
+    private int GetCurrentUserId()
+    {
+        var username = User.Identity.Name;
+        var usertype = Convert.ToByte(User.FindFirst("Usertype").Value);
+        var user = _context.Logins.FirstOrDefault(x => x.Username == username && x.Usertype == usertype);
+        return user?.Id_Login ?? throw new Exception("User not found");
     }
 }

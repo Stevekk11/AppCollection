@@ -1,4 +1,5 @@
 ﻿using AppCollection.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,6 +16,7 @@ namespace AppCollection.Controllers;
 /// ApplicationDbContext class and assumes authentication is in place to obtain
 /// the current user's context for operations.
 /// </remarks>
+[Authorize]
 public class EventsController : Controller
 {
     private readonly ApplicationDbContext _context;

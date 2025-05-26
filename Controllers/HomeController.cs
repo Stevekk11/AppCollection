@@ -14,10 +14,12 @@ namespace AppCollection.Controllers;
 public class HomeController : Controller
 {
     private readonly WeatherService _weatherService;
+    private ApplicationDbContext _context;
 
-    public HomeController(WeatherService weatherService)
+    public HomeController(WeatherService weatherService, ApplicationDbContext context)
     {
         _weatherService = weatherService;
+        _context = context;
     }
 
     /// <summary>
@@ -39,5 +41,16 @@ public class HomeController : Controller
     }
 
     public IActionResult Privacy() => View();
-    public IActionResult Index() => View();
+
+    public IActionResult Index()
+    {
+        // Get the 10 most recent search history records (you can adjust as needed)
+        var recentSearches = _context.Set<SearchHistory>()
+            .OrderByDescending(sh => sh.Date)
+            .Take(10)
+            .ToList();
+
+        ViewBag.Searches = recentSearches;
+        return View();
+    }
 }

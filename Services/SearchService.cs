@@ -34,7 +34,7 @@ public class SearchService
     /// </summary>
     /// <param name="query">The search query string to look up.</param>
     /// <returns>A string containing the formatted search results or an error message if the search fails.</returns>
-    public async Task<string?> SearchAsync(string query)
+    public async Task<string?> SearchAsync(string query, int loginId)
     {
         var client = _httpClientFactory.CreateClient();
         var url = "https://lustit.cz/najit?otazka=" + HttpUtility.UrlEncode(query);
@@ -45,6 +45,7 @@ public class SearchService
             {
                 Word = query,
                 Date = DateTime.Now,
+                UserId = loginId
             };
             _context.Add(hist);
             await _context.SaveChangesAsync();
