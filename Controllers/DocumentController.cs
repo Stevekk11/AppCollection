@@ -78,7 +78,8 @@ public class DocumentController : Controller
 
         var signatureInfo = _pdfSignatureService.GetPdfSignatureInfo(doc.StoragePath);
 
-        return Json(new {
+        return Json(new
+        {
             isSigned = signatureInfo.IsSigned,
             signerName = signatureInfo.SignerName,
             signatureDate = signatureInfo.SignatureDate?.ToString("dd.MM.yyyy HH:mm"),
@@ -177,9 +178,11 @@ public class DocumentController : Controller
     public async Task<IActionResult> Music()
     {
         var userId = GetCurrentUserId();
-        var audioTypes = new[] { "audio/mpeg", "audio/mp3", "audio/wav", "audio/x-wav", "audio/x-ms-wma", "audio/x-ms-wax", "audio/ogg" };
+        var audioTypes = new[]
+            { "audio/mpeg", "audio/mp3", "audio/wav", "audio/x-wav", "audio/x-ms-wma", "audio/x-ms-wax", "audio/ogg" };
 
-        var audioFiles = await _context.Documents.Where(d => d.LoginId == userId && audioTypes.Contains(d.ContentType.ToLower()))
+        var audioFiles = await _context.Documents
+            .Where(d => d.LoginId == userId && audioTypes.Contains(d.ContentType.ToLower()))
             .OrderByDescending(d => d.UploadedAt)
             .ToListAsync();
         return View(new DocumentViewModel { Documents = audioFiles });

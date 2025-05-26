@@ -11,6 +11,12 @@ namespace AppCollection.Controllers;
 [Authorize]
 public class DeparturesController : Controller
 {
+    private ApplicationDbContext _context;
+
+    public DeparturesController(ApplicationDbContext context)
+    {
+        _context = context;
+    }
     /// <summary>
     /// Displays departure information for a specified stop
     /// </summary>
@@ -30,6 +36,13 @@ public class DeparturesController : Controller
     [HttpPost]
     public IActionResult Search(string stopName)
     {
+        var hist = new SearchHistory
+        {
+            Word = stopName,
+            Date = DateTime.Now,
+        };
+        _context.Add(hist);
+        _context.SaveChangesAsync();
         return RedirectToAction("Index", new { stopName, actionType = "search" });
     }
 

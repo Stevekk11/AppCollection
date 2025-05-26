@@ -17,7 +17,7 @@ public class Login
 
     [Required] [StringLength(50)] public string Username { get; set; }
 
-    [Required] [StringLength(50)] public string Password { get; set; } // This will store the hashed password
+    [Required] [StringLength(255)] public string Password { get; set; } // This will store the hashed password
 
     [Required] public byte Usertype { get; set; } // 1 - Admin, 2 - Normal user
 }

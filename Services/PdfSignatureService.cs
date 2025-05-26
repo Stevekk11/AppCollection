@@ -1,6 +1,15 @@
 ﻿using AppCollection.Helpers;
+using iText.Bouncycastle.Crypto;
+using iText.Bouncycastle.X509;
+using iText.Commons.Bouncycastle.Cert;
+using iText.Forms.Fields.Properties;
+using iText.Forms.Form.Element;
+using iText.Kernel.Crypto;
 using iText.Kernel.Pdf;
 using iText.Signatures;
+using iText.Kernel.Geom;
+using Org.BouncyCastle.Crypto;
+using Org.BouncyCastle.Pkcs;
 
 namespace AppCollection.Services;
 
@@ -10,6 +19,7 @@ namespace AppCollection.Services;
 /// </summary>
 public class PdfSignatureService
 {
+
     /// <summary>
     /// Determines whether a PDF document, specified by its file path, contains a digital signature.
     /// </summary>
@@ -43,6 +53,7 @@ public class PdfSignatureService
                     return true;
                 }
             }
+
             return false;
         }
         catch (Exception e)
@@ -69,6 +80,7 @@ public class PdfSignatureService
             {
                 return new PdfSignatureInfo { IsSigned = false };
             }
+
             using var pdfReader = new PdfReader(filePath);
             using var pdfDocument = new PdfDocument(pdfReader);
             var signatureUtil = new SignatureUtil(pdfDocument);
@@ -101,5 +113,4 @@ public class PdfSignatureService
             return new PdfSignatureInfo { IsSigned = false };
         }
     }
-
 }

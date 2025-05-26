@@ -28,7 +28,13 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddHttpClient();
 
 builder.Services.AddSingleton<WeatherService>();
-builder.Services.AddScoped<SearchService>();
+builder.Services.AddScoped<SearchService>(p =>
+{
+    var context = p.GetRequiredService<ApplicationDbContext>();
+    var httpClientFactory = p.GetRequiredService<IHttpClientFactory>();
+    return new SearchService(httpClientFactory, context);
+});
+
 builder.Services.AddScoped<PdfSignatureService>();
 builder.Services.AddScoped<DocumentService>(provider =>
 {

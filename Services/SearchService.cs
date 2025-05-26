@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using HtmlAgilityPack;
 using System.Web;
 using System.Text;
+using AppCollection.Models;
 
 
 namespace AppCollection.Services;
@@ -15,14 +16,17 @@ namespace AppCollection.Services;
 public class SearchService
 {
     private readonly IHttpClientFactory _httpClientFactory;
+    private ApplicationDbContext _context;
 
     /// <summary>
     /// Initializes a new instance of the SearchService class.
     /// </summary>
     /// <param name="httpClientFactory">The HTTP client factory used for creating HTTP clients.</param>
-    public SearchService(IHttpClientFactory httpClientFactory)
+    /// <param name="context"> database</param>
+    public SearchService(IHttpClientFactory httpClientFactory, ApplicationDbContext context)
     {
         _httpClientFactory = httpClientFactory;
+        _context = context;
     }
 
     /// <summary>
@@ -37,6 +41,13 @@ public class SearchService
         try
         {
             var html = await client.GetStringAsync(url);
+            var hist = new SearchHistory
+            {
+                Word = query,
+                Date = DateTime.Now,
+            };
+            _context.Add(hist);
+            await _context.SaveChangesAsync();
             return ExtractTableData(html);
         }
         catch (Exception e)

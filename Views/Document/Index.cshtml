@@ -1,4 +1,5 @@
 ﻿@model AppCollection.Models.DocumentViewModel
+@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer Localizer
 @{
     ViewData["Title"] = "Moje Dokumenty";
 }
@@ -141,53 +142,8 @@ else
 
 
 @section Scripts {
+
     <script>
-        /**
-         * Displays modal with PDF signature information for a given document
-         * documentId - The ID of the document to show signature info for
-         */
-        function showSignatureInfo(documentId) {
-            $('#signatureModal').modal('show');
-            $('#signatureContent').html(`
-        <div class="text-center">
-            <div class="spinner-border" role="status">
-                <span class="visually-hidden">Načítání...</span>
-            </div>
-        </div>
-    `);
-
-            $.get('@Url.Action("GetPdfSignatureInfo")', {id: documentId})
-                .done(function (data) {
-                    let content = '<div class="alert alert-success">';
-                    content += '<i class="fas fa-check-circle"></i> PDF je digitálně podepsáno';
-                    content += '</div>';
-
-                    if (data.signerName) {
-                        content += '<p><strong>Podepsáno:</strong> ' + data.signerName + '</p>';
-                    }
-                    if (data.signatureDate) {
-                        content += '<p><strong>Datum podpisu:</strong> ' + data.signatureDate + '</p>';
-                    }
-                    content += '<p><strong>Počet podpisů:</strong> ' + data.signatureCount + '</p>';
-
-                    $('#signatureContent').html(content);
-                })
-                .fail(function () {
-                    $('#signatureContent').html(`
-                <div class="alert alert-danger">
-                    <i class="fas fa-exclamation-triangle"></i>
-                    Nepodařilo se načíst informace o podpisu.
-                </div>
-            `);
-                });
-        }
-
-        /**
-         * Shows a preview modal for the document based on its type
-         * {number} documentId - The ID of the document to preview
-         * {string} type - The MIME type of the document
-         * {string} fileName - The name of the file to display in the modal title
-         */
         function showPreviewModal(documentId, type, fileName) {
             $('#previewModalLabel').text('Náhled: ' + fileName);
             $('#previewModalBody').html(`
@@ -227,10 +183,50 @@ else
             }, 400);
         }
 
+        /**
+         * Displays modal with PDF signature information for a given document
+         * documentId - The ID of the document to show signature info for
+         */
+        function showSignatureInfo(documentId) {
+            $('#signatureModal').modal('show');
+            $('#signatureContent').html(`
+        <div class="text-center">
+            <div class="spinner-border" role="status">
+                <span class="visually-hidden">Načítání...</span>
+            </div>
+        </div>
+    `);
 
-        // Initialize tooltips
-        $(document).ready(function () {
-            $('[data-bs-toggle="tooltip"]').tooltip();
-        });
+            $.get('@Url.Action("GetPdfSignatureInfo")', {id: documentId})
+                .done(function (data) {
+                    let content = '<div class="alert alert-success">';
+                    content += '<i class="fas fa-check-circle"></i> PDF je digitálně podepsáno';
+                    content += '</div>';
+
+                    if (data.signerName) {
+                        content += '<p><strong>Podepsáno:</strong> ' + data.signerName + '</p>';
+                    }
+                    if (data.signatureDate) {
+                        content += '<p><strong>Datum podpisu:</strong> ' + data.signatureDate + '</p>';
+                    }
+                    content += '<p><strong>Počet podpisů:</strong> ' + data.signatureCount + '</p>';
+
+                    $('#signatureContent').html(content);
+                })
+                .fail(function () {
+                    $('#signatureContent').html(`
+                <div class="alert alert-danger">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    Nepodařilo se načíst informace o podpisu.
+                </div>
+            `);
+                });
+
+
+            // Initialize tooltips
+            $(document).ready(function () {
+                $('[data-bs-toggle="tooltip"]').tooltip();
+            });
+        }
     </script>
 }
