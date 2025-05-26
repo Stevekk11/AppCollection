@@ -1,7 +1,7 @@
 ﻿@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer Localizer
 @model AppCollection.Models.DepartureViewModel
 @{
-    ViewData["Title"] = "Odjezdy PID";
+    ViewData["Title"] = Localizer["Odjezdy PID"];
 }
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
 
@@ -13,7 +13,7 @@
             <div class="text-center mb-4">
                 <h1 class="display-4 mb-3">@ViewData["Title"]</h1>
                 <h2 class="h4 text-muted">
-                    Čas: <span id="clock">@Model.Now.ToLongTimeString()</span>,
+                    @Localizer["Čas"]: <span id="clock">@Model.Now.ToLongTimeString()</span>,
                     @Model.Now.ToString("d.M.yyyy")
                 </h2>
             </div>
@@ -33,7 +33,7 @@
                         <div class="card-body p-4">
                             <form asp-action="Search" asp-controller="Departures" method="post">
                                 <div class="mb-3">
-                                    <label for="stop-name" class="form-label fw-bold">Název zastávky:</label>
+                                    <label for="stop-name" class="form-label fw-bold">@Localizer["Název zastávky:"]</label>
                                     <input name="stopName"
                                            id="stop-name"
                                            class="form-control form-control-lg"
@@ -49,7 +49,7 @@
                                     </datalist>
                                 </div>
                                 <div class="d-grid">
-                                    <button type="submit" class="btn btn-primary btn-lg">Zobrazit</button>
+                                    <button type="submit" class="btn btn-primary btn-lg">@Localizer["Zobrazit"]</button>
                                 </div>
                             </form>
                         </div>
@@ -62,13 +62,15 @@
                 <div class="card shadow mb-3">
                     <div class="card-body py-4">
                         <div class="row text-center fw-bold fs-5">
-                            <div class="col-lg-2 text-nowrap">Číslo linky</div>
-                            <div class="col-lg-3 text-nowrap">Směr</div>
-                            <div class="col-lg-2 text-nowrap">Čas odjezdu (min)</div>
-                            <div class="col-lg-1 text-nowrap">Nástupiště</div>
-                            <div class="col-lg-1 text-nowrap">AC</div>
-                            <div class="col-lg-1 text-nowrap">Bezbariérový</div>
-                            <div class="col-lg-2 text-nowrap">Zpoždění</div>
+                            <div class="row text-center fw-bold fs-5">
+                                <div class="col-lg-2 text-nowrap">@Localizer["Číslo linky"]</div>
+                                <div class="col-lg-3 text-nowrap">@Localizer["Směr"]</div>
+                                <div class="col-lg-2 text-nowrap">@Localizer["Čas odjezdu (min)"]</div>
+                                <div class="col-lg-1 text-nowrap">@Localizer["Nástupiště"]</div>
+                                <div class="col-lg-1 text-nowrap">AC</div>
+                                <div class="col-lg-1 text-nowrap">@Localizer["Bezbariérový"]</div>
+                                <div class="col-lg-2 text-nowrap">@Localizer["Zpoždění"]</div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -111,7 +113,7 @@
                                     <div class="col-lg-2">
                                         @if (dep.Delay == 0)
                                         {
-                                            <span class="badge bg-success fs-6 px-3 py-2">Bez zpoždění</span>
+                                            <span class="badge bg-success fs-6 px-3 py-2">@Localizer["Bez zpoždění"]</span>
                                         }
                                         else if (dep.Delay <= 3)
                                         {
@@ -134,16 +136,16 @@
                                 <div class="row">
                                     <div class="col-4">
                                         <span class="badge bg-primary fs-6 mb-2 px-3 py-2">@dep.Route</span>
-                                        <div class="small text-muted">Linka</div>
+                                        <div class="small text-muted">@Localizer["Linka"]</div>
                                     </div>
                                     <div class="col-4 text-center">
                                         <div class="fs-3 fw-bold text-primary">@dep.Minutes</div>
-                                        <div class="small text-muted">minut</div>
+                                        <div class="small text-muted">@Localizer["minut"]</div>
                                     </div>
                                     <div class="col-4 text-end">
                                         @if (dep.Delay == 0)
                                         {
-                                            <span class="badge bg-success fs-6 px-3 py-2">Bez zpoždění</span>
+                                            <span class="badge bg-success fs-6 px-3 py-2">@Localizer["Bez zpoždění"]</span>
                                         }
                                         else if (dep.Delay <= 5)
                                         {
@@ -163,21 +165,21 @@
                                 </div>
                                 <div class="row mt-3">
                                     <div class="col-4">
-                                        <small class="text-muted">Nástupiště: </small>
+                                        <small class="text-muted">@Localizer["Nástupiště:"] </small>
                                         <strong class="fs-6">@dep.PlatformCode</strong>
                                     </div>
                                     <div class="col-4 text-center">
                                         @if (dep.Ac)
                                         {
                                             <i class="bi bi-snow text-info" style="font-size: 1.5rem;"></i>
-                                            <small class="text-muted ms-1">Klimatizace</small>
+                                            <small class="text-muted ms-1">@Localizer["Klimatizace"]</small>
                                         }
                                     </div>
                                     <div class="col-4 text-end">
                                         @if (dep.Krypl)
                                         {
                                             <img src="disability.png" alt="disability"/>
-                                            <small class="text-muted ms-1">Bezbariérový</small>
+                                            <small class="text-muted ms-1">@Localizer["Bezbariérový"]</small>
                                         }
                                     </div>
                                 </div>
@@ -190,7 +192,7 @@
             {
                 <div class="text-center my-5">
                     <div class="display-1 text-muted mb-3"><img src="bus.png" alt="no" width="128px" height="128px"/></div>
-                    <p class="text-muted fs-5">Žádné odjezdy k zobrazení</p>
+                    <p class="text-muted fs-5">@Localizer["Žádné odjezdy k zobrazení"]</p>
                 </div>
             }
 

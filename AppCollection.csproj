@@ -72,6 +72,26 @@
         <Generator>ResXFileCodeGenerator</Generator>
         <LastGenOutput>Views.Home.Clock.en.Designer.cs</LastGenOutput>
       </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Views.Home.Transport.en.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Views.Home.Transport.en.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Views.Search.Index.en.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Views.Search.Index.en.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Views.Document.Index.en.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Views.Document.Index.en.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Views.Document.Music.en.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Views.Document.Music.en.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Views.Document.Gallery.en.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Views.Document.Gallery.en.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
     </ItemGroup>
 
     <ItemGroup>
@@ -104,6 +124,31 @@
         <DesignTime>True</DesignTime>
         <AutoGen>True</AutoGen>
         <DependentUpon>Views.Home.Clock.en.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Resources\Views.Home.Transport.en.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Views.Home.Transport.en.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Resources\Views.Search.Index.en.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Views.Search.Index.en.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Resources\Views.Document.Index.en.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Views.Document.Index.en.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Resources\Views.Document.Music.en.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Views.Document.Music.en.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Resources\Views.Document.Gallery.en.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Views.Document.Gallery.en.resx</DependentUpon>
       </Compile>
     </ItemGroup>
 

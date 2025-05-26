@@ -43,4 +43,7 @@
     <data name="Zobrazit počasí" xml:space="preserve">
     <value>Show Weather</value>
   </data>
+  <data name="Slovní hodiny" xml:space="preserve">
+    <value>Word clock</value>
+  </data>
 </root>

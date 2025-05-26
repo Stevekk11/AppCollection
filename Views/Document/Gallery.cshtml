@@ -1,7 +1,9 @@
-﻿@model AppCollection.Models.DocumentViewModel
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@model AppCollection.Models.DocumentViewModel
 
 @{
-    ViewData["Title"] = "Galerie fotografií";
+    ViewData["Title"] = Localizer["Galerie fotografií"];
 }
 
 <div class="container-fluid">
@@ -13,9 +15,9 @@
             {
                 <div class="alert alert-info">
                     <i class="fas fa-info-circle"></i>
-                    Zatím nemáte nahrané žádné obrázky.
+                    @Localizer["Zatím nemáte nahrané žádné obrázky."]
                     <a href="@Url.Action("Index")" class="btn btn-primary btn-sm ms-2">
-                        Nahrát první obrázek
+                        @Localizer["Nahrát první obrázek"]
                     </a>
                 </div>
             }
@@ -62,25 +64,25 @@
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="imageDetailModalLabel">Detail fotografie</h5>
+                <h5 class="modal-title" id="imageDetailModalLabel">@Localizer["Detail fotografie"]</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body" id="modalContent">
                 <div class="text-center">
                     <div class="spinner-border" role="status">
-                        <span class="visually-hidden">Načítání...</span>
+                        <span class="visually-hidden">@Localizer["Načítání..."]</span>
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-success" id="downloadBtn">
-                    <i class="fas fa-download"></i> Stáhnout
+                    <i class="fas fa-download"></i> @Localizer["Stáhnout"]
                 </button>
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                    Zavřít
+                    @Localizer["Zavřít"]
                 </button>
                 <button type="button" class="btn btn-danger" id="deleteBtn">
-                    <i class="fas fa-trash"></i> Smazat
+                    <i class="fas fa-trash"></i> @Localizer["Smazat"]
                 </button>
             </div>
         </div>
@@ -101,7 +103,7 @@
                 $('#modalContent').html(`
             <div class="text-center">
                 <div class="spinner-border" role="status">
-                    <span class="visually-hidden">Načítání...</span>
+                    <span class="visually-hidden">@Localizer["Načítání..."]</span>
                 </div>
             </div>
         `);
@@ -117,7 +119,7 @@
                                  style="max-height: 400px; width: 100%; object-fit: contain;">
                         </div>
                         <div class="col-md-4">
-                            <h6>Informace o souboru</h6>
+                            <h6>${@Localizer["Informace o souboru"]}</h6>
                             <table class="table table-sm">
                                 <tr>
                                     <th>Název:</th>
@@ -149,7 +151,7 @@
                             window.open(data.downloadUrl, '_blank');
                         });
                         $('#deleteBtn').off('click').on('click', function () {
-                            if (confirm('Opravdu chcete smazat tento obrázek?')) {
+                            if (confirm('@Localizer["Opravdu chcete smazat tento obrázek?"]')) {
                                 deleteImage(data.id);
                             }
                         });
@@ -158,7 +160,7 @@
                         $('#modalContent').html(`
                     <div class="alert alert-danger">
                         <i class="fas fa-exclamation-triangle"></i>
-                        Nepodařilo se načíst detail obrázku.
+                        @Localizer["Nepodařilo se načíst detail obrázku."]
                     </div>
                 `);
                     });
@@ -174,7 +176,7 @@
                         location.reload();
                     })
                     .fail(function () {
-                        alert('Nepodařilo se smazat obrázek.');
+                        alert('@Localizer["Nepodařilo se smazat obrázek."]');
                     });
             }
 

@@ -1,16 +1,18 @@
-﻿@model DocumentViewModel
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@model DocumentViewModel
 
 @{
-    ViewData["Title"] = "Přehrávač skladeb";
+    ViewData["Title"] = Localizer["Přehrávač skladeb"];
 }
 
-<h2><i class="bi bi-music-note-list"></i> Přehrávač skladeb</h2>
+<h2><i class="bi bi-music-note-list"></i> @Localizer["Přehrávač skladeb"]</h2>
 
 @if (Model.Documents == null || !Model.Documents.Any())
 {
-    <div class="alert alert-info">Nemáte žádné audio soubory mezi dokumety.
+    <div class="alert alert-info">@Localizer["Nemáte žádné audio soubory mezi dokumety."]
         <a href="@Url.Action("Index")" class="btn btn-primary btn-sm ms-2">
-            Nahrát první zvuk
+            @Localizer["Nahrát první zvuk"]
         </a></div>
 }
 else
@@ -30,7 +32,7 @@ else
                             <audio id="audio_@file.Id" src="@Url.Action("Download", "Document", new { id = file.Id })"
                                    controls
                                    style="width: 100%; margin-top: 8px;">
-                                Váš prohlížeč nepodporuje audio element.
+                                @Localizer["Váš prohlížeč nepodporuje audio element."]
                             </audio>
                         </div>
                     </div>

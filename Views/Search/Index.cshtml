@@ -1,7 +1,7 @@
 ﻿@model AppCollection.Models.SearchResultViewModel
-
+@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer Localizer
 @{
-    ViewData["Title"] = "Křížovkářský slovník";
+    ViewData["Title"] = Localizer["Křížovkářský slovník"];
     // Helper to split results if in "Otázka: ... Odpověď: ..." format
     List<(string Question, string Answer)> qas = new();
     if (!string.IsNullOrWhiteSpace(Model?.Result) && Model.Result.StartsWith("Otázka:"))
@@ -35,7 +35,7 @@
                                    class="form-control"
                                    placeholder="Zadejte hledaný výraz..." aria-label="Search" />
                             <button type="submit" class="btn btn-success px-4">
-                                <span class="d-none d-md-inline">Hledat </span>🔍
+                                <span class="d-none d-md-inline">@Localizer["Hledat"]</span>🔍
                             </button>
                         </div>
                     </form>
@@ -50,11 +50,11 @@
                                     <div class="card mb-3 border-primary">
                                         <div class="card-body">
                                             <div class="mb-2">
-                                                <span class="badge bg-secondary me-2">Otázka</span>
+                                                <span class="badge bg-secondary me-2">@Localizer["Otázka"]</span>
                                                 <span>@qa.Question</span>
                                             </div>
                                             <div>
-                                                <span class="badge bg-info text-dark me-2">Odpověď</span>
+                                                <span class="badge bg-info text-dark me-2">@Localizer["Odpověď"]</span>
                                                 <span class="fw-bold">@qa.Answer</span>
                                             </div>
                                         </div>

@@ -21,14 +21,14 @@ namespace AppCollection.Resources {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Views_Home_Clock_en {
+    internal class Views_Search_Index_en {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Views_Home_Clock_en() {
+        internal Views_Search_Index_en() {
         }
         
         /// <summary>
@@ -38,7 +38,7 @@ namespace AppCollection.Resources {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("AppCollection.Resources.Views.Home.Clock.en", typeof(Views_Home_Clock_en).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("AppCollection.Resources.Views.Search.Index.en", typeof(Views_Search_Index_en).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -60,92 +60,38 @@ namespace AppCollection.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Current Time &amp; Weather.
+        ///   Looks up a localized string similar to Search.
         /// </summary>
-        internal static string Aktuální_čas___počasí {
+        internal static string Hledat {
             get {
-                return ResourceManager.GetString("Aktuální čas & počasí", resourceCulture);
+                return ResourceManager.GetString("Hledat", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Weather information is not available..
+        ///   Looks up a localized string similar to Crosswork finder.
         /// </summary>
-        internal static string Informace_o_počasí_nejsou_dostupné_ {
+        internal static string Křížovkářský_slovník {
             get {
-                return ResourceManager.GetString("Informace o počasí nejsou dostupné.", resourceCulture);
+                return ResourceManager.GetString("Křížovkářský slovník", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to City:.
+        ///   Looks up a localized string similar to Answer.
         /// </summary>
-        internal static string Město_ {
+        internal static string Odpověď {
             get {
-                return ResourceManager.GetString("Město:", resourceCulture);
+                return ResourceManager.GetString("Odpověď", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Weather:.
+        ///   Looks up a localized string similar to Question.
         /// </summary>
-        internal static string Počasí_ {
+        internal static string Otázka {
             get {
-                return ResourceManager.GetString("Počasí:", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to weather icon.
-        /// </summary>
-        internal static string počasí_ikona {
-            get {
-                return ResourceManager.GetString("počasí ikona", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Word clock.
-        /// </summary>
-        internal static string Slovní_hodiny {
-            get {
-                return ResourceManager.GetString("Slovní hodiny", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Temperature:.
-        /// </summary>
-        internal static string Teplota_ {
-            get {
-                return ResourceManager.GetString("Teplota:", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Wind:.
-        /// </summary>
-        internal static string Vítr_ {
-            get {
-                return ResourceManager.GetString("Vítr:", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Humidity:.
-        /// </summary>
-        internal static string Vlhkost_ {
-            get {
-                return ResourceManager.GetString("Vlhkost:", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Show Weather.
-        /// </summary>
-        internal static string Zobrazit_počasí {
-            get {
-                return ResourceManager.GetString("Zobrazit počasí", resourceCulture);
+                return ResourceManager.GetString("Otázka", resourceCulture);
             }
         }
     }

@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+    <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+        <xsd:element name="root" msdata:IsDataSet="true">
+        </xsd:element>
+    </xsd:schema>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>1.3</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+
+    <data name="Odjezdy PID" xml:space="preserve">
+    <value>Departures PID</value>
+  </data>
+    <data name="Čas" xml:space="preserve">
+    <value>Time</value>
+  </data>
+    <data name="Název zastávky:" xml:space="preserve">
+    <value>Stop name:</value>
+  </data>
+    <data name="Zobrazit" xml:space="preserve">
+    <value>Show</value>
+  </data>
+    <data name="Číslo linky" xml:space="preserve">
+    <value>Route number</value>
+  </data>
+    <data name="Směr" xml:space="preserve">
+    <value>Direction</value>
+  </data>
+    <data name="Čas odjezdu (min)" xml:space="preserve">
+    <value>Departure time (min)</value>
+  </data>
+    <data name="Nástupiště" xml:space="preserve">
+    <value>Platform</value>
+  </data>
+  <data name="Bezbariérový" xml:space="preserve">
+    <value>Accessible</value>
+  </data>
+    <data name="Zpoždění" xml:space="preserve">
+    <value>Delay</value>
+  </data>
+    <data name="Bez zpoždění" xml:space="preserve">
+    <value>No delay</value>
+  </data>
+  <data name="Linka" xml:space="preserve">
+    <value>Route</value>
+  </data>
+    <data name="minut" xml:space="preserve">
+    <value>minutes</value>
+  </data>
+    <data name="Nástupiště:" xml:space="preserve">
+    <value>Platform:</value>
+  </data>
+    <data name="Klimatizace" xml:space="preserve">
+    <value>Air-conditioning</value>
+  </data>
+  <data name="Žádné odjezdy k zobrazení" xml:space="preserve">
+    <value>No current departures</value>
+  </data>
+</root>

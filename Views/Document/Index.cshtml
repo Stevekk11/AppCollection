@@ -1,7 +1,8 @@
 ﻿@model AppCollection.Models.DocumentViewModel
 @inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer Localizer
 @{
-    ViewData["Title"] = "Moje Dokumenty";
+    ViewData["Title"] = Localizer["Moje Dokumenty"]
+        ;
 }
 <h2>@ViewData["Title"]</h2>
 
@@ -14,7 +15,7 @@
     <div class="mb-2">
         <input type="file" name="file" class="form-control-file btn btn-info fw-bold" multiple required/>
     </div>
-    <button type="submit" class="btn btn-primary">Nahrát</button>
+    <button type="submit" class="btn btn-primary">@Localizer["Nahrát"]</button>
     @Html.AntiForgeryToken()
 </form>
 
@@ -23,10 +24,10 @@
     <table class="table table-bordered">
         <thead>
         <tr>
-            <th>Název</th>
-            <th>Nahráno dne</th>
-            <th>Velikost (KB)</th>
-            <th>Možnosti</th>
+            <th>@Localizer["Název"]</th>
+            <th>@Localizer["Nahráno dne"]</th>
+            <th>@Localizer["Velikost (KB)"]</th>
+            <th>@Localizer["Možnosti"]</th>
         </tr>
         </thead>
         <tbody>
@@ -62,7 +63,7 @@
                         @if (type == "application/pdf" && item.IsPdfSigned)
                         {
                             <i class="bi bi-check-circle-fill text-success ms-2"
-                               title="PDF je digitálně podepsán"
+                               title="@Localizer["PDF je digitálně podepsán"]"
                                data-bs-toggle="tooltip"
                                style="cursor: pointer;"
                                onclick="showSignatureInfo(@item.Document.Id)"></i>
@@ -73,7 +74,7 @@
                             <button type="button"
                                     class="btn btn-sm btn-outline-secondary ms-2"
                                     onclick="showPreviewModal(@item.Document.Id, '@type', '@item.Document.FileName')">
-                                <i class="bi bi-eye"></i> Náhled
+                                <i class="bi bi-eye"></i> @Localizer["Náhled"]
                             </button>
                         }
                     </div>
@@ -84,11 +85,13 @@
                 <td>@(item.Document.FileSize / 1024)</td>
                 <td>
                     <a asp-action="Download" asp-route-id="@item.Document.Id"
-                       class="btn btn-sm btn-success">Stáhnout</a>
+                       class="btn btn-sm btn-success">@Localizer["Stáhnout"]
+                    </a>
                     <form asp-action="Delete" asp-route-id="@item.Document.Id" method="post" style="display:inline;">
                         @Html.AntiForgeryToken()
                         <button type="submit" class="btn btn-sm btn-danger"
-                                onclick="return confirm('Delete this file?');">Smazat
+                                onclick="return confirm('@Localizer["Smazat tento soubor?"]');">
+                            @Localizer["Smazat"]
                         </button>
                     </form>
                 </td>
@@ -99,7 +102,7 @@
 }
 else
 {
-    <div class="alert alert-info">Nic tu zatím není.</div>
+    <div class="alert alert-info">@Localizer["Nic tu zatím není."]</div>
 }
 
 <!-- Modal for signature info -->
@@ -107,13 +110,13 @@ else
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Informace o digitálním podpisu</h5>
+                <h5 class="modal-title">@Localizer["Informace o digitálním podpisu"]</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body" id="signatureContent">
                 <div class="text-center">
                     <div class="spinner-border" role="status">
-                        <span class="visually-hidden">Načítání...</span>
+                        <span class="visually-hidden">@Localizer["Načítání..."]</span>
                     </div>
                 </div>
             </div>
@@ -121,18 +124,19 @@ else
     </div>
 </div>
 
+
 <!-- Preview Modal -->
 <div class="modal fade" id="previewModal" tabindex="-1" aria-labelledby="previewModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="previewModalLabel">Náhled dokumentu</h5>
+                <h5 class="modal-title" id="previewModalLabel">@Localizer["Náhled dokumentu"]</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body" id="previewModalBody" style="min-height: 60vh;">
                 <div class="text-center">
                     <div class="spinner-border" role="status">
-                        <span class="visually-hidden">Načítání...</span>
+                        <span class="visually-hidden">@Localizer["Načítání..."]</span>
                     </div>
                 </div>
             </div>
@@ -144,12 +148,16 @@ else
 @section Scripts {
 
     <script>
+        /**
+         * Shows the preview window.
+         * */
         function showPreviewModal(documentId, type, fileName) {
             $('#previewModalLabel').text('Náhled: ' + fileName);
             $('#previewModalBody').html(`
         <div class="text-center">
             <div class="spinner-border" role="status">
-                <span class="visually-hidden">Načítání...</span>
+                <span class="visually-hidden">@Localizer["Načítání..."]
+                </span>
             </div>
         </div>
     `);
@@ -163,21 +171,21 @@ else
                 if (type === 'application/pdf') {
                     content = `<iframe src="${previewUrl}" width="100%" height="600px" frameborder="0"></iframe>`;
                 } else if (type.startsWith('image/')) {
-                    content = `<img src="${previewUrl}" alt="Náhled obrázku" class="img-fluid" />`;
+                    content = `<img src="${previewUrl}" alt="@Localizer["Náhled obrázku"]" class="img-fluid" />`;
                 } else if (type.startsWith('text/')) {
                     $.get(previewUrl, function (data) {
                         $('#previewModalBody').html('<pre style="white-space: pre-wrap; word-break: break-all;">' + $('<div>').text(data).html() + '</pre>');
                     }).fail(function () {
-                        $('#previewModalBody').html('<div class="alert alert-danger">Nepodařilo se načíst textový soubor.</div>');
+                        $('#previewModalBody').html('<div class="alert alert-danger">@Localizer["Nepodařilo se načíst textový soubor."]</div>');
                     });
                     return;
                 } else if (
                     type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' ||
                     type === 'application/msword'
                 ) {
-                    content = `<h2>TODO: Word preview</h2>`;
+                    content = `<h2>@Localizer["TODO: Word preview"]</h2>`;
                 } else {
-                    content = `<div class="alert alert-info">Náhled tohoto typu souboru není podporován.</div>`;
+                    content = `<div class="alert alert-info">@Localizer["Náhled tohoto typu souboru není podporován."]</div>`;
                 }
                 $('#previewModalBody').html(content);
             }, 400);
@@ -192,7 +200,8 @@ else
             $('#signatureContent').html(`
         <div class="text-center">
             <div class="spinner-border" role="status">
-                <span class="visually-hidden">Načítání...</span>
+                <span class="visually-hidden">@Localizer["Načítání..."]
+                </span>
             </div>
         </div>
     `);
@@ -200,16 +209,16 @@ else
             $.get('@Url.Action("GetPdfSignatureInfo")', {id: documentId})
                 .done(function (data) {
                     let content = '<div class="alert alert-success">';
-                    content += '<i class="fas fa-check-circle"></i> PDF je digitálně podepsáno';
+                    content += '<i class="fas fa-check-circle"></i> @Localizer["PDF je digitálně podepsán"]';
                     content += '</div>';
 
                     if (data.signerName) {
-                        content += '<p><strong>Podepsáno:</strong> ' + data.signerName + '</p>';
+                        content += '<p><strong>@Localizer["Podepsáno"]:</strong> ' + data.signerName + '</p>';
                     }
                     if (data.signatureDate) {
-                        content += '<p><strong>Datum podpisu:</strong> ' + data.signatureDate + '</p>';
+                        content += '<p><strong>@Localizer["Datum podpisu"]:</strong> ' + data.signatureDate + '</p>';
                     }
-                    content += '<p><strong>Počet podpisů:</strong> ' + data.signatureCount + '</p>';
+                    content += '<p><strong>@Localizer["Počet podpisů"]:</strong> ' + data.signatureCount + '</p>';
 
                     $('#signatureContent').html(content);
                 })
@@ -217,16 +226,10 @@ else
                     $('#signatureContent').html(`
                 <div class="alert alert-danger">
                     <i class="fas fa-exclamation-triangle"></i>
-                    Nepodařilo se načíst informace o podpisu.
+                    @Localizer["Nepodařilo se načíst informace o podpisu."]
                 </div>
-            `);
+                    `);
                 });
-
-
-            // Initialize tooltips
-            $(document).ready(function () {
-                $('[data-bs-toggle="tooltip"]').tooltip();
-            });
         }
     </script>
 }
