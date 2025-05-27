@@ -37,7 +37,6 @@
       <Folder Include="Migrations\" />
       <Folder Include="UserDocs\" />
       <Folder Include="wwwroot\lib\vendor\" />
-      <Folder Include="wwwroot\media\" />
     </ItemGroup>
 
     <ItemGroup>
@@ -72,7 +71,7 @@
         <Generator>ResXFileCodeGenerator</Generator>
         <LastGenOutput>Views.Home.Clock.en.Designer.cs</LastGenOutput>
       </EmbeddedResource>
-      <EmbeddedResource Update="Resources\Views.Home.Transport.en.resx">
+      <EmbeddedResource Update="Resources\Views.Departures.Transport.en.resx">
         <Generator>ResXFileCodeGenerator</Generator>
         <LastGenOutput>Views.Home.Transport.en.Designer.cs</LastGenOutput>
       </EmbeddedResource>
@@ -129,10 +128,10 @@
         <AutoGen>True</AutoGen>
         <DependentUpon>Views.Home.Clock.en.resx</DependentUpon>
       </Compile>
-      <Compile Update="Resources\Views.Home.Transport.en.Designer.cs">
+      <Compile Update="Resources\Views.Departures.Transport.en.Designer.cs">
         <DesignTime>True</DesignTime>
         <AutoGen>True</AutoGen>
-        <DependentUpon>Views.Home.Transport.en.resx</DependentUpon>
+        <DependentUpon>Views.Departures.Transport.en.resx</DependentUpon>
       </Compile>
       <Compile Update="Resources\Views.Search.Index.en.Designer.cs">
         <DesignTime>True</DesignTime>

@@ -18,14 +18,16 @@
 	<s:Boolean x:Key="/Default/ResxEditorPersonal/CheckedGroups/=AppCollection_002FResources_002FControllers_002EHomeController/@EntryIndexRemoved">True</s:Boolean>
 	<s:Boolean x:Key="/Default/ResxEditorPersonal/CheckedGroups/=AppCollection_002FResources_002FViews_002EAccount_002ELogin/@EntryIndexedValue">False</s:Boolean>
 	<s:Boolean x:Key="/Default/ResxEditorPersonal/CheckedGroups/=AppCollection_002FResources_002FViews_002EAccount_002ERegister/@EntryIndexedValue">False</s:Boolean>
+	<s:Boolean x:Key="/Default/ResxEditorPersonal/CheckedGroups/=AppCollection_002FResources_002FViews_002EDepartures_002ETransport/@EntryIndexedValue">False</s:Boolean>
 	<s:Boolean x:Key="/Default/ResxEditorPersonal/CheckedGroups/=AppCollection_002FResources_002FViews_002EDocument_002EGallery/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/ResxEditorPersonal/CheckedGroups/=AppCollection_002FResources_002FViews_002EDocument_002EIndex/@EntryIndexedValue">False</s:Boolean>
 	<s:Boolean x:Key="/Default/ResxEditorPersonal/CheckedGroups/=AppCollection_002FResources_002FViews_002EDocument_002EMusic/@EntryIndexedValue">False</s:Boolean>
-	<s:Boolean x:Key="/Default/ResxEditorPersonal/CheckedGroups/=AppCollection_002FResources_002FViews_002EEvents_002ECalendar/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/ResxEditorPersonal/CheckedGroups/=AppCollection_002FResources_002FViews_002EEvents_002ECalendar/@EntryIndexedValue">False</s:Boolean>
 	<s:Boolean x:Key="/Default/ResxEditorPersonal/CheckedGroups/=AppCollection_002FResources_002FViews_002EHome_002EClock/@EntryIndexedValue">False</s:Boolean>
-	<s:Boolean x:Key="/Default/ResxEditorPersonal/CheckedGroups/=AppCollection_002FResources_002FViews_002EHome_002EIndex/@EntryIndexedValue">False</s:Boolean>
+	<s:Boolean x:Key="/Default/ResxEditorPersonal/CheckedGroups/=AppCollection_002FResources_002FViews_002EHome_002EIndex/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/ResxEditorPersonal/CheckedGroups/=AppCollection_002FResources_002FViews_002EHome_002EPrivacy/@EntryIndexedValue">False</s:Boolean>
 	<s:Boolean x:Key="/Default/ResxEditorPersonal/CheckedGroups/=AppCollection_002FResources_002FViews_002EHome_002ETransport/@EntryIndexedValue">False</s:Boolean>
+	<s:Boolean x:Key="/Default/ResxEditorPersonal/CheckedGroups/=AppCollection_002FResources_002FViews_002EHome_002ETransport/@EntryIndexRemoved">True</s:Boolean>
 	<s:Boolean x:Key="/Default/ResxEditorPersonal/CheckedGroups/=AppCollection_002FResources_002FViews_002ESearch_002EIndex/@EntryIndexedValue">False</s:Boolean>
 	<s:Boolean x:Key="/Default/ResxEditorPersonal/CheckedGroups/=AppCollection_002FResources_002FViews_002EShared_002E_005FLayout/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/ResxEditorPersonal/Initialized/@EntryValue">True</s:Boolean></wpf:ResourceDictionary>

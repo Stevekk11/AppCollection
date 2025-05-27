@@ -87,6 +87,15 @@ namespace AppCollection.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ribbon color.
+        /// </summary>
+        internal static string Barva_lišty {
+            get {
+                return ResourceManager.GetString("Barva lišty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Safe document storage.
         /// </summary>
         internal static string Bezpečné_ukládání_dat {

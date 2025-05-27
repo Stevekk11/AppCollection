@@ -12,7 +12,7 @@
 <div class="container py-4 ">
     <h1 class="mb-4 text-decoration-underline">@Localizer["Přehled"]</h1>
 
-    @if (isAuthenticated)
+     @if (isAuthenticated)
     {
         <div class="card mb-3">
             <div class="card-body">
@@ -21,8 +21,33 @@
             </div>
         </div>
 
+        <!-- FULL WIDTH: Základní informace -->
         <div class="row">
-            <div class="col-md-4">
+            <div class="col-12">
+                <div class="card text-bg-secondary text-dark mb-3">
+                    <div class="card-header">@Localizer["Základní informace"]</div>
+                    <div class="card-body">
+                        <div class="text-dark">
+                            <h5>@Localizer["O projektu"]</h5>
+                            <p>@Localizer["Co tato webová aplikace umí:"]</p>
+                            <ul>
+                                <li>@Localizer["Přihlášení a správa uživatelů"]</li>
+                                <li>@Localizer["Lokalizace do více jazyků"]</li>
+                                <li>@Localizer["Responzivní Bootstrap rozhraní"]</li>
+                                <li>@Localizer["Bezpečné ukládání dat"]</li>
+                                <li>@Localizer["Vyhledávání odjezdů PID"]</li>
+                                <li>@Localizer["Bezpečné ukládání dat"]</li>
+                                <li>@Localizer["A další ..."]😀</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- NEXT ROW: Search history/profile and Ribbon color selector side by side -->
+        <div class="row">
+            <div class="col-md-6">
                 <div class="card text-bg-primary mb-3">
                     <div class="card-header">@Localizer["Info o profilu"]</div>
                     <div class="card-body">
@@ -57,26 +82,39 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-8">
-                <div class="card text-bg-secondary text-dark mb-3">
-                    <div class="card-header">@Localizer["Základní informace"]</div>
-                    <div class="card-body">
-                        <div class="text-dark">
-                            <h5>@Localizer["O projektu"]</h5>
-                            <p>@Localizer["Co tato webová aplikace umí:"]</p>
-                            <ul>
-                                <li>@Localizer["Přihlášení a správa uživatelů"]</li>
-                                <li>@Localizer["Lokalizace do více jazyků"]</li>
-                                <li>@Localizer["Responzivní Bootstrap rozhraní"]</li>
-                                <li>@Localizer["Bezpečné ukládání dat"]</li>
-                                <li>@Localizer["Vyhledávání odjezdů PID"]</li>
-                                <li>@Localizer["Bezpečné ukládání dat"]</li>
-                                <li>@Localizer["A další ..."]😀</li>
-                            </ul>
+            <div class="col-md-6">
+                <div class="card shadow-sm mb-3">
+                    <div class="card-body py-2 px-3">
+                        <div class="mb-2 fw-bold">@Localizer["Barva lišty"]</div>
+                        <div id="ribbonColorRadios" class="btn-group" role="group" aria-label="Ribbon color selector">
+                            <input type="radio" class="btn-check" name="ribbonColor" id="colorPrimary" autocomplete="off" checked>
+                            <label class="btn btn-primary btn-sm" for="colorPrimary"></label>
+
+                            <input type="radio" class="btn-check" name="ribbonColor" id="colorSecondary" autocomplete="off">
+                            <label class="btn btn-secondary btn-sm" for="colorSecondary"></label>
+
+                            <input type="radio" class="btn-check" name="ribbonColor" id="colorSuccess" autocomplete="off">
+                            <label class="btn btn-success btn-sm" for="colorSuccess"></label>
+
+                            <input type="radio" class="btn-check" name="ribbonColor" id="colorDanger" autocomplete="off">
+                            <label class="btn btn-danger btn-sm" for="colorDanger"></label>
+
+                            <input type="radio" class="btn-check" name="ribbonColor" id="colorWarning" autocomplete="off">
+                            <label class="btn btn-warning btn-sm" for="colorWarning"></label>
+
+                            <input type="radio" class="btn-check" name="ribbonColor" id="colorInfo" autocomplete="off">
+                            <label class="btn btn-info btn-sm" for="colorInfo"></label>
+
+                            <input type="radio" class="btn-check" name="ribbonColor" id="colorDark" autocomplete="off">
+                            <label class="btn btn-dark btn-sm" for="colorDark"></label>
+
+                            <input type="radio" class="btn-check" name="ribbonColor" id="colorWhite" autocomplete="off">
+                            <label class="btn btn-outline-light btn-sm" for="colorWhite"></label>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     }
+    <script src="js/navbar.js"></script>
 </div>

@@ -78,4 +78,7 @@
     <data name="Zatím žádné vyhledávání" xml:space="preserve">
         <value>No searches yet</value>
     </data>
+    <data name="Barva lišty" xml:space="preserve">
+        <value>Ribbon color</value>
+    </data>
 </root>

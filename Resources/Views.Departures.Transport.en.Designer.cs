@@ -21,14 +21,14 @@ namespace AppCollection.Resources {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Views_Home_Transport_en {
+    internal class Views_Departures_Transport_en {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Views_Home_Transport_en() {
+        internal Views_Departures_Transport_en() {
         }
         
         /// <summary>
@@ -38,7 +38,7 @@ namespace AppCollection.Resources {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("AppCollection.Resources.Views.Home.Transport.en", typeof(Views_Home_Transport_en).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("AppCollection.Resources.Views.Departures.Transport.en", typeof(Views_Departures_Transport_en).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
