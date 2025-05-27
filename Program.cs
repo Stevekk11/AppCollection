@@ -2,15 +2,14 @@ using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using AppCollection.Models;
 using AppCollection.Services;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Localization;
+using Microsoft.Data.SqlClient;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllersWithViews(options =>
-{
-    options.Filters.Add(new AuthorizeFilter());
-
-}).AddViewLocalization().AddDataAnnotationsLocalization();
+builder.Services.AddControllersWithViews(options => { options.Filters.Add(new AuthorizeFilter()); })
+    .AddViewLocalization().AddDataAnnotationsLocalization();
 // Add localization services
 builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
 
@@ -26,7 +25,7 @@ builder.Services.AddAuthentication("Cookies")
 builder.Services.AddAuthorization();
 builder.Services.AddControllersWithViews();
 builder.Services.AddHttpClient();
-
+builder.Services.AddHostedService<CleanupService>();
 builder.Services.AddSingleton<WeatherService>();
 builder.Services.AddScoped<SearchService>(p =>
 {
@@ -49,7 +48,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 var app = builder.Build();
 // Set supported cultures
-var supportedCultures = new[] {"en", "cs"};
+var supportedCultures = new[] { "en", "cs" };
 var localizationOptions = new RequestLocalizationOptions()
     .SetDefaultCulture("cs")
     .AddSupportedCultures(supportedCultures)
@@ -58,12 +57,28 @@ var localizationOptions = new RequestLocalizationOptions()
 localizationOptions.RequestCultureProviders.Insert(0, new QueryStringRequestCultureProvider());
 app.UseRequestLocalization(localizationOptions);
 // Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
+
+app.UseExceptionHandler(errorApp =>
 {
-    app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-    app.UseHsts();
-}
+    errorApp.Run(async context =>
+    {
+        var errorFeature = context.Features.Get<IExceptionHandlerFeature>();
+        var exception = errorFeature?.Error;
+
+        if (exception is SqlException || exception is InvalidOperationException)
+        {
+            context.Response.Redirect("/Home/DatabaseError");
+        }
+        else
+        {
+            context.Response.Redirect("/Home/Error");
+        }
+    });
+});
+
+// The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+app.UseHsts();
+
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();

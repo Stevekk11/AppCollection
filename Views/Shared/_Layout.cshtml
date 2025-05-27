@@ -3,6 +3,7 @@
 @inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer Localizer
 @{
     var culture = CultureInfo.CurrentUICulture.Name;
+    var dbUnavailable = ViewBag.DatabaseUnavailable as bool? ?? false;
 }
 <html lang="en">
 <head>
@@ -148,4 +149,26 @@
         </span>
     </div>
 </footer>
+@if (dbUnavailable)
+{
+    <script>
+        window.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('button, input[type="submit"], a.btn').forEach(function(el) {
+                el.disabled = true;
+                el.classList.add('disabled');
+                el.title = "Database unavailable";
+            });
+            document.querySelectorAll('a[href]').forEach(function(link) {
+                // Prevent clicks
+                link.addEventListener('click', function(event) {
+                    event.preventDefault();
+                });
+                // Make link look and behave disabled
+                link.classList.add('disabled');
+                link.setAttribute('aria-disabled', 'true');
+                link.title = "Database unavailable";
+            });
+        });
+    </script>
+}
 </html>

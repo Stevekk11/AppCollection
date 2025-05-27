@@ -39,8 +39,14 @@ public class HomeController : Controller
         };
         return View(viewModel);
     }
+    public IActionResult DatabaseError()
+    {
+        ViewBag.DatabaseUnavailable = true;
+        return View("NoDatabase"); // Show your custom view
+    }
 
     public IActionResult Privacy() => View();
+    public IActionResult Error() => View();
 
     public IActionResult Index()
     {
