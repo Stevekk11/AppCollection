@@ -22,10 +22,10 @@ public class DeparturesController : Controller
     /// </summary>
     /// <param name="stopName">Name of the stop to show departures for</param>
     /// <returns>View with departure information</returns>
-    public IActionResult Index(string stopName = "")
+    public IActionResult Transport(string stopName = "")
     {
         var model = BuildViewModel(stopName);
-        return View("~/Views/Home/Transport.cshtml", model);
+        return View(model);
     }
 
     /// <summary>
@@ -44,7 +44,7 @@ public class DeparturesController : Controller
         };
         _context.Add(hist);
         _context.SaveChangesAsync();
-        return RedirectToAction("Index", new { stopName, actionType = "search" });
+        return RedirectToAction("Transport", new { stopName, actionType = "search" });
     }
 
     /// <summary>

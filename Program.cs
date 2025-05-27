@@ -12,7 +12,7 @@ builder.Services.AddControllersWithViews(options => { options.Filters.Add(new Au
     .AddViewLocalization().AddDataAnnotationsLocalization();
 // Add localization services
 builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
-
+//Auth
 builder.Services.AddAuthentication("Cookies")
     .AddCookie("Cookies", options =>
     {
@@ -64,7 +64,7 @@ app.UseExceptionHandler(errorApp =>
     {
         var errorFeature = context.Features.Get<IExceptionHandlerFeature>();
         var exception = errorFeature?.Error;
-
+        //exception handling for db err
         if (exception is SqlException || exception is InvalidOperationException)
         {
             context.Response.Redirect("/Home/DatabaseError");
@@ -78,8 +78,6 @@ app.UseExceptionHandler(errorApp =>
 
 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
 app.UseHsts();
-
-
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();

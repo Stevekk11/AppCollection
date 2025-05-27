@@ -35,7 +35,7 @@ public class AccountControllerTests
         var urlHelperMock = new Mock<IUrlHelper>();
         urlHelperMock
             .Setup(x => x.Action(It.IsAny<UrlActionContext>()))
-            .Returns("/"); // or return a value suitable for your test
+            .Returns("/");
         _controller.Url = urlHelperMock.Object;
 
     }
