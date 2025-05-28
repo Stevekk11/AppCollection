@@ -5,7 +5,7 @@
 
 1. Naklonujte repozitář - git clone či v IDE.
 2. dotnet restore
-3. dotnet ef database update - connection string v appsettings.json a musí být nainstalováno Entity Framework
+3. dotnet ef database update - connection string v appsettings.json a musí být nainstalováno Entity Framework pokud nefunguje použít skript create db.
 4. databázi pojmenujte ProgramDataMVC.
 5. Spustit na IIS nebo https.
 
