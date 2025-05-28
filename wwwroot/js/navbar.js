@@ -1,43 +1,43 @@
-﻿// Map radio button IDs to Bootstrap navbar color classes
-
-document.addEventListener("DOMContentLoaded", function() {
+﻿document.addEventListener("DOMContentLoaded", function() {
     const colorMap = {
-        colorPrimary: "bg-primary navbar-primary",
-        colorSecondary: "bg-secondary navbar-secondary",
-        colorSuccess: "bg-success navbar-success",
-        colorDanger: "bg-danger navbar-danger",
-        colorWarning: "bg-warning navbar-warning",
-        colorInfo: "bg-info navbar-info",
+        colorPrimary: "bg-primary navbar-dark",
+        colorSecondary: "bg-secondary navbar-dark",
+        colorSuccess: "bg-success navbar-dark",
+        colorDanger: "bg-danger navbar-dark",
+        colorWarning: "bg-warning navbar-dark",
+        colorInfo: "bg-info navbar-dark",
         colorDark: "bg-dark navbar-dark",
-        colorWhite: "bg-white",
+        colorWhite: "bg-white navbar-light",
     };
 
-// Find the navbar
     const navbar = document.getElementById('mainNavbar');
+    const ribbonColorRadios = document.getElementById('ribbonColorRadios');
 
-// Listen for radio button changes
-    document.getElementById('ribbonColorRadios').addEventListener('change', function (e) {
-        if (e.target.name === "ribbonColor") {
-            // Remove all bg-* classes
-            navbar.className = navbar.className.replace(/\bbg-\w+\b/g, '');
-            // Add the selected color class
-            navbar.classList.add(...colorMap[e.target.id].split(' '));
-        }
-    });
-
+    // Apply saved color on page load
     const savedColor = localStorage.getItem('navbarRibbonColor');
-    if (savedColor && colorMap[savedColor]) {
+    if (navbar && savedColor && colorMap[savedColor]) {
+        // Remove old classes
         navbar.className = navbar.className.replace(/\bbg-\w+\b/g, '');
+        navbar.className = navbar.className.replace(/\bnavbar-(light|dark)\b/g, '');
         navbar.classList.add(...colorMap[savedColor].split(' '));
-        document.getElementById(savedColor).checked = true;
+
+        // Only check the radio if it exists on this view
+        if (ribbonColorRadios && document.getElementById(savedColor)) {
+            document.getElementById(savedColor).checked = true;
+        }
     }
 
-    document.getElementById('ribbonColorRadios').addEventListener('change', function(e) {
-        if (e.target.name === "ribbonColor") {
-            navbar.className = navbar.className.replace(/\bbg-\w+\b/g, '');
-            navbar.classList.add(...colorMap[e.target.id].split(' '));
-            localStorage.setItem('navbarRibbonColor', e.target.id);
-        }
-    });
-})
-
+    // Only add event listener if the color selector exists on this view
+    if (ribbonColorRadios) {
+        ribbonColorRadios.addEventListener('change', function(e) {
+            if (e.target.name === "ribbonColor") {
+                // Remove old classes
+                navbar.className = navbar.className.replace(/\bbg-\w+\b/g, '');
+                navbar.className = navbar.className.replace(/\bnavbar-(light|dark)\b/g, '');
+                // Add new classes
+                navbar.classList.add(...colorMap[e.target.id].split(' '));
+                localStorage.setItem('navbarRibbonColor', e.target.id);
+            }
+        });
+    }
+});

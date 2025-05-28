@@ -13,7 +13,7 @@
 @if (Model.Documents == null || !Model.Documents.Any())
 {
     <div class="alert alert-info">@Localizer["Nemáte žádné audio soubory mezi dokumety."]
-        <a href="@Url.Action("Index")" class="btn btn-primary btn-sm ms-2" asp-route-culture="@culture">
+        <a href="@Url.Action("Index", new { culture = CultureInfo.CurrentUICulture.Name })" class="btn btn-primary btn-sm ms-2">
             @Localizer["Nahrát první zvuk"]
         </a></div>
 }
