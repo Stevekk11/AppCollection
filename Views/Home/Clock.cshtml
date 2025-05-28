@@ -32,66 +32,74 @@
     var weather = Model.Weather;
 }
 <h1 class="display-4 text-center">@Localizer["Aktuální čas & počasí"] ⏱️</h1>
-<div class="d-flex justify-content-center align-items-start flex-row">
-    <div class="clock-grid me-5">
-        @for (int row = 0; row < rows; row++)
-        {
-            for (int col = 0; col < cols; col++)
-            {
-                var word = grid[row, col];
-                var context = gridContexts[row, col];
-                var isActive = activeWords.Any(w => string.Equals(w.Text, word, StringComparison.OrdinalIgnoreCase) && w.Context == context);
-                if (isActive)
+<div class="container">
+    <div class="row justify-content-center align-items-start g-4 flex-wrap">
+        <!-- Clock Grid -->
+        <div class="col-12 col-md-7 col-lg-6">
+            <div class="clock-grid d-flex flex-wrap justify-content-center">
+                @for (int row = 0; row < rows; row++)
                 {
-                    var colorIndex = activeWordsList.FindIndex(w => string.Equals(w.Text, word, StringComparison.OrdinalIgnoreCase) && w.Context == context) % colors.Length;
-                    <span class="clock-letter d-flex justify-content-center text-align-center active"
-                          style="color:@colors[colorIndex]">@word</span>
+                    for (int col = 0; col < cols; col++)
+                    {
+                        var word = grid[row, col];
+                        var context = gridContexts[row, col];
+                        var isActive = activeWords.Any(w => string.Equals(w.Text, word, StringComparison.OrdinalIgnoreCase) && w.Context == context);
+                        if (isActive)
+                        {
+                            var colorIndex = activeWordsList.FindIndex(w => string.Equals(w.Text, word, StringComparison.OrdinalIgnoreCase) && w.Context == context) % colors.Length;
+                            <span class="clock-letter active m-1"
+                                  style="color:@colors[colorIndex]; min-width: 70px; text-align: center;">@word</span>
+                        }
+                        else
+                        {
+                            <span class="clock-letter inactive m-1"
+                                  style="min-width: 70px; text-align: center;">@word</span>
+                        }
+                    }
+                }
+            </div>
+        </div>
+        <!-- Weather Box -->
+        <div class="col-12 col-md-5 col-lg-4">
+            <div class="weather-box bg-white p-3 rounded border shadow-sm w-100">
+                <div class="text-center mb-2">
+                    <strong>@Localizer["Počasí:"]</strong>
+                </div>
+                @if (weather != null)
+                {
+                    <div class="text-center">
+                        <img src="@weather.IconUrl" alt="@Localizer["počasí ikona"]" style="width:50px; max-width:100%;"/>
+                    </div>
+                    <div class="mt-2">
+                        <span>@Localizer["Teplota:"]: <strong>@weather.TemperatureCelsius</strong>°C</span><br/>
+                        @if (weather.WindSpeedKmh.HasValue)
+                        {
+                            <span>@Localizer["Vítr:"]: <strong>@weather.WindSpeedKmh.Value</strong> km/h</span>
+                            <br/>
+                        }
+                        @if (weather.HumidityPercent.HasValue)
+                        {
+                            <span>@Localizer["Vlhkost:"]: <strong>@weather.HumidityPercent.Value</strong>%</span>
+                        }
+                    </div>
+                    <div class="mt-2 text-muted" style="font-size:0.85em;">
+                        <span>@weather.Date.ToString("d.M.yyyy H:mm")</span>
+                    </div>
                 }
                 else
                 {
-                    <span class="clock-letter d-flex justify-content-center text-align-center inactive">@word</span>
+                    <span>@Localizer["Informace o počasí nejsou dostupné."]😵</span>
                 }
-            }
-        }
-    </div>
-    <div class="weather-box bg-white p-3 rounded border shadow-sm" style="width: 10vw">
-        <div class="text-center mb-2">
-            <strong>@Localizer["Počasí:"]</strong>
+                <div class="weather-city-form mt-3">
+                    <form asp-action="Clock" method="get" class="d-flex flex-wrap align-items-center gap-2">
+                        <label for="city" class="form-label mb-0">@Localizer["Město:"]</label>
+                        <input type="text" id="city" name="city"
+                               value="@(Context.Request.Query["city"].FirstOrDefault() ?? "Praha")" class="form-control flex-grow-1"
+                               style="max-width: 160px;"/>
+                        <button type="submit" class="btn btn-primary flex-shrink-0">@Localizer["Zobrazit počasí"]</button>
+                    </form>
+                </div>
+            </div>
         </div>
-        @if (weather != null)
-        {
-            <div class="text-center">
-                <img src="@weather.IconUrl" alt="@Localizer["počasí ikona"]" style="width:25%"/>
-            </div>
-            <div class="mt-2">
-                <span>@Localizer["Teplota:"]: <strong>@weather.TemperatureCelsius</strong>°C</span><br/>
-                @if (weather.WindSpeedKmh.HasValue)
-                {
-                    <span>@Localizer["Vítr:"]: <strong>@weather.WindSpeedKmh.Value</strong> km/h</span>
-                    <br/>
-                }
-                @if (weather.HumidityPercent.HasValue)
-                {
-                    <span>@Localizer["Vlhkost:"]: <strong>@weather.HumidityPercent.Value</strong>%</span>
-                }
-            </div>
-            <div class="mt-2 text-muted" style="font-size:0.85em;">
-                <span>@weather.Date.ToString("d.M.yyyy H:mm")</span>
-            </div>
-        }
-        else
-        {
-            <span>@Localizer["Informace o počasí nejsou dostupné."]😵</span>
-        }
-    </div>
-    <div class="weather-city-form mb-3" style="padding: 1em">
-        <form asp-action="Clock" method="get" class="d-flex flex-row align-items-center gap-2">
-            <label for="city" class="form-label mb-0">@Localizer["Město:"]</label>
-            <input type="text" id="city" name="city"
-                   value="@(Context.Request.Query["city"].FirstOrDefault() ?? "Praha")" class="form-control"
-                   style="width: 140px;"/>
-            <button type="submit" class="btn btn-primary">@Localizer["Zobrazit počasí"]</button>
-        </form>
     </div>
 </div>
-<h2 id="alrm" style="color: indianred" class="display-5 text-center"></h2>

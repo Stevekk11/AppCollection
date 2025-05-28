@@ -85,8 +85,10 @@
                     </li>
                     <li class="nav-item d-flex align-items-center">
                         <a class="nav-link text-dark d-flex align-items-center" asp-controller="Document"
-                           asp-action="Music" asp-route-culture="@culture"><i class="bi bi-music-note-list"></i>
-                           @Localizer["Přehrávač skladeb"]</a>
+                           asp-action="Music" asp-route-culture="@culture">
+                            <i class="bi bi-music-note-list me-2"></i>
+                            @Localizer["Přehrávač skladeb"]
+                        </a>
                     </li>
                     <li class="nav-item d-flex align-items-center">
                         <a class="nav-link text-dark d-flex align-items-center" asp-controller="Departures"
