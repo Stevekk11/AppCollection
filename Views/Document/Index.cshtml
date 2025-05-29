@@ -169,8 +169,11 @@ else
 
             setTimeout(function () {
                 let content = '';
-                if (type === 'application/pdf') {
-                    content = `<iframe src="${previewUrl}" width="100%" height="600px" frameborder="0"></iframe>`;
+                if (type === 'application/pdf' ||
+                    type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' ||
+                    type === 'application/msword') {
+                    // Both PDF and Word documents will be displayed using the PDF viewer
+                    content = `<iframe src="${previewUrl}" width="100%" height="600px"></iframe>`;
                 } else if (type.startsWith('image/')) {
                     content = `<img src="${previewUrl}" alt="@Localizer["Náhled obrázku"]" class="img-fluid" />`;
                 } else if (type.startsWith('text/')) {
@@ -180,11 +183,6 @@ else
                         $('#previewModalBody').html('<div class="alert alert-danger">@Localizer["Nepodařilo se načíst textový soubor."]</div>');
                     });
                     return;
-                } else if (
-                    type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' ||
-                    type === 'application/msword'
-                ) {
-                    content = `<h2>@Localizer["TODO: Word preview"]</h2>`;
                 } else {
                     content = `<div class="alert alert-info">@Localizer["Náhled tohoto typu souboru není podporován."]</div>`;
                 }
