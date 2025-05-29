@@ -5,6 +5,10 @@ using Microsoft.Extensions.Configuration;
 using AppCollection.Models;
 using AppCollection.Services;
 using System.Drawing;
+using Syncfusion.DocIO;
+using Syncfusion.DocIO.DLS;
+using Syncfusion.DocIORenderer;
+using Syncfusion.Pdf;
 
 namespace AppCollection.Controllers;
 
@@ -241,7 +245,34 @@ public class DocumentController : Controller
         if (!System.IO.File.Exists(absolutePath))
             return NotFound();
 
-        // Inline disposition for browser preview
+        // Handle Word documents
+        if (mimeType == "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ||
+            mimeType == "application/msword")
+        {
+            using (Stream fileStream = new FileStream(absolutePath, FileMode.Open, FileAccess.Read))
+            {
+                // Load the Word document
+                using (WordDocument wordDocument = new WordDocument(fileStream, FormatType.Docx))
+                {
+                    // Create a new DocIORenderer instance
+                    using (DocIORenderer renderer = new DocIORenderer())
+                    {
+                        // Convert Word document to PDF
+                        using (PdfDocument pdfDocument = renderer.ConvertToPDF(wordDocument))
+                        {
+                            MemoryStream outputStream = new MemoryStream();
+                            pdfDocument.Save(outputStream);
+                            outputStream.Position = 0;
+
+                            // Return PDF for preview
+                            return File(outputStream.ToArray(), "application/pdf");
+                        }
+                    }
+                }
+            }
+        }
+
+        // For all other file types, use the existing preview logic
         return PhysicalFile(absolutePath, mimeType, enableRangeProcessing: true);
     }
 

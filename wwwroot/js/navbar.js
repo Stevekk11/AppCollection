@@ -13,21 +13,18 @@
     const navbar = document.getElementById('mainNavbar');
     const ribbonColorRadios = document.getElementById('ribbonColorRadios');
 
-    // Apply saved color on page load
+
     const savedColor = localStorage.getItem('navbarRibbonColor');
     if (navbar && savedColor && colorMap[savedColor]) {
-        // Remove old classes
         navbar.className = navbar.className.replace(/\bbg-\w+\b/g, '');
         navbar.className = navbar.className.replace(/\bnavbar-(light|dark)\b/g, '');
         navbar.classList.add(...colorMap[savedColor].split(' '));
 
-        // Only check the radio if it exists on this view
         if (ribbonColorRadios && document.getElementById(savedColor)) {
             document.getElementById(savedColor).checked = true;
         }
     }
 
-    // Only add event listener if the color selector exists on this view
     if (ribbonColorRadios) {
         ribbonColorRadios.addEventListener('change', function(e) {
             if (e.target.name === "ribbonColor") {

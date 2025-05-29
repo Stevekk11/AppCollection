@@ -5,9 +5,11 @@ using AppCollection.Services;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.Data.SqlClient;
+using Syncfusion.Licensing;
 
 var builder = WebApplication.CreateBuilder(args);
-
+SyncfusionLicenseProvider.RegisterLicense("Ngo9BigBOggjHTQxAR8/V1NNaF1cWWhPYVZpR2Nbek5xdF9HaVZQRWYuP1ZhSXxWdkBhUH5ecX1UR2dYUEN9XUs=");
+Console.WriteLine(SyncfusionLicenseProvider.ValidateLicense(Platform.ASPNETCore));
 builder.Services.AddControllersWithViews(options => { options.Filters.Add(new AuthorizeFilter()); })
     .AddViewLocalization().AddDataAnnotationsLocalization();
 // Add localization services
