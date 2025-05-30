@@ -20,6 +20,7 @@
 &lt;/SessionState&gt;</s:String>
 	<s:Boolean x:Key="/Default/ResxEditorPersonal/CheckedGroups/=AppCollection_002FResources_002FControllers_002EHomeController/@EntryIndexedValue">False</s:Boolean>
 	<s:Boolean x:Key="/Default/ResxEditorPersonal/CheckedGroups/=AppCollection_002FResources_002FControllers_002EHomeController/@EntryIndexRemoved">True</s:Boolean>
+	<s:Boolean x:Key="/Default/ResxEditorPersonal/CheckedGroups/=AppCollection_002FResources_002FServices_002ESearchService/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/ResxEditorPersonal/CheckedGroups/=AppCollection_002FResources_002FViews_002EAccount_002ELogin/@EntryIndexedValue">False</s:Boolean>
 	<s:Boolean x:Key="/Default/ResxEditorPersonal/CheckedGroups/=AppCollection_002FResources_002FViews_002EAccount_002ERegister/@EntryIndexedValue">False</s:Boolean>
 	<s:Boolean x:Key="/Default/ResxEditorPersonal/CheckedGroups/=AppCollection_002FResources_002FViews_002EDepartures_002ETransport/@EntryIndexedValue">False</s:Boolean>

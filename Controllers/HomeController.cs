@@ -42,7 +42,7 @@ public class HomeController : Controller
     public IActionResult DatabaseError()
     {
         ViewBag.DatabaseUnavailable = true;
-        return View("NoDatabase"); // Show your custom view
+        return View("NoDatabase");
     }
 
     public IActionResult Privacy() => View();
@@ -50,7 +50,7 @@ public class HomeController : Controller
 
     public IActionResult Index()
     {
-        // Get the 10 most recent search history records (you can adjust as needed)
+        // Get the 10 most recent search history records
         var recentSearches = _context.Set<SearchHistory>()
             .OrderByDescending(sh => sh.Date)
             .Take(10)

@@ -76,9 +76,8 @@ public class AccountController : Controller
                 // Set authentication cookie
                 var claims = new List<Claim>
                 {
-                    new Claim(ClaimTypes.Name, user.Username),
-                    new Claim("Usertype", user.Usertype.ToString())
-                    // Add other claims as needed
+                    new(ClaimTypes.Name, user.Username),
+                    new("Usertype", user.Usertype.ToString())
                 };
                 var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                 var authProperties = new AuthenticationProperties
