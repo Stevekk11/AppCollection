@@ -162,11 +162,11 @@
                 el.title = "Database unavailable";
             });
             document.querySelectorAll('a[href]').forEach(function(link) {
-                // Prevent clicks
+                // Prevent clicks on the links
                 link.addEventListener('click', function(event) {
                     event.preventDefault();
                 });
-                // Make link look and behave disabled
+                // Make links look and behave disabled
                 link.classList.add('disabled');
                 link.setAttribute('aria-disabled', 'true');
                 link.title = "Database unavailable";

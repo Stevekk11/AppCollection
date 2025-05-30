@@ -39,6 +39,11 @@ public class SearchController : Controller
         return View(model);
     }
 
+    /// <summary>
+    /// Retrieves the current user's unique identifier based on the logged-in user's information.
+    /// </summary>
+    /// <returns>An integer representing the unique identifier of the current user.</returns>
+    /// <exception cref="Exception">Thrown when no user is found matching the current login credentials.</exception>
     private int GetCurrentUserId()
     {
         var username = User.Identity.Name;

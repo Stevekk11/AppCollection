@@ -3,6 +3,14 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AppCollection.Models;
 
+/// <summary>
+/// Represents an event within the application system.
+/// </summary>
+/// <remarks>
+/// The Event class is used to store details of a scheduled event,
+/// including its name, start date, end date, and associated user.
+/// It includes data annotations for restrictions and database mappings.
+/// </remarks>
 public class Event
 {
     [Key]

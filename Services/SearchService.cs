@@ -1,38 +1,41 @@
-﻿using System.Net.Http;
-using System.Threading.Tasks;
-using HtmlAgilityPack;
+﻿using HtmlAgilityPack;
 using System.Web;
 using System.Text;
 using AppCollection.Models;
+using Microsoft.Extensions.Localization;
 
 
 namespace AppCollection.Services;
 
 /// <summary>
 /// Service responsible for performing web searches and extracting structured data from the results.
-/// Specifically designed to work with lustit.cz website for word searches.
+/// Specifically designed to work with the lustit.cz website for word searches.
 /// </summary>
 
 public class SearchService
 {
     private readonly IHttpClientFactory _httpClientFactory;
     private ApplicationDbContext _context;
+    private readonly IStringLocalizer<SearchService> _loc;
 
     /// <summary>
     /// Initializes a new instance of the SearchService class.
     /// </summary>
     /// <param name="httpClientFactory">The HTTP client factory used for creating HTTP clients.</param>
     /// <param name="context"> database</param>
-    public SearchService(IHttpClientFactory httpClientFactory, ApplicationDbContext context)
+    /// <param name="loc">localizer</param>
+    public SearchService(IHttpClientFactory httpClientFactory, ApplicationDbContext context, IStringLocalizer<SearchService> loc)
     {
         _httpClientFactory = httpClientFactory;
         _context = context;
+        _loc = loc;
     }
 
     /// <summary>
     /// Performs an asynchronous search query on a website for crosswords API.
     /// </summary>
     /// <param name="query">The search query string to look up.</param>
+    /// <param name="loginId">The unique identifier of the user performing the search.</param>
     /// <returns>A string containing the formatted search results or an error message if the search fails.</returns>
     public async Task<string?> SearchAsync(string query, int loginId)
     {
@@ -89,12 +92,12 @@ public class SearchService
             }
 
             if (sb.Length == 0)
-                return "Chyba načítání výsledků - špatné slovo";
+                return _loc["Chyba načítání výsledků - špatné slovo"] ;
             return sb.ToString();
         }
         catch (Exception e)
         {
-            return "Chyba HTML extrakce, zkuste to znova, " + e.Message;
+            return $"{_loc["Chyba HTML extrakce, zkuste to znova, "]} {e.Message}";
         }
     }
 }

@@ -47,12 +47,12 @@
                         if (isActive)
                         {
                             var colorIndex = activeWordsList.FindIndex(w => string.Equals(w.Text, word, StringComparison.OrdinalIgnoreCase) && w.Context == context) % colors.Length;
-                            <span class="clock-letter active m-1"
+                            <span class="clock-letter active m-1 bg-light rounded"
                                   style="color:@colors[colorIndex]; min-width: 70px; text-align: center;">@word</span>
                         }
                         else
                         {
-                            <span class="clock-letter inactive m-1"
+                            <span class="clock-letter inactive m-1 bg-light rounded"
                                   style="min-width: 70px; text-align: center;">@word</span>
                         }
                     }

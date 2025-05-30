@@ -1,7 +1,7 @@
 ﻿$(document).ready(function () {
     // Initialize FullCalendar
     $('#calendar').fullCalendar({
-        locale: 'cs',
+        locale: navigator.language || navigator.userLanguage,
         header: {
             left: 'prev,next today',
             center: 'title',

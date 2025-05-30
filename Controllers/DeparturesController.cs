@@ -29,7 +29,7 @@ public class DeparturesController : Controller
     }
 
     /// <summary>
-    /// Processes the stop search form submission
+    /// Processes stop search form submission
     /// </summary>
     /// <param name="stopName">Name of the stop to search for</param>
     /// <returns>Redirects to Index action with search parameters</returns>
@@ -57,7 +57,7 @@ public class DeparturesController : Controller
         var vm = new DepartureViewModel
         {
             Now = DateTime.Now,
-            AvailableStops = new List<string>(), // Will fill shortly
+            AvailableStops = new List<string>(), // Will fill shortly, avoid LOH warnings PLSS
             Placeholder = "",
         };
 
@@ -111,6 +111,12 @@ public class DeparturesController : Controller
         }
         return vm;
     }
+
+    /// <summary>
+    /// Retrieves the unique identifier of the currently authenticated user.
+    /// </summary>
+    /// <returns>The ID of the currently authenticated user.</returns>
+    /// <exception cref="Exception">Thrown if the user is not found or authentication details are invalid.</exception>
     private int GetCurrentUserId()
     {
         var username = User.Identity.Name;

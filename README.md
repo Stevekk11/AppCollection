@@ -7,7 +7,8 @@
 2. dotnet restore
 3. dotnet ef database update - connection string v appsettings.json a musí být nainstalováno Entity Framework, pokud nefunguje použít skript create db.
 4. databázi vytvořte a pojmenujte ProgramDataMVC.
-5. Spustit na IIS nebo https.
+5. Spustit na IIS nebo https. Vygenerujte si SSL certifikát.
+6. Vytvořte si účet v aplikaci.
 
 ## Funkce
 
@@ -33,13 +34,20 @@
 - Napojení na SQL Server
 - Perzistentní ukládání dat
 - Zabezpečené zpracování dat
+- Historie hledání
+- Uživatelské účty
 
 ### Galerie a přehrávač skladeb
-- Soubory z dokumetů se zde zobrazí.
-- Lze si přehrát audio soubory.
+- Soubory z dokumetů se zde zobrazí, pokud tam nějaký jsou.
+- Lze si přehrát audio soubory a zobrazit fotky.
 
 ### Slovní hodiny a počasí
 - Zajímavý typ hodin a aktuální počasí.
 
 ### Křížovkářský slovník
 - Vyhledávání slov v něm a možnost si je uložit.
+### Kalendář
+- Jednoduché přidávání událostí, jejich editace a mazání.
+- Vytvořeno pomocí JS fullcalendar.
+
+## Poznámka : Dokumentační komentáře vytvořeny pomocí nástroje JetBrains AI documentation comment generator.

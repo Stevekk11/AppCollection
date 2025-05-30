@@ -3,6 +3,13 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AppCollection.Models;
 
+/// <summary>
+/// Represents a record of a search performed by a user within the application.
+/// </summary>
+/// <remarks>
+/// This class is used to store and retrieve information about searches,
+/// including the search term, the date and time of the search, and the user who performed it.
+/// </remarks>
 public class SearchHistory
 {
     [Key]
