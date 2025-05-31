@@ -102,6 +102,10 @@
         <Generator>ResXFileCodeGenerator</Generator>
         <LastGenOutput>Services.SearchService.en.Designer.cs</LastGenOutput>
       </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Views.Home.Credits.en.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Views.Home.Credits.en.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
     </ItemGroup>
 
     <ItemGroup>
@@ -169,6 +173,11 @@
         <DesignTime>True</DesignTime>
         <AutoGen>True</AutoGen>
         <DependentUpon>Services.SearchService.en.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Resources\Views.Home.Credits.en.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Views.Home.Credits.en.resx</DependentUpon>
       </Compile>
     </ItemGroup>
 

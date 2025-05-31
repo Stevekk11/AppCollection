@@ -1,4 +1,8 @@
-﻿public static class PasswordHelper
+﻿namespace AppCollection.Helpers;
+/// <summary>
+/// Provides utility methods for hashing and verifying passwords using the BCrypt algorithm.
+/// </summary>
+public static class PasswordHelper
 {
     /// <summary>
     /// Returns a hashed version of a plaintext password.
