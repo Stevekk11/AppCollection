@@ -5,7 +5,7 @@
         <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-
+        <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
         <IsPackable>false</IsPackable>
         <IsTestProject>true</IsTestProject>
     </PropertyGroup>
