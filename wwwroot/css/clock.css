@@ -1,0 +1,32 @@
+﻿.clock-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: center;
+}
+
+.clock-letter {
+    font-size: 1.1rem;
+    padding: 0.25em 0.5em;
+    border-radius: 0.25em;
+    transition: color 0.3s, background 0.3s;
+    color: black;
+}
+
+.clock-letter.active {
+    font-weight: bold;
+}
+
+.clock-letter.inactive {
+    color: #888;
+}
+
+@media (max-width: 768px) {
+    .clock-letter {
+        min-width: 50px;
+        font-size: 0.95rem;
+    }
+    .weather-box {
+        margin-top: 1.5rem;
+    }
+}

@@ -1,0 +1,122 @@
+﻿@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer Localizer
+@using System.Globalization
+@using System.Security.Claims
+
+@{
+    ViewData["Title"] = Localizer["Přehled"];
+
+    bool isAuthenticated = User.Identity?.IsAuthenticated ?? false;
+    string? username = isAuthenticated ? User.FindFirstValue(ClaimTypes.Name) : Localizer["Anonym"].ToString();
+    string? usertype = isAuthenticated ? User.FindFirstValue("Usertype") : null;
+    var culture = CultureInfo.CurrentUICulture.Name;
+}
+
+<div class="container py-4 ">
+    <h1 class="mb-4 text-decoration-underline">@Localizer["Přehled"]</h1>
+
+     @if (isAuthenticated)
+    {
+        <div class="card mb-3">
+            <div class="card-body">
+                <h4>@Localizer["Vítejte, "] @username</h4>
+                <p>@Localizer["Základní info:"]</p>
+            </div>
+        </div>
+
+        <!-- FULL WIDTH: Základní informace -->
+        <div class="row">
+            <div class="col-12">
+                <div class="card text-bg-secondary text-dark mb-3">
+                    <div class="card-header">@Localizer["Základní informace"]</div>
+                    <div class="card-body">
+                        <div class="text-dark">
+                            <h5>@Localizer["O projektu"]</h5>
+                            <p>@Localizer["Co tato webová aplikace umí:"]</p>
+                            <ul>
+                                <li>@Localizer["Přihlášení a správa uživatelů"]</li>
+                                <li>@Localizer["Lokalizace do více jazyků"]</li>
+                                <li>@Localizer["Responzivní Bootstrap rozhraní"]</li>
+                                <li>@Localizer["Bezpečné ukládání dat"]</li>
+                                <li>@Localizer["Vyhledávání odjezdů PID"]</li>
+                                <li>@Localizer["Bezpečné ukládání dat"]</li>
+                                <li>@Localizer["A další ..."]😀</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- NEXT ROW: Search history/profile and Ribbon color selector side by side -->
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card text-bg-primary mb-3">
+                    <div class="card-header">@Localizer["Info o profilu"]</div>
+                    <div class="card-body">
+                        <p><strong>@Localizer["Uživatelské jméno:"]</strong> @username</p>
+                        <p><strong>@Localizer["Typ uživatele: "]</strong>
+                            @if (usertype.Equals("1"))
+                            {
+                                <p style="color: red">@Localizer["Administrátor"]</p>
+                            }
+                            else
+                            {
+                                <p style="color: green">@Localizer["Normální uživatel"]</p>
+                            }
+                        </p>
+                    </div>
+                    <div class="card-header fw-bold">@Localizer["Nedávno hledané"]</div>
+                    <div class="card-body">
+                        @{
+                            if (ViewBag.Searches != null)
+                            {
+                                foreach (var search in ViewBag.Searches)
+                                {
+                                    <p class="mb-1 fw-normal">@search.Word</p>
+                                    <p class="text-muted">@search.Date.ToString("g")</p>
+                                }
+                            }
+                            else
+                            {
+                                <p>@Localizer["Zatím žádné vyhledávání"]</p>
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card shadow-sm mb-3">
+                    <div class="card-body py-2 px-3">
+                        <div class="mb-2 fw-bold">@Localizer["Barva lišty"]</div>
+                        <div id="ribbonColorRadios" class="btn-group" role="group" aria-label="Ribbon color selector">
+                            <input type="radio" class="btn-check" name="ribbonColor" id="colorPrimary" autocomplete="off" checked>
+                            <label class="btn btn-primary btn-sm" for="colorPrimary"></label>
+
+                            <input type="radio" class="btn-check" name="ribbonColor" id="colorSecondary" autocomplete="off">
+                            <label class="btn btn-secondary btn-sm" for="colorSecondary"></label>
+
+                            <input type="radio" class="btn-check" name="ribbonColor" id="colorSuccess" autocomplete="off">
+                            <label class="btn btn-success btn-sm" for="colorSuccess"></label>
+
+                            <input type="radio" class="btn-check" name="ribbonColor" id="colorDanger" autocomplete="off">
+                            <label class="btn btn-danger btn-sm" for="colorDanger"></label>
+
+                            <input type="radio" class="btn-check" name="ribbonColor" id="colorWarning" autocomplete="off">
+                            <label class="btn btn-warning btn-sm" for="colorWarning"></label>
+
+                            <input type="radio" class="btn-check" name="ribbonColor" id="colorInfo" autocomplete="off">
+                            <label class="btn btn-info btn-sm" for="colorInfo"></label>
+
+                            <input type="radio" class="btn-check" name="ribbonColor" id="colorDark" autocomplete="off">
+                            <label class="btn btn-dark btn-sm" for="colorDark"></label>
+
+                            <input type="radio" class="btn-check" name="ribbonColor" id="colorWhite" autocomplete="off">
+                            <label class="btn btn-outline-light btn-sm" for="colorWhite"></label>
+                        </div>
+                    </div>
+                </div>
+                <a asp-action="Credits" asp-controller="Home" class="btn btn-success m-2 w-75" asp-route-culture="@culture">⭐Credits⭐</a>
+            </div>
+        </div>
+    }
+</div>

@@ -1,0 +1,49 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@model Event
+@inject IViewLocalizer Localizer
+
+@{
+    ViewBag.Title = Localizer["Kalendář"];
+}
+@section Scripts {
+    <script src="~/js/calendar.js"></script>
+}
+
+
+<div class="container mt-4">
+    <h2>@ViewBag.Title</h2>
+    <div id="calendar"></div>
+</div>
+
+<!-- Event Modal -->
+<div class="modal fade" id="eventModal" tabindex="-1" role="dialog" aria-labelledby="eventModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <form id="eventForm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="eventModalLabel">@Localizer["Přidat/Upravit"]</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="eventId"/>
+                    <div class="form-group">
+                        <label for="eventName">@Localizer["Název"]</label>
+                        <input type="text" class="form-control" id="eventName" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="eventStart">@Localizer["Start"] </label>
+                        <input type="datetime-local" class="form-control" id="eventStart" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="eventEnd">@Localizer["Konec"]</label>
+                        <input type="datetime-local" class="form-control" id="eventEnd" required />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" id="deleteEventBtn" style="display:none;">@Localizer["Smazat"]</button>
+                    <button type="submit" class="btn btn-primary">@Localizer["Uložit"]</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

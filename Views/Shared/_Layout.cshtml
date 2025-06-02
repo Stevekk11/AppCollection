@@ -1,0 +1,177 @@
+﻿@using System.Globalization
+<!DOCTYPE html>
+@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer Localizer
+@{
+    var culture = CultureInfo.CurrentUICulture.Name;
+    var dbUnavailable = ViewBag.DatabaseUnavailable as bool? ?? false;
+}
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>@ViewData["Title"]@Localizer[" - Kolekce aplikací"]</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.css"/>
+
+</head>
+<body class="d-flex flex-column min-vh-100">
+<header>
+    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3" id="mainNavbar">
+        <div class="container-fluid">
+            <a class="navbar-brand fw-bold d-flex align-items-center" asp-area="" asp-controller="Home"
+               asp-action="Index" asp-route-culture="@culture">
+                <i class="bi bi-collection me-2"></i>
+                @Localizer["Kolekce aplikací"]
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse"
+                    aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div
+                class="navbar-collapse collapse d-sm-inline-flex justify-content-between align-items-center text-nowrap">
+                <ul class="navbar-nav flex-grow-1 align-items-center">
+                    <li class="nav-item d-flex align-items-center">
+                        <a class="nav-link text-dark d-flex align-items-center" asp-area="" asp-controller="Home"
+                           asp-action="Index" asp-route-culture="@culture">
+                            <i class="bi bi-house me-2"></i>
+                            @Localizer["Domů"]
+                        </a>
+                    </li>
+                    <li class="nav-item d-flex align-items-center">
+                        <a class="nav-link text-dark d-flex align-items-center fw-bold" asp-controller="Search"
+                           asp-action="Index" asp-route-culture="@culture">
+                            <i class="bi bi-puzzle me-2"></i>
+                            @Localizer["Křížovkářský slovník"]
+                        </a>
+                    </li>
+                    <li class="nav-item d-flex align-items-center">
+                        <a class="nav-link text-dark d-flex align-items-center" asp-area="" asp-controller="Home"
+                           asp-action="Privacy" asp-route-culture="@culture">
+                            <i class="bi bi-shield-check me-2"></i>
+                           @Localizer["Ochrana soukromí"]
+                        </a>
+                    </li>
+                    <li class="nav-item d-flex align-items-center">
+                        <a class="nav-link text-dark d-flex align-items-center" asp-area="" asp-controller="Home"
+                           asp-action="Clock" asp-route-culture="@culture">
+                            <i class="bi bi-clock me-2"></i>
+                            @Localizer["Slovní hodiny"]
+                        </a>
+                    </li>
+                    <li class="nav-item d-flex align-items-center">
+                        <a class="nav-link text-dark d-flex align-items-center" asp-controller="Document"
+                           asp-action="Index" asp-route-culture="@culture">
+                            <i class="bi bi-file-earmark-text me-2"></i>
+                            @Localizer["Moje dokumenty"]
+                        </a>
+                    </li>
+                    <li class="nav-item d-flex align-items-center">
+                        <a class="nav-link text-dark d-flex align-items-center" asp-controller="Document"
+                           asp-action="Gallery" asp-route-culture="@culture">
+                            <i class="bi bi-images me-2"></i>
+                            @Localizer["Galerie"]
+                        </a>
+                    </li>
+                    <li class="nav-item d-flex align-items-center">
+                        <a class="nav-link text-dark d-flex align-items-center" asp-controller="Events"
+                           asp-action="Calendar" asp-route-culture="@culture">
+                            <i class="bi bi-calendar-event me-2"></i>
+                            @Localizer["Kalendář"]
+                        </a>
+                    </li>
+                    <li class="nav-item d-flex align-items-center">
+                        <a class="nav-link text-dark d-flex align-items-center" asp-controller="Document"
+                           asp-action="Music" asp-route-culture="@culture">
+                            <i class="bi bi-music-note-list me-2"></i>
+                            @Localizer["Přehrávač skladeb"]
+                        </a>
+                    </li>
+                    <li class="nav-item d-flex align-items-center">
+                        <a class="nav-link text-dark d-flex align-items-center" asp-controller="Departures"
+                           asp-action="Transport" asp-route-culture="@culture">
+                            <i class="bi bi-bus-front me-2"></i>
+                            @Localizer["Odjezdy PID"]
+                        </a>
+                    </li>
+                    <div class="dropdown ms-auto nav-item d-flex align-items-center p-3">
+                        <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="languageDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-translate me-1"></i>
+                            @CultureInfo.CurrentUICulture.TwoLetterISOLanguageName.ToUpper()
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="languageDropdown">
+                            <li>
+                                <a class="dropdown-item" href="?culture=en&ui-culture=en">
+                                    <i class="bi bi-flag me-1"></i> English
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="?culture=cs&ui-culture=cs">
+                                    <i class="bi bi-flag me-1"></i> Čeština
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="nav-item d-flex align-items-center">
+                        <form asp-controller="Account" asp-action="Logout" method="post" class="d-inline"
+                              id="logoutForm">
+                            @Html.AntiForgeryToken()
+                            <button class="btn btn-secondary d-flex align-items-center" type="submit">
+                                <i class="bi bi-box-arrow-right me-2"></i>
+                                @Localizer["Odhlásit se..."]
+                            </button>
+                        </form>
+                    </div>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+<div class="container flex-grow-1">
+    <main role="main" class="pb-3">
+        @RenderBody()
+    </main>
+</div>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.js"></script>
+<script src="~/js/navbar.js"></script>
+
+<script src="~/js/site.js" asp-append-version="true"></script>
+@await RenderSectionAsync("Scripts", required: false)
+</body>
+<footer class="footer mt-auto py-3 bg-black text-white border-top">
+    <div class="container text-center">
+        <span class="text-muted fw-bold">
+            @Localizer["&copy; 2025 SPŠE Ječná - Kolekce aplikací"] 🩷
+        </span>
+    </div>
+</footer>
+@if (dbUnavailable)
+{
+    <script>
+        window.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('button, input[type="submit"], a.btn').forEach(function(el) {
+                el.disabled = true;
+                el.classList.add('disabled');
+                el.title = "Database unavailable";
+            });
+            document.querySelectorAll('a[href]').forEach(function(link) {
+                // Prevent clicks on the links
+                link.addEventListener('click', function(event) {
+                    event.preventDefault();
+                });
+                // Make links look and behave disabled
+                link.classList.add('disabled');
+                link.setAttribute('aria-disabled', 'true');
+                link.title = "Database unavailable";
+            });
+        });
+    </script>
+}
+</html>

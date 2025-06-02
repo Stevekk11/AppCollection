@@ -1,0 +1,19 @@
+﻿@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer Localizer
+
+<!DOCTYPE html>
+@{
+    ViewData["Title"] = "Credits";
+}
+<body>
+<h1 class="d-flex justify-content-center m-2 text-lg-start" style="font-family: 'Blackadder ITC',sans-serif">-- Credits --</h1>
+<h2 class="fw-bold d-flex justify-content-center m-2">@Localizer["Hlavní programátor: "]Štěpán</h2>
+<h2 class="fw-bold d-flex justify-content-center m-2">@Localizer["Překlad: "]Štěpán</h2>
+<h2 class="fw-bold d-flex justify-content-center m-2">@Localizer["Marketing: "]Štěpán</h2>
+<h2 class="fw-bold d-flex justify-content-center m-2">@Localizer["Testování: "]Štěpán, Oleg, Tomáš, Lukáš</h2>
+<h2 class="fw-bold d-flex justify-content-center m-2">@Localizer["Inspirováno aplikací: "]</h2>
+<div class="d-flex justify-content-center align-items-center m-2">
+    <img src="~/media/1086f6a0a59e8899-formflow-ad505cf9-1.png"
+         alt="form-flow"
+         class="p-3 border border-dark rounded"/>
+</div>
+</body>
