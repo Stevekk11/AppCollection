@@ -5,6 +5,7 @@ using System.Net.Http.Headers;
 using Microsoft.AspNetCore.Authorization;
 
 namespace AppCollection.Controllers;
+
 /// <summary>
 /// Controller for managing public transport departures
 /// </summary>
@@ -19,6 +20,7 @@ public class DeparturesController : Controller
         _context = context;
         _configuration = configuration;
     }
+
     /// <summary>
     /// Displays departure information for a specified stop
     /// </summary>
@@ -31,7 +33,7 @@ public class DeparturesController : Controller
     }
 
     /// <summary>
-    /// Processes stop search form submission
+    /// Processes stop search form submission and saves the stop to search history
     /// </summary>
     /// <param name="stopName">Name of the stop to search for</param>
     /// <returns>Redirects to Index action with search parameters</returns>
@@ -45,8 +47,9 @@ public class DeparturesController : Controller
             UserId = GetCurrentUserId()
         };
         _context.Add(hist);
-        _context.SaveChangesAsync();
-        return RedirectToAction("Transport", new { stopName, actionType = "search" });
+        _context.SaveChanges();
+        var culture = Thread.CurrentThread.CurrentCulture.Name;
+        return RedirectToAction("Transport", new { stopName, actionType = "search", culture});
     }
 
     /// <summary>
@@ -86,7 +89,8 @@ public class DeparturesController : Controller
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             client.DefaultRequestHeaders.Add("X-Access-Token", _configuration["Golemio:ApiKey"]);
             var url = "https://api.golemio.cz/v2/pid/departureboards";
-            var query = $"names={Uri.EscapeDataString(stopName)}&minutesBefore=0&minutesAfter=100&timeFrom={DateTime.UtcNow:o}&includeMetroTrains=true&airCondition=true&preferredTimezone=Europe/Prague&mode=departures&order=real&filter=none&skip=canceled&limit=20";
+            var query =
+                $"names={Uri.EscapeDataString(stopName)}&minutesBefore=0&minutesAfter=100&timeFrom={DateTime.UtcNow:o}&includeMetroTrains=true&airCondition=true&preferredTimezone=Europe/Prague&mode=departures&order=real&filter=none&skip=canceled&limit=20";
             try
             {
                 var result = client.GetStringAsync($"{url}?{query}").Result;
@@ -100,8 +104,12 @@ public class DeparturesController : Controller
                         Minutes = int.TryParse(item["departure_timestamp"]?["minutes"]?.ToString(), out var m) ? m : 0,
                         PlatformCode = item["stop"]?["platform_code"]?.ToString(),
                         Delay = int.TryParse(item["delay"]?["minutes"]?.ToString(), out var d) ? d : 0,
-                        Ac = (item["trip"]?["is_air_conditioned"]?.Type == JTokenType.Boolean) ? item["trip"]["is_air_conditioned"].Value<bool>() : false,
-                        Krypl = (item["trip"]?["is_wheelchair_accessible"]?.Type == JTokenType.Boolean) ? item["trip"]["is_wheelchair_accessible"].Value<bool>() : false
+                        Ac = (item["trip"]?["is_air_conditioned"]?.Type == JTokenType.Boolean)
+                            ? item["trip"]["is_air_conditioned"].Value<bool>()
+                            : false,
+                        Krypl = (item["trip"]?["is_wheelchair_accessible"]?.Type == JTokenType.Boolean)
+                            ? item["trip"]["is_wheelchair_accessible"].Value<bool>()
+                            : false
                     })
                     .ToList();
             }
@@ -109,8 +117,10 @@ public class DeparturesController : Controller
             {
                 vm.Error = "Failed to fetch departures. Please try again.";
             }
+
             vm.StopName = stopName;
         }
+
         return vm;
     }
 
