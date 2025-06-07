@@ -1,0 +1,69 @@
+﻿@model RadioSong
+@{
+    ViewData["Title"] = "Hitradio City Praha";
+    string stream = ViewBag.StreamUrl as string;
+    string err = ViewBag.RadioErr as string;
+}
+
+<div class="container mt-5">
+    <div class="card shadow-lg border-0 rounded-4">
+        <div class="card-header bg-dark text-white">
+            <h2 class="mb-0">🎧 Hitrádio City Praha</h2>
+        </div>
+
+        <div class="card-body">
+
+            @if (Model != null)
+            {
+                <div class="row g-4 align-items-center">
+                    <div class="col-md-4 text-center">
+                        <img src="@Model.Image" alt="Cover Art" class="img-fluid rounded shadow-sm" id="songImage"/>
+                    </div>
+
+                    <div class="col-md-8">
+                        <h4 class="fw-bold" id="songTitle">@Model.Song</h4>
+                        <p class="text-muted">by <strong id="songArtist">@Model.Interpret</strong></p>
+
+                        <div class="mb-2" id="songTimes">
+                            <span class="badge bg-secondary">Start: @Model.BeginAt.ToLocalTime()</span>
+                            <span class="badge bg-secondary">Konec: @Model.EndAt.ToLocalTime()</span>
+                        </div>
+
+                        <audio controls autoplay class="w-100 mt-3" id="radioPlayer">
+                            <source src="@stream" type="audio/mpeg"/>
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-warning text-center">
+                    <strong>⚠️ Nelze načíst rádio. @err </strong><br/>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+<script>
+    async function refreshNowPlaying() {
+        try {
+            const res = await fetch('/api/radio/now');
+            if (!res.ok) throw new Error("Network error");
+
+            const song = await res.json();
+
+            document.getElementById("songTitle").textContent = song.song;
+            document.getElementById("songArtist").textContent = song.interpret;
+            document.getElementById("songImage").src = song.image;
+            document.getElementById("songTimes").innerHTML = `
+                <span class="badge bg-secondary">Start: ${new Date(song.beginAt).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', second: '2-digit'})}</span>
+                <span class="badge bg-secondary">End: ${new Date(song.endAt).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', second: '2-digit'})}</span>
+            `;
+        } catch (err) {
+            console.warn("Now Playing fetch failed:", err);
+        }
+    }
+
+    setInterval(refreshNowPlaying, 30000);
+</script>
