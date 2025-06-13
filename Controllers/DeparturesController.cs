@@ -2,6 +2,7 @@
 using Newtonsoft.Json.Linq;
 using AppCollection.Models;
 using System.Net.Http.Headers;
+using System.Runtime.InteropServices;
 using Microsoft.AspNetCore.Authorization;
 
 namespace AppCollection.Controllers;
@@ -14,11 +15,13 @@ public class DeparturesController : Controller
 {
     private readonly ApplicationDbContext _context;
     private readonly IConfiguration _configuration;
+    private readonly ILogger _logger;
 
-    public DeparturesController(ApplicationDbContext context, IConfiguration configuration)
+    public DeparturesController(ApplicationDbContext context, IConfiguration configuration, ILogger<DeparturesController> logger)
     {
         _context = context;
         _configuration = configuration;
+        _logger = logger;
     }
 
     /// <summary>
@@ -48,6 +51,7 @@ public class DeparturesController : Controller
         };
         _context.Add(hist);
         _context.SaveChanges();
+        _logger.LogInformation($"User {User.Identity.Name} searched for {stopName} at {DateTime.Now:o}");
         var culture = Thread.CurrentThread.CurrentCulture.Name;
         return RedirectToAction("Transport", new { stopName, actionType = "search", culture});
     }
@@ -116,6 +120,7 @@ public class DeparturesController : Controller
             catch
             {
                 vm.Error = "Failed to fetch departures. Please try again.";
+                _logger.LogError("Failed to fetch departures for stop {stopName}", stopName);
             }
 
             vm.StopName = stopName;

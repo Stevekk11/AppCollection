@@ -57,4 +57,7 @@
     <data name="Kolekce aplikací" xml:space="preserve">
         <value>App collection</value>
     </data>
+    <data name="Rádio" xml:space="preserve">
+        <value>Radio</value>
+    </data>
 </root>

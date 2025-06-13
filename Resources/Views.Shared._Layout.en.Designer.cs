@@ -168,6 +168,15 @@ namespace AppCollection.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Radio.
+        /// </summary>
+        internal static string Rádio {
+            get {
+                return ResourceManager.GetString("Rádio", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Word clock and weather.
         /// </summary>
         internal static string Slovní_hodiny {

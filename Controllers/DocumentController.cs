@@ -22,13 +22,15 @@ public class DocumentController : Controller
     private readonly ApplicationDbContext _context;
     private readonly DocumentService _documentService;
     private readonly PdfSignatureService _pdfSignatureService;
+    private readonly ILogger _logger;
 
-    public DocumentController(ApplicationDbContext context, IConfiguration configuration,
-        DocumentService documentService, PdfSignatureService pdfSignatureService)
+    public DocumentController(ApplicationDbContext context,
+        DocumentService documentService, PdfSignatureService pdfSignatureService, ILogger<DocumentController> logger)
     {
         _context = context;
         _documentService = documentService;
         _pdfSignatureService = pdfSignatureService;
+        _logger = logger;
     }
 
     /// <summary>
@@ -80,6 +82,7 @@ public class DocumentController : Controller
             return NotFound();
 
         var signatureInfo = _pdfSignatureService.GetPdfSignatureInfo(doc.StoragePath);
+        _logger.LogInformation($"User {User.Identity.Name} retrieved signature info for document {doc.FileName}.");
 
         return Json(new
         {
@@ -109,7 +112,7 @@ public class DocumentController : Controller
 
         var userId = GetCurrentUserId();
         await _documentService.AddDocumentAsync(userId, file);
-
+        _logger.LogInformation($"User {User.Identity.Name} uploaded a new document with name {file.FileName}.");
         return RedirectToAction(nameof(Index));
     }
 
@@ -139,7 +142,7 @@ public class DocumentController : Controller
 
             if (!System.IO.File.Exists(absolutePath))
                 return NotFound();
-
+            _logger.LogInformation($"User {User.Identity.Name} downloaded document with the name {doc.FileName}.");
             return PhysicalFile(absolutePath, mimeType, doc.FileName);
         }
         catch (FileNotFoundException)
@@ -152,7 +155,7 @@ public class DocumentController : Controller
         }
         catch (Exception ex)
         {
-            //_logger.LogError(ex, "Unexpected error while downloading document {DocumentId}", id);
+            _logger.LogError(ex, "Unexpected error while downloading document {DocumentId}", id);
             return StatusCode(500, "An unexpected error occurred.");
         }
     }
@@ -298,7 +301,7 @@ public class DocumentController : Controller
     /// <summary>
     /// Deletes a specific document from the user's account.
     /// </summary>
-    /// <param name="id"></param>
+    /// <param name="id">The id of the to be deleted document</param>
     /// <returns></returns>
     [HttpPost]
     [ValidateAntiForgeryToken]
@@ -306,6 +309,7 @@ public class DocumentController : Controller
     {
         var userId = GetCurrentUserId();
         await _documentService.DeleteDocumentAsync(id, userId);
+        _logger.LogInformation($"User {User.Identity.Name} deleted document with ID {id}.");
         return RedirectToAction(nameof(Index));
     }
 }

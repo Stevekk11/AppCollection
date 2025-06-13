@@ -81,4 +81,7 @@
     <data name="Barva lišty" xml:space="preserve">
         <value>Ribbon color</value>
     </data>
+    <data name="Aplikační log (pro pokročilé)" xml:space="preserve">
+        <value>Application log (for advanced users)</value>
+    </data>
 </root>

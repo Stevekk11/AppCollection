@@ -1,0 +1,99 @@
+﻿@using System.Globalization
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@{
+    ViewData["Title"] = Localizer["Aplikační log"];
+    var logFiles = ViewBag.LogFiles as List<FileInfo> ?? new List<FileInfo>();
+}
+
+<h1 class="text-center my-4">@ViewData["Title"]</h1>
+<div class="container py-4">
+    @if (logFiles.Count == 0)
+    {
+        <div class="alert alert-info text-center">
+            <i class="bi bi-info-circle"></i>
+            @Localizer["Žádné logy nebyly nalezeny."]
+        </div>
+    }
+    else
+    {
+        <table class="table table-hover align-middle shadow-sm">
+            <thead class="table-light">
+            <tr>
+                <th><i class="bi bi-file-earmark-text"></i> @Localizer["Soubor"]</th>
+                <th class="text-center">@Localizer["Datum poslední změny"]</th>
+                <th class="text-center">@Localizer["Velikost"]</th>
+                <th class="text-center">@Localizer["Akce"]</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var log in logFiles)
+            {
+                // Is the file plain text or previewable? (basic check)
+                var ext = log.Extension.ToLowerInvariant();
+                var isPreviewable = ext == ".log" || ext == ".txt";
+                <tr>
+                    <td>
+                        <i class="bi bi-file-earmark-text me-2"></i>
+                        @log.Name
+                    </td>
+                    <td class="text-center">@log.LastWriteTime.ToString("g", CultureInfo.CurrentUICulture)</td>
+                    <td class="text-center">@($"{log.Length / 1024.0:F1}") KB</td>
+                    <td class="text-center">
+                        <a href="@Url.Action("DownloadLog", "Home", new { fileName = log.Name })"
+                           class="btn btn-sm btn-success me-1"
+                           title="@Localizer["Stáhnout logový soubor"]">
+                            <i class="bi bi-download"></i>
+                        </a>
+                        @if (isPreviewable)
+                        {
+                            <button type="button"
+                                    class="btn btn-sm btn-outline-secondary"
+                                    onclick="showLogPreview('@log.Name')"
+                                    title="@Localizer["Zobrazit náhled"]">
+                                <i class="bi bi-eye"></i>
+                            </button>
+                        }
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    }
+</div>
+
+<!-- Modal for previewing log file content -->
+<div class="modal fade" id="logPreviewModal" tabindex="-1" aria-labelledby="logPreviewModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="logPreviewModalLabel">@Localizer["Náhled logu"]</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="@Localizer["Zavřít"]"></button>
+            </div>
+            <div class="modal-body" id="logPreviewContent">
+                <div class="text-center text-muted">
+                    <i class="bi bi-hourglass-split"></i>
+                    @Localizer["Načítám obsah logu..."]
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function showLogPreview(fileName) {
+            $("#logPreviewContent").html('<div class="text-center text-muted"><i class="bi bi-hourglass-split"></i> Načítám obsah logu...</div>');
+            $("#logPreviewModal").modal('show');
+            $.get('@Url.Action("PreviewLog", "Home")', { fileName: fileName })
+                .done(function (data) {
+                    $("#logPreviewContent").html(
+                        "<pre class='bg-light p-3 rounded small' style='max-height:60vh; overflow:auto;'>" + $("<div>").text(data).html() + "</pre>"
+                    );
+                })
+                .fail(function () {
+                    $("#logPreviewContent").html('<div class="alert alert-danger">@Localizer["Nepodařilo se načíst obsah logu."]</div>');
+                });
+        }
+    </script>
+}

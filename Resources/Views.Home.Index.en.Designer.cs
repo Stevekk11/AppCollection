@@ -87,6 +87,15 @@ namespace AppCollection.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Application log (for advanced users).
+        /// </summary>
+        internal static string Aplikační_log__pro_pokročilé_ {
+            get {
+                return ResourceManager.GetString("Aplikační log (pro pokročilé)", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ribbon color.
         /// </summary>
         internal static string Barva_lišty {

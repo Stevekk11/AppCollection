@@ -17,6 +17,7 @@ public class SearchService
     private readonly IHttpClientFactory _httpClientFactory;
     private ApplicationDbContext _context;
     private readonly IStringLocalizer<SearchService> _loc;
+    private readonly ILogger<SearchService> _logger;
 
     /// <summary>
     /// Initializes a new instance of the SearchService class.
@@ -24,11 +25,12 @@ public class SearchService
     /// <param name="httpClientFactory">The HTTP client factory used for creating HTTP clients.</param>
     /// <param name="context"> database</param>
     /// <param name="loc">localizer</param>
-    public SearchService(IHttpClientFactory httpClientFactory, ApplicationDbContext context, IStringLocalizer<SearchService> loc)
+    public SearchService(IHttpClientFactory httpClientFactory, ApplicationDbContext context, IStringLocalizer<SearchService> loc, ILogger<SearchService> logger)
     {
         _httpClientFactory = httpClientFactory;
         _context = context;
         _loc = loc;
+        _logger = logger;
     }
 
     /// <summary>
@@ -51,11 +53,13 @@ public class SearchService
                 UserId = loginId
             };
             _context.Add(hist);
+            _logger.LogInformation($"Searched for {query} at {DateTime.Now:o}");
             await _context.SaveChangesAsync();
             return ExtractTableData(html);
         }
         catch (Exception e)
         {
+            _logger.LogError($"Error searching for {query}: {e.Message}");
             return "Chyba načítání výsledků, " + e.Message;
         }
     }
@@ -97,6 +101,7 @@ public class SearchService
         }
         catch (Exception e)
         {
+            _logger.LogError($"Error extracting table data from HTML: {e.Message}");
             return $"{_loc["Chyba HTML extrakce, zkuste to znova, "]} {e.Message}";
         }
     }
